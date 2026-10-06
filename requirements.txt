@@ -1,5 +1,6 @@
 openai>=1.50
 pypdf
+fonttools
 pypdfium2
 pillow
 pillow-heif
