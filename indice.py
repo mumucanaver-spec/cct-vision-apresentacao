@@ -9,6 +9,7 @@ import hashlib
 import json
 import re
 import shutil
+import threading
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from dataclasses import dataclass, field
 from datetime import datetime
@@ -152,8 +153,24 @@ def situacao() -> dict:
     return {"na_pasta": len(unidades), "pendentes": pendentes, "removidas": removidas}
 
 
+_trava_indexacao = threading.Lock()
+
+
 def atualizar_indice(progresso: Progresso = None) -> dict:
-    """Processa CCTs novas/alteradas e remove do índice as que saíram da pasta."""
+    """Processa CCTs novas/alteradas e remove do índice as que saíram da pasta.
+    Só uma atualização roda por vez no servidor (várias pessoas podem clicar ao mesmo tempo)."""
+    if not _trava_indexacao.acquire(blocking=False):
+        return {"processadas": 0, "removidas": 0, "total": len(descobrir_unidades()),
+                "substituidas": 0,
+                "avisos": ["Já existe uma atualização do acervo em andamento (talvez iniciada por "
+                           "outra pessoa). Aguarde alguns minutos e confira de novo."]}
+    try:
+        return _atualizar_indice(progresso)
+    finally:
+        _trava_indexacao.release()
+
+
+def _atualizar_indice(progresso: Progresso) -> dict:
     PASTA_INDICE.mkdir(parents=True, exist_ok=True)
     existentes = {c["id"]: c for c in carregar_indice()}
     unidades = descobrir_unidades()

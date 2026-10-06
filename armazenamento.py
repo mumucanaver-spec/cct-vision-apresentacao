@@ -44,9 +44,10 @@ def configurado() -> bool:
 def baixar() -> int:
     """Traz o acervo do GitHub para as pastas locais. Devolve quantos arquivos vieram."""
     with _trava:
+        # "Já salvo no GitHub" = só o que veio do GitHub. Arquivos que já estavam na pasta local
+        # e não vieram de lá precisam ser enviados no próximo sincronizar().
+        _salvos.clear()
         if not _tem_commits():
-            _salvos.clear()
-            _salvos.update(_arquivos_locais())
             return 0
         recebidos = 0
         with tempfile.TemporaryFile() as temporario:
@@ -66,10 +67,11 @@ def baixar() -> int:
                         continue
                     destino.parent.mkdir(parents=True, exist_ok=True)
                     with pacote.extractfile(membro) as origem:
-                        destino.write_bytes(origem.read())
+                        dados = origem.read()
+                    destino.write_bytes(dados)
+                    _salvos[destino.relative_to(PASTA_BASE.resolve()).as_posix()] = \
+                        hashlib.sha256(dados).hexdigest()
                     recebidos += 1
-        _salvos.clear()
-        _salvos.update(_arquivos_locais())
         return recebidos
 
 

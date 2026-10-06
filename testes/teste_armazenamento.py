@@ -90,6 +90,8 @@ gh = GitHubFalso(); arm.requests.request = gh
 base = Path(tempfile.mkdtemp()); apontar_para(base)
 
 assert arm.configurado()
+# Arquivo que já estava na pasta local ANTES de existir acervo no GitHub (caso real que falhou):
+(base / "ccts").mkdir(parents=True); (base / "ccts" / "ja estava aqui.pdf").write_bytes(b"%PDF local antigo")
 print("1) repositório vazio -> baixados:", arm.baixar())
 
 (base / "ccts" / "Fotos CCT").mkdir(parents=True); (base / "dados" / "indice").mkdir(parents=True)
@@ -99,6 +101,13 @@ print("1) repositório vazio -> baixados:", arm.baixar())
 n, avisos = arm.sincronizar("primeiro envio")
 print("2) primeiro envio:", n, "arquivos | no GitHub:", sorted(gh.arquivos()))
 assert gh.arquivos()["ccts/Fotos CCT/pag 1.jpg"] == bytes(range(256)) * 50
+assert gh.arquivos()["ccts/ja estava aqui.pdf"] == b"%PDF local antigo", "arquivo local anterior não foi enviado"
+# Arquivo local que não veio do GitHub, presente na hora de baixar: também deve ser enviado depois.
+(base / "ccts" / "so local.pdf").write_bytes(b"%PDF so local")
+arm.baixar()
+n, _ = arm.sincronizar("envia o que só existia localmente")
+assert gh.arquivos()["ccts/so local.pdf"] == b"%PDF so local", "arquivo só local foi tratado como salvo"
+print("   arquivos que já existiam localmente foram enviados:", n)
 
 print("3) sem mudanças -> enviados:", arm.sincronizar("nada")[0])
 
