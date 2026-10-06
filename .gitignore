@@ -5,3 +5,4 @@ __pycache__/
 # O acervo fica num repositório separado (veja armazenamento.py)
 ccts/
 dados/
+COLAR_NO_STREAMLIT_SECRETS.txt
