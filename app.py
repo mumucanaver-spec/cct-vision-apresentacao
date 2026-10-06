@@ -242,6 +242,25 @@ def sem_formula(texto: str) -> str:
     return texto.replace("$", r"\$")
 
 
+def mostrar_detalhes_cct(cct: dict):
+    m = cct.get("metadados") or {}
+    st.caption(f"Arquivo: {cct['nome']} · {len(cct['paginas'])} página(s)/trecho(s)")
+    st.write(f"**Vigência:** {_vigencia(cct)}")
+    if m.get("categorias_abrangidas"):
+        st.write("**Categorias:** " + sem_formula("; ".join(m["categorias_abrangidas"])))
+    if m.get("abrangencia_territorial"):
+        st.write("**Abrangência:** " + "; ".join(m["abrangencia_territorial"]))
+    if m.get("resumo"):
+        st.write(sem_formula(m["resumo"]))
+    for aviso in cct.get("avisos", []):
+        st.warning(aviso)
+    if st.checkbox("Quero excluir esta CCT", key=f"confirmar_{cct['id']}"):
+        if st.button("Excluir definitivamente", key=f"excluir_cct_{cct['id']}", type="primary"):
+            excluir(cct)
+            executar_indexacao()
+            st.rerun()
+
+
 def _curto(texto: str, limite: int = 42) -> str:
     return texto if len(texto) <= limite else texto[:limite - 1].rstrip() + "…"
 
@@ -316,40 +335,21 @@ with st.sidebar:
     substituidas = [c for c in ccts if c.get("substituida_por")]
     por_id = {c["id"]: c for c in ccts}
     with st.expander(f"📚 CCTs indexadas ({len(ativas)})"):
+        if not ccts:
+            st.caption("Nenhuma CCT no acervo ainda.")
+        # Um cartão por CCT, que abre com os detalhes (como na versão anterior).
         for cct in ativas:
-            st.markdown(f"**{titulo(cct)}**  \n<small>{_vigencia(cct)}</small>", unsafe_allow_html=True)
+            with st.expander(titulo(cct)):
+                mostrar_detalhes_cct(cct)
         if substituidas:
-            st.markdown(f"**Deixadas de lado ({len(substituidas)})**  \n<small>Repetidas ou versões "
-                        "anteriores; não são usadas nas respostas.</small>", unsafe_allow_html=True)
+            st.caption(f"Deixadas de lado ({len(substituidas)}): repetidas ou versões anteriores, "
+                       "não usadas nas respostas.")
             for cct in substituidas:
-                vale = por_id.get(cct["substituida_por"])
-                st.markdown(f"<small><s>{titulo(cct)}</s> → vale <b>{titulo(vale) if vale else '?'}</b>"
-                            f" ({cct.get('motivo_substituicao') or 'mesma CCT'})</small>",
-                            unsafe_allow_html=True)
-        if ccts:
-            st.divider()
-            escolhida = st.selectbox("Ver detalhes", [c["id"] for c in ccts], index=None,
-                                     placeholder="Escolha uma CCT",
-                                     format_func=lambda i: titulo(por_id[i]))
-            if escolhida:
-                cct = por_id[escolhida]
-                m = cct.get("metadados") or {}
-                st.caption(f"Arquivo: {cct['nome']} · {len(cct['paginas'])} página(s)/trecho(s)")
-                st.write(f"**Vigência:** {_vigencia(cct)}")
-                if m.get("categorias_abrangidas"):
-                    st.write("**Categorias:** " + "; ".join(m["categorias_abrangidas"]))
-                if m.get("abrangencia_territorial"):
-                    st.write("**Abrangência:** " + "; ".join(m["abrangencia_territorial"]))
-                if m.get("resumo"):
-                    st.write(sem_formula(m["resumo"]))
-                for aviso in cct.get("avisos", []):
-                    st.warning(aviso)
-                if st.checkbox("Quero excluir esta CCT", key=f"confirmar_{cct['id']}"):
-                    if st.button("Excluir definitivamente", key=f"excluir_cct_{cct['id']}",
-                                 type="primary"):
-                        excluir(cct)
-                        executar_indexacao()
-                        st.rerun()
+                with st.expander(f"⤷ {titulo(cct)}"):
+                    vale = por_id.get(cct["substituida_por"])
+                    st.info(f"Vale **{titulo(vale) if vale else '?'}**: "
+                            f"{cct.get('motivo_substituicao') or 'mesma CCT'}")
+                    mostrar_detalhes_cct(cct)
 
     st.divider()
     usuario_col, sair_col = st.columns([3, 1], vertical_alignment="center")
