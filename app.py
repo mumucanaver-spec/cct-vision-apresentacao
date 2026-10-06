@@ -34,8 +34,9 @@ import conversas  # noqa: E402
 import ia  # noqa: E402
 from config import PASTA_CCTS  # noqa: E402
 from consulta import responder  # noqa: E402
-from indice import (atualizar_indice, carregar_indice, excluir, impressoes_digitais,  # noqa: E402
-                    situacao, titulo)
+from indice import (MARCADOR_PASTA, SEM_PASTA, atualizar_indice, carregar_indice,  # noqa: E402
+                    eh_pasta_de_organizacao, excluir, impressoes_digitais, pasta_da_cct,
+                    pastas_de_organizacao, situacao, titulo)
 
 ONLINE = armazenamento.configurado()
 SENHA = os.getenv("SENHA_DE_ACESSO", "")
@@ -193,8 +194,24 @@ def _sem_conflito(destino):
     return destino
 
 
-def salvar_envios(enviados: list, grupo: str, pasta_inteira: bool) -> tuple[int, list[str]]:
-    """Grava os arquivos enviados na pasta do acervo, recusando os que já existem.
+def _pasta_de_organizacao(nome: str):
+    """Pasta que agrupa CCTs (criada se não existir). Se já houver uma pasta comum com esse
+    nome (uma CCT em vários arquivos), usa outro nome para não misturar as duas coisas."""
+    base = PASTA_CCTS / _nome_seguro(nome)
+    numero = 2
+    while base.exists() and not eh_pasta_de_organizacao(base):
+        base = PASTA_CCTS / f"{_nome_seguro(nome)} ({numero})"
+        numero += 1
+    base.mkdir(parents=True, exist_ok=True)
+    (base / MARCADOR_PASTA).touch()
+    return base
+
+
+def salvar_envios(enviados: list, grupo: str, pasta_inteira: bool,
+                  pasta_destino: str | None) -> tuple[int, list[str]]:
+    """Grava os arquivos enviados no acervo, recusando os que já existem.
+    No envio de pasta, os arquivos ficam numa pasta de organização com o nome dela; no envio
+    de arquivos, na pasta de destino escolhida (ou soltos, em "Arquivos avulsos").
     Devolve (quantos foram gravados, descrições dos repetidos)."""
     conhecidos = impressoes_digitais()
     gravados, repetidos = 0, []
@@ -209,13 +226,16 @@ def salvar_envios(enviados: list, grupo: str, pasta_inteira: bool) -> tuple[int,
             repetidos.append(f"{nome} (igual a “{conhecidos[impressao]}”)")
             continue
         if pasta_inteira and len(partes) > 1:
-            partes = partes[1:]  # tira o nome da pasta escolhida
-        if grupo.strip():
-            destino = PASTA_CCTS / _nome_seguro(grupo) / _nome_seguro(nome)
-        elif len(partes) > 1:  # arquivo dentro de uma subpasta: a subpasta é uma CCT
-            destino = PASTA_CCTS / _nome_seguro(partes[0]) / _nome_seguro(nome)
+            pasta, partes = partes[0], partes[1:]  # a pasta escolhida vira a pasta de organização
         else:
-            destino = PASTA_CCTS / _nome_seguro(nome)
+            pasta, partes = pasta_destino, partes[-1:]
+        base = _pasta_de_organizacao(pasta) if pasta and pasta.strip() else PASTA_CCTS
+        if grupo.strip():
+            destino = base / _nome_seguro(grupo) / _nome_seguro(nome)
+        elif len(partes) > 1:  # arquivo dentro de uma subpasta: a subpasta é uma CCT
+            destino = base / _nome_seguro(partes[0]) / _nome_seguro(nome)
+        else:
+            destino = base / _nome_seguro(nome)
         destino = _sem_conflito(destino)
         destino.parent.mkdir(parents=True, exist_ok=True)
         destino.write_bytes(dados)
@@ -293,9 +313,10 @@ with st.sidebar:
                            on_click=pedir_exclusao, args=(c["id"],), type="tertiary")
 
     st.divider()
-    mostrar_notificacoes()
+    with st.container():  # sempre presente: evita que as seções abaixo se fechem sozinhas
+        mostrar_notificacoes()
 
-    with st.expander("➕ Adicionar CCTs"):
+    with st.expander("➕ Adicionar CCTs", key="secao_adicionar", on_change="rerun"):
         modo = st.radio("Enviar", ["Arquivos", "Pasta inteira"], horizontal=True,
                         label_visibility="collapsed")
         pasta_inteira = modo == "Pasta inteira"
@@ -304,15 +325,22 @@ with st.sidebar:
                 "Selecione a pasta com as CCTs" if pasta_inteira else
                 "Selecione os arquivos (PDF, imagens, Word, qualquer formato)",
                 accept_multiple_files="directory" if pasta_inteira else True,
-                help="Cada arquivo vira uma CCT; uma subpasta vira uma única CCT."
-                if pasta_inteira else None)
+                help="A pasta aparece com o mesmo nome no acervo. Cada arquivo vira uma CCT; "
+                     "uma subpasta vira uma única CCT." if pasta_inteira else None)
+            pasta_destino = None
+            if not pasta_inteira:
+                pasta_destino = st.selectbox(
+                    "Pasta de destino (opcional)", pastas_de_organizacao(), index=None,
+                    accept_new_options=True, placeholder=SEM_PASTA,
+                    help="Escolha uma pasta existente ou digite o nome de uma nova. "
+                         f"Sem pasta, os arquivos ficam em “{SEM_PASTA}”.")
             grupo = st.text_input("Juntar tudo numa única CCT (opcional)",
                                   placeholder="Ex.: CCT Comerciários Sorocaba 2026",
                                   help="Preencha quando os arquivos forem partes da mesma "
                                        "convenção, como várias fotos de páginas.")
             enviar = st.form_submit_button("Adicionar e processar", use_container_width=True)
         if enviar and enviados:
-            gravados, repetidos = salvar_envios(enviados, grupo, pasta_inteira)
+            gravados, repetidos = salvar_envios(enviados, grupo, pasta_inteira, pasta_destino)
             if repetidos:
                 estado.notificacoes.append(
                     ("info", f"{len(repetidos)} arquivo(s) já estavam no acervo e foram ignorados: "
@@ -334,18 +362,24 @@ with st.sidebar:
     ativas = [c for c in ccts if not c.get("substituida_por")]
     substituidas = [c for c in ccts if c.get("substituida_por")]
     por_id = {c["id"]: c for c in ccts}
-    with st.expander(f"📚 CCTs indexadas ({len(ativas)})"):
+    with st.expander(f"📚 CCTs indexadas ({len(ativas)})", key="secao_ccts", on_change="rerun"):
         if not ccts:
             st.caption("Nenhuma CCT no acervo ainda.")
-        # Um cartão por CCT, que abre com os detalhes (como na versão anterior).
+        # Agrupadas pela pasta de onde vieram ("Arquivos avulsos" por último), um cartão por CCT.
+        por_pasta: dict[str, list[dict]] = {}
         for cct in ativas:
-            with st.expander(titulo(cct)):
-                mostrar_detalhes_cct(cct)
+            por_pasta.setdefault(pasta_da_cct(cct), []).append(cct)
+        ordem = sorted(por_pasta, key=lambda p: (p == SEM_PASTA, p.lower()))
+        for pasta in ordem:
+            st.markdown(f"**📁 {pasta}** · {len(por_pasta[pasta])}")
+            for cct in por_pasta[pasta]:
+                with st.expander(titulo(cct), key=f"cartao_{cct['id']}", on_change="rerun"):
+                    mostrar_detalhes_cct(cct)
         if substituidas:
             st.caption(f"Deixadas de lado ({len(substituidas)}): repetidas ou versões anteriores, "
                        "não usadas nas respostas.")
             for cct in substituidas:
-                with st.expander(f"⤷ {titulo(cct)}"):
+                with st.expander(f"⤷ {titulo(cct)}", key=f"cartao_{cct['id']}", on_change="rerun"):
                     vale = por_id.get(cct["substituida_por"])
                     st.info(f"Vale **{titulo(vale) if vale else '?'}**: "
                             f"{cct.get('motivo_substituicao') or 'mesma CCT'}")

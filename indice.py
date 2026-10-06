@@ -73,21 +73,57 @@ def titulo(cct: dict) -> str:
     return (cct.get("metadados") or {}).get("titulo") or cct["nome"]
 
 
+MARCADOR_PASTA = ".pasta_do_acervo"  # arquivo vazio que identifica uma pasta de organização
+SEM_PASTA = "Arquivos avulsos"
+
+
 def descobrir_unidades() -> list[tuple[str, list[Path]]]:
-    """Lista as CCTs da pasta: (nome, arquivos que a compõem)."""
+    """Lista as CCTs da pasta: (nome, arquivos que a compõem).
+
+    Dentro de `ccts/`:
+      - arquivo solto ............................. uma CCT ("Arquivos avulsos")
+      - subpasta comum ............................ uma CCT em vários arquivos (ex.: fotos)
+      - pasta de organização (tem MARCADOR_PASTA) . agrupa CCTs: cada arquivo dentro dela é
+        uma CCT e cada subpasta dentro dela é uma CCT em vários arquivos
+    """
     PASTA_CCTS.mkdir(parents=True, exist_ok=True)
     unidades = []
-    for item in sorted(PASTA_CCTS.iterdir(), key=lambda p: _ordem_natural(p.name)):
-        if _ignorar(item):
-            continue
+    for item in _itens(PASTA_CCTS):
         if item.is_file():
             unidades.append((item.name, [item]))
-        elif item.is_dir():
-            arquivos = [a for a in item.rglob("*") if a.is_file() and not _ignorar(a)]
-            arquivos.sort(key=lambda a: _ordem_natural(a.relative_to(item).as_posix()))
-            if arquivos:
-                unidades.append((item.name, arquivos))
+        elif eh_pasta_de_organizacao(item):
+            for sub in _itens(item):
+                nome = f"{item.name}/{sub.name}"
+                if sub.is_file():
+                    unidades.append((nome, [sub]))
+                elif arquivos := _arquivos_de(sub):
+                    unidades.append((nome, arquivos))
+        elif arquivos := _arquivos_de(item):
+            unidades.append((item.name, arquivos))
     return unidades
+
+
+def eh_pasta_de_organizacao(caminho: Path) -> bool:
+    return caminho.is_dir() and (caminho / MARCADOR_PASTA).exists()
+
+
+def pastas_de_organizacao() -> list[str]:
+    PASTA_CCTS.mkdir(parents=True, exist_ok=True)
+    return [p.name for p in _itens(PASTA_CCTS) if eh_pasta_de_organizacao(p)]
+
+
+def pasta_da_cct(cct: dict) -> str:
+    """Nome da pasta de organização de onde a CCT veio."""
+    return cct["nome"].split("/", 1)[0] if "/" in cct["nome"] else SEM_PASTA
+
+
+def _itens(pasta: Path) -> list[Path]:
+    return [p for p in sorted(pasta.iterdir(), key=lambda p: _ordem_natural(p.name)) if not _ignorar(p)]
+
+
+def _arquivos_de(pasta: Path) -> list[Path]:
+    arquivos = [a for a in pasta.rglob("*") if a.is_file() and not _ignorar(a)]
+    return sorted(arquivos, key=lambda a: _ordem_natural(a.relative_to(pasta).as_posix()))
 
 
 def excluir(cct: dict):
@@ -99,6 +135,10 @@ def excluir(cct: dict):
         shutil.rmtree(alvo)
     elif alvo.exists():
         alvo.unlink()
+    # Pasta de organização que ficou vazia (só com o marcador) também sai.
+    pai = alvo.parent
+    if pai != PASTA_CCTS.resolve() and eh_pasta_de_organizacao(pai) and not _itens(pai):
+        shutil.rmtree(pai)
 
 
 def situacao() -> dict:

@@ -64,6 +64,12 @@ with zipfile.ZipFile(ccts / "saude.odt", "w") as z:
 (ccts / "antigo.doc").write_bytes(b"\xd0\xcf\x11\xe0 binario")
 (ccts / "lixo.bin").write_bytes(bytes(range(256)) * 10)
 (ccts / "~$temporario.docx").write_bytes(b"x")
+# Pasta de organização: cada arquivo é uma CCT e cada subpasta é uma CCT em vários arquivos
+org = ccts / "Sindicatos de Marília"; (org / "Fotos Açougueiros").mkdir(parents=True)
+(org / indice.MARCADOR_PASTA).touch()
+(org / "padeiros.txt").write_text("CCT Padeiros de Marília 2026. Piso R$ 2.400,00.", encoding="utf-8")
+(org / "Fotos Açougueiros" / "pag 1.txt").write_text("CCT Açougueiros pág 1", encoding="utf-8")
+(org / "Fotos Açougueiros" / "pag 2.txt").write_text("CCT Açougueiros pág 2", encoding="utf-8")
 
 # ------------------------------------------------ API simulada
 chamadas = []
@@ -122,6 +128,18 @@ assert fichas["copia identica.txt"]["substituida_por"] == fichas["rodoviarios.tx
        fichas["rodoviarios.txt"]["substituida_por"] == fichas["copia identica.txt"]["id"]
 assert sum(1 for n in ("rodoviarios.txt", "copia identica.txt", "hoteis.html") if fichas[n]["substituida_por"]) == 2
 print("impressões digitais (p/ recusar envios repetidos):", len(indice.impressoes_digitais()), "arquivos")
+pastas = {}
+for c in indice.carregar_indice():
+    pastas.setdefault(indice.pasta_da_cct(c), []).append(c["nome"])
+print("por pasta:", {p: len(n) for p, n in pastas.items()}, "| Marília:", pastas["Sindicatos de Marília"])
+assert sorted(pastas["Sindicatos de Marília"]) == ["Sindicatos de Marília/Fotos Açougueiros", "Sindicatos de Marília/padeiros.txt"]
+assert indice.pastas_de_organizacao() == ["Sindicatos de Marília"]
+fotos = next(c for c in indice.carregar_indice() if c["nome"].endswith("Fotos Açougueiros"))
+print("  páginas da CCT em fotos:", [p["rotulo"] for p in fotos["paginas"]])
+for nome in ("Sindicatos de Marília/padeiros.txt", "Sindicatos de Marília/Fotos Açougueiros"):
+    indice.excluir(next(c for c in indice.carregar_indice() if c["nome"] == nome))
+print("  após excluir as 2 CCTs da pasta, ela sumiu:", not (ccts / "Sindicatos de Marília").exists())
+indice.atualizar_indice()
 n = len(chamadas); indice.atualizar_indice(); print("reindexar sem mudanças -> chamadas novas:", len(chamadas) - n)
 
 res = consulta.responder("Qual o piso dos vigilantes?", [{"pergunta": "oi", "resposta": "olá"}])
