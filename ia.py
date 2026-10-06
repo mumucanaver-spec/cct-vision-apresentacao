@@ -83,12 +83,21 @@ def transcrever_imagem(jpeg: bytes, instrucoes: str) -> tuple[str, bool]:
     # Transcrever é copiar, não raciocinar: desligar o "pensamento" deixa 10x mais rápido.
     # Uma página leva ~10 s; se ficar presa na fila do serviço gratuito, tenta outro modelo.
     return _com_reserva(MODELOS_VISAO, mensagens, 16000, sem_raciocinio=True,
-                        tempo_limite=TEMPO_LIMITE_IMAGEM)
+                        tempo_limite=TEMPO_LIMITE_IMAGEM, validar=_transcricao_valida)
+
+
+# Às vezes o modelo devolve o próprio rascunho ("We need to transcribe...") em vez da página.
+_RASCUNHO = re.compile(r"(?i)\b(we need to|let'?s (read|transcribe|start)|the user (wants|asks)|"
+                       r"i need to|i will|the (page|image) (appears|contains|shows|is))\b")
+
+
+def _transcricao_valida(texto: str) -> bool:
+    return not _RASCUNHO.search(texto[:1500])
 
 
 def _com_reserva(modelos: list[str], mensagens: list[dict], max_tokens: int,
-                 sem_raciocinio: bool = False, tempo_limite: float = TEMPO_LIMITE_TEXTO
-                 ) -> tuple[str, bool]:
+                 sem_raciocinio: bool = False, tempo_limite: float = TEMPO_LIMITE_TEXTO,
+                 validar=None) -> tuple[str, bool]:
     """Tenta os modelos em rodízio. Se um estiver sobrecarregado, passa na hora para o
     próximo; só espera (cada vez mais) depois que todos recusaram na mesma rodada."""
     ativos = list(modelos)
@@ -107,6 +116,8 @@ def _com_reserva(modelos: list[str], mensagens: list[dict], max_tokens: int,
                 texto = _limpar(escolha.message.content or "")
                 if not texto:
                     raise _Temporario("resposta vazia")
+                if validar and not validar(texto):
+                    raise _Temporario("resposta fora do formato pedido")
                 return texto, escolha.finish_reason == "length"
             except (openai.RateLimitError, openai.InternalServerError, openai.APIConnectionError,
                     openai.APITimeoutError, _Temporario) as e:
