@@ -10,6 +10,7 @@ import json
 import re
 import shutil
 import threading
+import unicodedata
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from dataclasses import dataclass, field
 from datetime import datetime
@@ -250,7 +251,7 @@ def _atualizar_indice(progresso: Progresso) -> dict:
     if pendentes or removidas or any("substituida_por" not in c for c in carregar_indice()):
         _avisar(progresso, "Verificando CCTs repetidas...", 1.0)
         try:
-            substituidas = analisar_repetidas()
+            substituidas = analisar_repetidas(progresso)
         except Exception as e:  # a verificação é um extra: não pode impedir o uso do acervo
             erros.append(f"Não foi possível verificar CCTs repetidas agora ({e}).")
 
@@ -267,27 +268,38 @@ def _atualizar_indice(progresso: Progresso) -> dict:
 
 # ---------------------------------------------------------------- CCTs repetidas
 
-SISTEMA_REPETIDAS = """Você organiza um acervo de Convenções e Acordos Coletivos de Trabalho.
-Cada item do catálogo é um arquivo do acervo, com código (ex.: C3). Encontre os arquivos que
-são o MESMO instrumento coletivo, ou seja, as mesmas partes (sindicatos/empresas), a mesma
-categoria e a mesma base territorial, em versões diferentes:
-- anos/vigências diferentes da mesma convenção (ex.: 2025/2026 e 2026/2027);
-- cópias do mesmo documento (registrada e não registrada, digitalizada e digital);
-- um resumo ou extrato e o texto completo da mesma convenção.
+LIMIAR_SEMELHANCA = 0.18        # semelhança de sindicatos/categorias/cidades/título
+LIMIAR_TITULO = 0.5             # semelhança só do título (pega resumos com ficha pobre)
+MAXIMO_PARES_POR_CCT = 8
 
-NÃO agrupe:
-- termos aditivos, circulares, comunicados de reajuste ou acordos complementares com a convenção
-  principal: eles complementam, não substituem;
-- convenções de categorias, sindicatos ou territórios diferentes, mesmo que parecidas.
+RELACOES_MESMA_CCT = {"mesma_cct_outra_vigencia", "copia_do_mesmo_documento",
+                      "resumo_e_texto_completo"}
 
-Na dúvida, não agrupe. Responda SOMENTE com JSON:
-{"grupos": [{"codigos": ["C1", "C7"], "motivo": "frase curta explicando por que são a mesma CCT, sem citar os códigos"}]}
-Use {"grupos": []} se não houver repetições."""
+SISTEMA_PAR = """Você compara dois documentos de um acervo de Convenções e Acordos Coletivos de
+Trabalho e diz qual é a relação entre eles. Considere as partes (sindicatos e empresas, que podem
+estar escritos por extenso, abreviados ou com siglas), a categoria e a base territorial.
+
+Relações possíveis:
+- "mesma_cct_outra_vigencia": o mesmo instrumento (mesmas partes, categoria e território) em
+  anos/vigências diferentes;
+- "copia_do_mesmo_documento": o mesmo documento em duas cópias (registrada e não registrada,
+  digitalizada e digital, nomes de arquivo diferentes);
+- "resumo_e_texto_completo": um é resumo ou extrato do outro;
+- "complementar": termo aditivo, circular, comunicado de reajuste ou acordo que complementa o
+  outro sem substituí-lo;
+- "diferente": categorias, partes ou territórios diferentes.
+
+Na dúvida entre uma relação de mesma CCT e "complementar" ou "diferente", escolha a segunda.
+Responda SOMENTE com JSON:
+{"relacao": "...", "motivo": "frase curta em português, sem citar 'documento A' ou 'B'"}"""
 
 
-def analisar_repetidas() -> int:
+def analisar_repetidas(progresso: Progresso = None) -> int:
     """Marca como substituídas as CCTs repetidas, mantendo sempre a mais atual.
     CCTs substituídas continuam no acervo, mas não são usadas nas respostas.
+
+    Para ser estável, cada par de CCTs parecidas é julgado separadamente pela IA e a decisão
+    fica guardada: nas próximas atualizações, só pares novos são avaliados.
     Devolve quantas ficaram marcadas como substituídas."""
     ccts = [c for c in carregar_indice() if c.get("paginas")]
     substituicoes: dict[str, tuple[str, str]] = {}  # id -> (id da que vale, motivo)
@@ -300,30 +312,56 @@ def analisar_repetidas() -> int:
         if not chave:
             continue
         if chave in por_conteudo:
-            original = por_conteudo[chave]
-            substituicoes[cct["id"]] = (original["id"], "arquivo idêntico (mesmo conteúdo)")
+            substituicoes[cct["id"]] = (por_conteudo[chave]["id"], "arquivo idêntico (mesmo conteúdo)")
         else:
             por_conteudo[chave] = cct
 
-    # 2) A mesma CCT em arquivos diferentes: a IA compara as fichas.
+    # 2) A mesma CCT em arquivos diferentes: pares parecidos, julgados um a um pela IA.
     candidatas = [c for c in ccts if c["id"] not in substituicoes]
-    if len(candidatas) >= 2:
-        por_codigo = {f"C{i}": c for i, c in enumerate(candidatas, 1)}
-        catalogo = "\n".join(json.dumps({"codigo": cod, **_ficha_para_comparar(c)}, ensure_ascii=False)
-                             for cod, c in por_codigo.items())
-        resposta = ia.conversar_json(SISTEMA_REPETIDAS, f"<catalogo>\n{catalogo}\n</catalogo>")
-        for grupo in resposta.get("grupos") or []:
-            membros = [por_codigo[c] for c in dict.fromkeys(str(x).strip().upper()
-                                                             for x in grupo.get("codigos") or [])
-                       if c in por_codigo]
-            if len(membros) < 2:
-                continue
-            vencedora = max(membros, key=_mais_atual)
-            # Os códigos (C2, C3...) são internos: não devem aparecer para o usuário.
-            motivo = re.sub(r"\s*\(?\bC\d+\b\)?", "", str(grupo.get("motivo") or "")).strip(" ,;")
-            for cct in membros:
-                if cct is not vencedora and cct["id"] not in substituicoes:
-                    substituicoes[cct["id"]] = (vencedora["id"], motivo or "mesma CCT")
+    decisoes = _carregar_decisoes()
+    pares = _pares_parecidos(candidatas)
+    pendentes = [(a, b) for a, b in pares if _chave_par(a, b) not in decisoes]
+    falhas = 0
+    if pendentes:
+        with ThreadPoolExecutor(CHAMADAS_PARALELAS) as pool:
+            futuros = {pool.submit(_julgar_par, a, b): (a, b) for a, b in pendentes}
+            for feitos, futuro in enumerate(as_completed(futuros), 1):
+                a, b = futuros[futuro]
+                try:
+                    decisoes[_chave_par(a, b)] = futuro.result()
+                except Exception:
+                    falhas += 1  # sem decisão: o par é tentado de novo na próxima atualização
+                _avisar(progresso, f"Comparando CCTs parecidas ({feitos}/{len(pendentes)})",
+                        feitos / len(pendentes))
+        _salvar_decisoes(decisoes, {c["id"] for c in ccts})
+
+    # Junta os pares "mesma CCT" em grupos (A=B e B=C -> A, B, C) e mantém a mais atual de cada.
+    grupo_de = {c["id"]: c["id"] for c in candidatas}
+
+    def raiz(i):
+        while grupo_de[i] != i:
+            grupo_de[i] = grupo_de[grupo_de[i]]
+            i = grupo_de[i]
+        return i
+
+    motivos: dict[frozenset, str] = {}
+    for a, b in pares:
+        decisao = decisoes.get(_chave_par(a, b))
+        if decisao and decisao["relacao"] in RELACOES_MESMA_CCT:
+            grupo_de[raiz(a["id"])] = raiz(b["id"])
+            motivos[frozenset((a["id"], b["id"]))] = decisao["motivo"]
+    grupos: dict[str, list[dict]] = {}
+    for cct in candidatas:
+        grupos.setdefault(raiz(cct["id"]), []).append(cct)
+    for membros in grupos.values():
+        if len(membros) < 2:
+            continue
+        vencedora = max(membros, key=_mais_atual)
+        for cct in membros:
+            if cct is not vencedora:
+                motivo = (motivos.get(frozenset((cct["id"], vencedora["id"])))
+                          or next((m for par, m in motivos.items() if cct["id"] in par), "mesma CCT"))
+                substituicoes[cct["id"]] = (vencedora["id"], motivo)
 
     # 3) Grava nas fichas (e limpa marcações antigas que deixaram de valer).
     for cct in carregar_indice():
@@ -333,7 +371,91 @@ def analisar_repetidas() -> int:
             cct["motivo_substituicao"] = motivo
             (PASTA_INDICE / f"{cct['id']}.json").write_text(
                 json.dumps(cct, ensure_ascii=False, indent=1), encoding="utf-8")
+    if falhas:
+        raise ia.ErroIA(f"{falhas} comparação(ões) não puderam ser feitas agora; serão refeitas "
+                        "na próxima atualização.")
     return len(substituicoes)
+
+
+_PALAVRAS_COMUNS = set("""de da do das dos e em no na nos nas a o os as para com por sindicato sindicatos
+sind trabalhadores empregados empresas estado sp regiao cct acordo convencao coletiva trabalho act
+sao paulo ltda""".split())
+
+
+def _palavras(texto: str) -> set[str]:
+    texto = unicodedata.normalize("NFKD", texto).encode("ascii", "ignore").decode().lower()
+    return {p for p in re.findall(r"[a-z]{3,}", texto) if p not in _PALAVRAS_COMUNS}
+
+
+def _semelhanca(x: set, y: set) -> float:
+    return len(x & y) / len(x | y) if x and y else 0.0
+
+
+def _pares_parecidos(ccts: list[dict]) -> list[tuple[dict, dict]]:
+    """Pré-seleção sem IA: pares com sindicatos, categorias, cidades ou título parecidos."""
+    def tudo(c):
+        m = c.get("metadados") or {}
+        return _palavras(" ".join([m.get("titulo", "")] + [" ".join(m.get(k) or []) for k in (
+            "sindicatos_trabalhadores", "sindicatos_empregadores_ou_empresas",
+            "categorias_abrangidas", "abrangencia_territorial")]))
+
+    palavras = {c["id"]: tudo(c) for c in ccts}
+    titulos = {c["id"]: _palavras(titulo(c)) for c in ccts}
+    notas = []
+    for i, a in enumerate(ccts):
+        for b in ccts[i + 1:]:
+            nota = max(_semelhanca(palavras[a["id"]], palavras[b["id"]]),
+                       _semelhanca(titulos[a["id"]], titulos[b["id"]]) * LIMIAR_SEMELHANCA / LIMIAR_TITULO)
+            if nota >= LIMIAR_SEMELHANCA:
+                notas.append((nota, a, b))
+    notas.sort(key=lambda n: -n[0])
+    por_cct: dict[str, int] = {}
+    escolhidos = []
+    for _, a, b in notas:  # limita os pares por CCT, ficando com os mais parecidos
+        if por_cct.get(a["id"], 0) < MAXIMO_PARES_POR_CCT and por_cct.get(b["id"], 0) < MAXIMO_PARES_POR_CCT:
+            escolhidos.append((a, b))
+            por_cct[a["id"]] = por_cct.get(a["id"], 0) + 1
+            por_cct[b["id"]] = por_cct.get(b["id"], 0) + 1
+    return escolhidos
+
+
+def _julgar_par(a: dict, b: dict) -> dict:
+    def descricao(c):
+        ficha = _ficha_para_comparar(c)
+        ficha["inicio_do_texto"] = "\n".join(p["texto"] for p in c["paginas"])[:1500]
+        return json.dumps(ficha, ensure_ascii=False)
+
+    resposta = ia.conversar_json(SISTEMA_PAR, f"<documento_A>\n{descricao(a)}\n</documento_A>\n\n"
+                                              f"<documento_B>\n{descricao(b)}\n</documento_B>")
+    relacao = str(resposta.get("relacao") or "diferente").strip().lower()
+    motivo = re.sub(r"(?i)\b(o |do |no )?documento [ab]\b", "", str(resposta.get("motivo") or "")).strip()
+    return {"relacao": relacao, "motivo": motivo or relacao.replace("_", " ")}
+
+
+def _chave_par(a: dict, b: dict) -> str:
+    """Muda se uma das CCTs for reprocessada (aí o par é julgado de novo)."""
+    return "|".join(sorted(f"{c['id']}@{c.get('indexado_em', '')}" for c in (a, b)))
+
+
+def _carregar_decisoes() -> dict:
+    try:
+        return json.loads(_arquivo_decisoes().read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return {}
+
+
+def _salvar_decisoes(decisoes: dict, ids_existentes: set[str]):
+    # Esquece pares de CCTs que saíram do acervo.
+    validas = {k: v for k, v in decisoes.items()
+               if all(parte.split("@")[0] in ids_existentes for parte in k.split("|"))}
+    _arquivo_decisoes().parent.mkdir(parents=True, exist_ok=True)
+    _arquivo_decisoes().write_text(json.dumps(validas, ensure_ascii=False, indent=1, sort_keys=True),
+                                encoding="utf-8")
+
+
+def _arquivo_decisoes() -> Path:
+    """Decisões já tomadas sobre pares de CCTs (guardadas junto do acervo)."""
+    return PASTA_INDICE.parent / "repetidas.json"
 
 
 def _ficha_para_comparar(cct: dict) -> dict:

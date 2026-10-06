@@ -97,13 +97,13 @@ def falso_json(system, mensagem, max_tokens=16000):
         return {"titulo": f"Ficha de {nome}", "vigencia_inicio": "2026-01-01", "categorias_abrangidas": "texto em vez de lista"}
     if system == consulta.SISTEMA_SELECAO:
         return {"codigos": re.findall(r'"codigo": "(C\d+)"', mensagem) + ["C999"]}
-    if system == indice.SISTEMA_REPETIDAS:
-        # Simula a IA dizendo que "rodoviarios.txt" e "hoteis.html" são a mesma CCT.
-        codigos = {re.search(r'"arquivo": "([^"]+)"', l).group(1): re.search(r'"codigo": "(C\d+)"', l).group(1)
-                   for l in mensagem.splitlines() if '"codigo"' in l}
-        assert "copia identica.txt" not in codigos or "rodoviarios.txt" not in codigos, "cópia idêntica deveria ter sido resolvida antes da IA"
-        rodoviarios = codigos.get("rodoviarios.txt") or codigos["copia identica.txt"]
-        return {"grupos": [{"codigos": [rodoviarios, codigos["hoteis.html"]], "motivo": "teste"}]}
+    if system == indice.SISTEMA_PAR:
+        # Simula a IA dizendo que "rodoviarios.txt" (ou sua cópia) e "hoteis.html" são a mesma CCT.
+        arquivos = set(re.findall(r'"arquivo": "([^"]+)"', mensagem))
+        assert not {"copia identica.txt", "rodoviarios.txt"} <= arquivos, "cópia idêntica deveria ter sido resolvida antes da IA"
+        if "hoteis.html" in arquivos and arquivos & {"rodoviarios.txt", "copia identica.txt"}:
+            return {"relacao": "mesma_cct_outra_vigencia", "motivo": "teste"}
+        return {"relacao": "diferente", "motivo": "teste"}
     raise AssertionError(system)
 
 ia.transcrever_imagem = falsa_transcricao
@@ -128,6 +128,12 @@ assert fichas["copia identica.txt"]["substituida_por"] == fichas["rodoviarios.tx
        fichas["rodoviarios.txt"]["substituida_por"] == fichas["copia identica.txt"]["id"]
 assert sum(1 for n in ("rodoviarios.txt", "copia identica.txt", "hoteis.html") if fichas[n]["substituida_por"]) == 2
 print("impressões digitais (p/ recusar envios repetidos):", len(indice.impressoes_digitais()), "arquivos")
+# Estabilidade: verificar de novo, sem mudanças no acervo, não chama a IA e não muda nada.
+antes = {c["id"]: c["substituida_por"] for c in indice.carregar_indice()}
+n = len(chamadas); indice.analisar_repetidas()
+assert len(chamadas) == n, f"{len(chamadas) - n} chamadas à IA numa verificação sem mudanças"
+assert antes == {c["id"]: c["substituida_por"] for c in indice.carregar_indice()}
+print("estabilidade: 2ª verificação sem chamadas à IA e com as mesmas decisões")
 pastas = {}
 for c in indice.carregar_indice():
     pastas.setdefault(indice.pasta_da_cct(c), []).append(c["nome"])
