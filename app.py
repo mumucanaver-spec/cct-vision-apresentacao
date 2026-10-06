@@ -35,7 +35,7 @@ import ia  # noqa: E402
 from config import PASTA_CCTS  # noqa: E402
 from consulta import responder  # noqa: E402
 from indice import (MARCADOR_PASTA, SEM_PASTA, atualizar_indice, carregar_indice,  # noqa: E402
-                    eh_pasta_de_organizacao, excluir, impressoes_digitais, pasta_da_cct,
+                    eh_pasta_de_organizacao, excluir, excluir_todas, impressoes_digitais, pasta_da_cct,
                     pastas_de_organizacao, situacao, titulo)
 
 ONLINE = armazenamento.configurado()
@@ -384,6 +384,26 @@ with st.sidebar:
                     st.info(f"Vale **{titulo(vale) if vale else '?'}**: "
                             f"{cct.get('motivo_substituicao') or 'mesma CCT'}")
                     mostrar_detalhes_cct(cct)
+
+        if ccts:
+            st.divider()
+            if st.checkbox(f"🗑️ Remover todas as {len(ccts)} CCTs do acervo", key="remover_todas"):
+                st.warning("Isto apaga **todas** as CCTs (arquivos e fichas) para **todos** os "
+                           "usuários. As conversas são mantidas.")
+                confirmacao = st.text_input("Para confirmar, digite EXCLUIR", key="confirmar_remover_todas")
+                if st.button("Remover todas as CCTs", type="primary", use_container_width=True,
+                             disabled=confirmacao.strip().upper() != "EXCLUIR"):
+                    try:
+                        removidas = excluir_todas()
+                    except RuntimeError as e:
+                        st.error(str(e))
+                    else:
+                        salvar_acervo("Remove todas as CCTs do acervo")
+                        estado.notificacoes.append(
+                            ("success", f"{removidas} CCT(s) removida(s). O acervo está vazio."))
+                        for chave in ("remover_todas", "confirmar_remover_todas"):
+                            estado.pop(chave, None)
+                        st.rerun()
 
     st.divider()
     usuario_col, sair_col = st.columns([3, 1], vertical_alignment="center")

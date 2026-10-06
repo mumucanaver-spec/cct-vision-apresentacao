@@ -142,6 +142,24 @@ def excluir(cct: dict):
         shutil.rmtree(pai)
 
 
+def excluir_todas() -> int:
+    """Apaga todas as CCTs do acervo (arquivos e fichas). As conversas são mantidas, e as
+    transcrições ficam guardadas: se as mesmas CCTs voltarem, não precisam ser relidas.
+    Devolve quantas CCTs foram removidas."""
+    if not _trava_indexacao.acquire(blocking=False):
+        raise RuntimeError("Há uma atualização do acervo em andamento. Aguarde terminar.")
+    try:
+        quantidade = len(descobrir_unidades())
+        for item in PASTA_CCTS.iterdir():
+            shutil.rmtree(item) if item.is_dir() else item.unlink()
+        if PASTA_INDICE.exists():
+            for ficha in PASTA_INDICE.glob("*.json"):
+                ficha.unlink()
+        return quantidade
+    finally:
+        _trava_indexacao.release()
+
+
 def situacao() -> dict:
     """Quantas CCTs estão na pasta e quantas precisam ser (re)processadas."""
     existentes = {c["id"]: c for c in carregar_indice()}
