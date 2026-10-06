@@ -190,6 +190,9 @@ def _gravar_commit(entradas: list[dict], mensagem: str):
 
 # ---------------------------------------------------------------- arquivos locais
 
+_cache_sha: dict[tuple, str] = {}
+
+
 def _arquivos_locais() -> dict[str, str]:
     arquivos = {}
     for pasta in PASTAS_SINCRONIZADAS:
@@ -198,7 +201,11 @@ def _arquivos_locais() -> dict[str, str]:
         for arquivo in pasta.rglob("*"):
             if arquivo.is_file():
                 relativo = arquivo.relative_to(PASTA_BASE).as_posix()
-                arquivos[relativo] = hashlib.sha256(arquivo.read_bytes()).hexdigest()
+                info = arquivo.stat()
+                chave = (str(arquivo), info.st_mtime_ns, info.st_size)
+                if chave not in _cache_sha:  # só relê arquivos que mudaram
+                    _cache_sha[chave] = hashlib.sha256(arquivo.read_bytes()).hexdigest()
+                arquivos[relativo] = _cache_sha[chave]
     return arquivos
 
 

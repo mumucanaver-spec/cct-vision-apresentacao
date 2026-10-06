@@ -118,7 +118,8 @@ class _Fontes:
 def responder(pergunta: str, historico: list[dict] | None = None,
               progresso: Progresso = None) -> Resultado:
     """`historico`: lista de {"pergunta", "resposta"} das últimas trocas, para perguntas de seguimento."""
-    ccts = [c for c in carregar_indice() if c.get("paginas")]
+    # CCTs substituídas por uma versão mais atual não entram nas respostas.
+    ccts = [c for c in carregar_indice() if c.get("paginas") and not c.get("substituida_por")]
     if not ccts:
         return Resultado("Nenhuma CCT indexada ainda. Coloque os arquivos na pasta `ccts` "
                          "e clique em **Atualizar índice**.")

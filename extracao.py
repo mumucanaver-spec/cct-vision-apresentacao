@@ -62,10 +62,12 @@ class Pagina:
 def ler_arquivo(caminho: Path, prefixo: str, avisos: list[str]) -> list[Pagina]:
     """Lê um arquivo e devolve suas páginas. `prefixo` identifica o arquivo dentro de uma CCT
     composta por vários arquivos (vazio quando a CCT é um único arquivo)."""
-    ext = caminho.suffix.lower()
     try:
         conteudo = caminho.read_bytes()
         sha = hashlib.sha256(conteudo).hexdigest()
+        # O formato é identificado pelo conteúdo; a extensão só vale se o conteúdo não disser nada
+        # (ex.: páginas HTML salvas como .doc, Word renomeado, PDF sem extensão).
+        ext = _formato_pelo_conteudo(conteudo) or caminho.suffix.lower()
         if ext == ".pdf":
             return _ler_pdf(conteudo, sha, prefixo, avisos, caminho.name)
         if ext == ".docx":
@@ -265,6 +267,36 @@ def _ler_docx(conteudo: bytes) -> str:
     return "\n".join(linhas)
 
 
+def _formato_pelo_conteudo(conteudo: bytes) -> str | None:
+    inicio = conteudo[:2048]
+    if inicio.startswith(b"%PDF") or b"%PDF-" in inicio[:1024]:
+        return ".pdf"
+    if inicio.startswith(b"PK\x03\x04"):
+        try:
+            with zipfile.ZipFile(io.BytesIO(conteudo)) as z:
+                nomes = set(z.namelist())
+        except zipfile.BadZipFile:
+            return None
+        if "word/document.xml" in nomes:
+            return ".docx"
+        if "content.xml" in nomes:
+            return ".odt"
+        return None
+    if inicio.startswith(b"\xd0\xcf\x11\xe0"):  # Word 97-2003 de verdade
+        return ".doc"
+    if inicio.lstrip(b"\xef\xbb\xbf \r\n\t").startswith(b"{\\rtf"):
+        return ".rtf"
+    amostra = inicio.lower()
+    if b"<html" in amostra or b"<!doctype html" in amostra:
+        return ".html"
+    return None
+
+
+def leitor_doc_disponivel() -> bool:
+    import shutil
+    return bool(shutil.which("antiword") or shutil.which("catdoc"))
+
+
 def _ler_doc_antigo(caminho: Path) -> str | None:
     """Word 97-2003 (.doc): usa o antiword (instalado no servidor via packages.txt)."""
     import shutil
@@ -291,7 +323,13 @@ def _html_para_texto(html: str) -> str:
     html = re.sub(r"(?is)<(script|style).*?</\1>", "", html)
     html = re.sub(r"(?i)<br\s*/?>|</(p|div|tr|h\d|li)>", "\n", html)
     html = re.sub(r"(?i)</t[dh]>", " | ", html)
-    return unescape(re.sub(r"<[^>]+>", "", html))
+    texto = unescape(re.sub(r"<[^>]+>", " ", html)).replace("\xa0", " ")
+    linhas = []
+    for linha in texto.splitlines():
+        linha = re.sub(r"[ \t]+", " ", linha).strip(" |")
+        if linha or (linhas and linhas[-1]):  # no máximo uma linha em branco seguida
+            linhas.append(linha)
+    return "\n".join(linhas).strip()
 
 
 def _decodificar(conteudo: bytes, estrito: bool = False) -> str:

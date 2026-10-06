@@ -57,6 +57,7 @@ d = Document(); d.add_paragraph("CCT dos Bancarios - clausula 1: vale-refeicao d
 t = d.add_table(rows=2, cols=2); t.cell(0, 0).text = "Funcao"; t.cell(0, 1).text = "Piso"; t.cell(1, 0).text = "Caixa"; t.cell(1, 1).text = "R$ 3.000"
 d.save(ccts / "bancarios.docx")
 (ccts / "rodoviarios.txt").write_text("CCT Rodoviarios\n\nAdicional noturno de 30%.", encoding="cp1252")
+(ccts / "copia identica.txt").write_bytes((ccts / "rodoviarios.txt").read_bytes())  # mesmo conteúdo, outro nome
 (ccts / "hoteis.html").write_text("<html><body><p>CCT Hoteis</p><table><tr><td>Piso</td><td>R$ 1.900</td></tr></table></body></html>")
 with zipfile.ZipFile(ccts / "saude.odt", "w") as z:
     z.writestr("content.xml", '<office:document-content><text:p>CCT Saude</text:p><text:p>Insalubridade 40%</text:p></office:document-content>')
@@ -90,6 +91,13 @@ def falso_json(system, mensagem, max_tokens=16000):
         return {"titulo": f"Ficha de {nome}", "vigencia_inicio": "2026-01-01", "categorias_abrangidas": "texto em vez de lista"}
     if system == consulta.SISTEMA_SELECAO:
         return {"codigos": re.findall(r'"codigo": "(C\d+)"', mensagem) + ["C999"]}
+    if system == indice.SISTEMA_REPETIDAS:
+        # Simula a IA dizendo que "rodoviarios.txt" e "hoteis.html" são a mesma CCT.
+        codigos = {re.search(r'"arquivo": "([^"]+)"', l).group(1): re.search(r'"codigo": "(C\d+)"', l).group(1)
+                   for l in mensagem.splitlines() if '"codigo"' in l}
+        assert "copia identica.txt" not in codigos or "rodoviarios.txt" not in codigos, "cópia idêntica deveria ter sido resolvida antes da IA"
+        rodoviarios = codigos.get("rodoviarios.txt") or codigos["copia identica.txt"]
+        return {"grupos": [{"codigos": [rodoviarios, codigos["hoteis.html"]], "motivo": "teste"}]}
     raise AssertionError(system)
 
 ia.transcrever_imagem = falsa_transcricao
@@ -104,6 +112,16 @@ for a in r["avisos"]: print("  aviso:", a)
 for c in indice.carregar_indice():
     print(f"  {c['nome']:35} paginas={[p['rotulo'] for p in c['paginas']]}")
 print("situacao depois:", indice.situacao())
+print("substituídas:", r["substituidas"])
+fichas = {c["nome"]: c for c in indice.carregar_indice()}
+for c in fichas.values():
+    if c.get("substituida_por"):
+        vale = next(x["nome"] for x in fichas.values() if x["id"] == c["substituida_por"])
+        print(f"  {c['nome']} -> vale {vale} ({c['motivo_substituicao']})")
+assert fichas["copia identica.txt"]["substituida_por"] == fichas["rodoviarios.txt"]["id"] or \
+       fichas["rodoviarios.txt"]["substituida_por"] == fichas["copia identica.txt"]["id"]
+assert sum(1 for n in ("rodoviarios.txt", "copia identica.txt", "hoteis.html") if fichas[n]["substituida_por"]) == 2
+print("impressões digitais (p/ recusar envios repetidos):", len(indice.impressoes_digitais()), "arquivos")
 n = len(chamadas); indice.atualizar_indice(); print("reindexar sem mudanças -> chamadas novas:", len(chamadas) - n)
 
 res = consulta.responder("Qual o piso dos vigilantes?", [{"pergunta": "oi", "resposta": "olá"}])

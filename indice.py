@@ -17,7 +17,7 @@ from typing import Callable
 
 import ia
 from config import CHAMADAS_PARALELAS, PASTA_CCTS, PASTA_INDICE, VERSAO_INDICE
-from extracao import Pagina, ler_arquivo, transcrever_pendentes
+from extracao import Pagina, leitor_doc_disponivel, ler_arquivo, transcrever_pendentes
 
 Progresso = Callable[[str, float], None] | None
 LIMITE_CARACTERES_METADADOS = 700_000
@@ -170,14 +170,118 @@ def atualizar_indice(progresso: Progresso = None) -> dict:
             _avisar(progresso, f"Catalogando CCTs ({concluidas}/{len(pendentes)})",
                     concluidas / len(pendentes))
 
+    # 4) CCTs repetidas: sempre que o acervo muda (ou se nunca foi verificado)
+    substituidas = 0
+    if pendentes or removidas or any("substituida_por" not in c for c in carregar_indice()):
+        _avisar(progresso, "Verificando CCTs repetidas...", 1.0)
+        try:
+            substituidas = analisar_repetidas()
+        except Exception as e:  # a verificação é um extra: não pode impedir o uso do acervo
+            erros.append(f"Não foi possível verificar CCTs repetidas agora ({e}).")
+
     return {
         "processadas": len(pendentes),
         "removidas": len(removidas),
         "total": len(ids_na_pasta),
+        "substituidas": substituidas,
         "avisos": [a if a.startswith(p.nome) else f"{p.nome}: {a}"
                    for p in pendentes for a in p.avisos]
                   + avisos_gerais + erros,
     }
+
+
+# ---------------------------------------------------------------- CCTs repetidas
+
+SISTEMA_REPETIDAS = """Você organiza um acervo de Convenções e Acordos Coletivos de Trabalho.
+Cada item do catálogo é um arquivo do acervo, com código (ex.: C3). Encontre os arquivos que
+são o MESMO instrumento coletivo, ou seja, as mesmas partes (sindicatos/empresas), a mesma
+categoria e a mesma base territorial, em versões diferentes:
+- anos/vigências diferentes da mesma convenção (ex.: 2025/2026 e 2026/2027);
+- cópias do mesmo documento (registrada e não registrada, digitalizada e digital);
+- um resumo ou extrato e o texto completo da mesma convenção.
+
+NÃO agrupe:
+- termos aditivos, circulares, comunicados de reajuste ou acordos complementares com a convenção
+  principal: eles complementam, não substituem;
+- convenções de categorias, sindicatos ou territórios diferentes, mesmo que parecidas.
+
+Na dúvida, não agrupe. Responda SOMENTE com JSON:
+{"grupos": [{"codigos": ["C1", "C7"], "motivo": "frase curta explicando por que são a mesma CCT, sem citar os códigos"}]}
+Use {"grupos": []} se não houver repetições."""
+
+
+def analisar_repetidas() -> int:
+    """Marca como substituídas as CCTs repetidas, mantendo sempre a mais atual.
+    CCTs substituídas continuam no acervo, mas não são usadas nas respostas.
+    Devolve quantas ficaram marcadas como substituídas."""
+    ccts = [c for c in carregar_indice() if c.get("paginas")]
+    substituicoes: dict[str, tuple[str, str]] = {}  # id -> (id da que vale, motivo)
+
+    # 1) Arquivos com conteúdo idêntico (mesmo com nomes diferentes): fica a indexada primeiro.
+    por_conteudo: dict[tuple, dict] = {}
+    for cct in sorted(ccts, key=lambda c: c.get("indexado_em") or ""):
+        chave = tuple(sorted(_sha_arquivo(PASTA_CCTS / a) for a in cct["arquivos"]
+                             if (PASTA_CCTS / a).exists()))
+        if not chave:
+            continue
+        if chave in por_conteudo:
+            original = por_conteudo[chave]
+            substituicoes[cct["id"]] = (original["id"], "arquivo idêntico (mesmo conteúdo)")
+        else:
+            por_conteudo[chave] = cct
+
+    # 2) A mesma CCT em arquivos diferentes: a IA compara as fichas.
+    candidatas = [c for c in ccts if c["id"] not in substituicoes]
+    if len(candidatas) >= 2:
+        por_codigo = {f"C{i}": c for i, c in enumerate(candidatas, 1)}
+        catalogo = "\n".join(json.dumps({"codigo": cod, **_ficha_para_comparar(c)}, ensure_ascii=False)
+                             for cod, c in por_codigo.items())
+        resposta = ia.conversar_json(SISTEMA_REPETIDAS, f"<catalogo>\n{catalogo}\n</catalogo>")
+        for grupo in resposta.get("grupos") or []:
+            membros = [por_codigo[c] for c in dict.fromkeys(str(x).strip().upper()
+                                                             for x in grupo.get("codigos") or [])
+                       if c in por_codigo]
+            if len(membros) < 2:
+                continue
+            vencedora = max(membros, key=_mais_atual)
+            # Os códigos (C2, C3...) são internos: não devem aparecer para o usuário.
+            motivo = re.sub(r"\s*\(?\bC\d+\b\)?", "", str(grupo.get("motivo") or "")).strip(" ,;")
+            for cct in membros:
+                if cct is not vencedora and cct["id"] not in substituicoes:
+                    substituicoes[cct["id"]] = (vencedora["id"], motivo or "mesma CCT")
+
+    # 3) Grava nas fichas (e limpa marcações antigas que deixaram de valer).
+    for cct in carregar_indice():
+        vale, motivo = substituicoes.get(cct["id"], (None, ""))
+        if cct.get("substituida_por", "ausente") != vale or cct.get("motivo_substituicao", "") != motivo:
+            cct["substituida_por"] = vale
+            cct["motivo_substituicao"] = motivo
+            (PASTA_INDICE / f"{cct['id']}.json").write_text(
+                json.dumps(cct, ensure_ascii=False, indent=1), encoding="utf-8")
+    return len(substituicoes)
+
+
+def _ficha_para_comparar(cct: dict) -> dict:
+    m = cct.get("metadados") or {}
+    ficha = {"arquivo": cct["nome"], "paginas": len(cct["paginas"])}
+    for campo in ("titulo", "tipo_instrumento", "sindicatos_trabalhadores",
+                  "sindicatos_empregadores_ou_empresas", "categorias_abrangidas",
+                  "abrangencia_territorial", "vigencia_inicio", "vigencia_fim",
+                  "numero_registro_mte", "resumo"):
+        if m.get(campo):
+            ficha[campo] = m[campo]
+    if not m:
+        ficha["inicio_do_texto"] = cct["paginas"][0]["texto"][:800]
+    return ficha
+
+
+def _mais_atual(cct: dict) -> tuple:
+    """Critério para escolher qual versão vale: vigência mais recente; empatando,
+    o documento mais completo (mais texto); depois, o adicionado por último."""
+    m = cct.get("metadados") or {}
+    tamanho = sum(len(p["texto"]) for p in cct["paginas"])
+    return (m.get("vigencia_inicio") or "", m.get("vigencia_fim") or "", tamanho,
+            cct.get("indexado_em") or "")
 
 
 def _finalizar(p: _Pendente, completa: bool):
@@ -192,7 +296,8 @@ def _finalizar(p: _Pendente, completa: bool):
             completa = False
     else:
         p.avisos.append("nenhum texto foi encontrado neste documento.")
-        completa = False  # tenta de novo depois (ex.: .doc é lido no servidor online)
+        if any(a.suffix.lower() == ".doc" for a in p.arquivos) and not leitor_doc_disponivel():
+            completa = False  # .doc não lido aqui: tenta de novo no servidor online, que lê
     ficha = {
         "id": p.id,
         "nome": p.nome,
@@ -230,14 +335,40 @@ def _id(nome: str) -> str:
     return hashlib.sha1(nome.encode("utf-8")).hexdigest()[:12]
 
 
+_cache_hash: dict[tuple, str] = {}
+
+
+def _assinatura(arquivos: list[Path]) -> tuple:
+    """Muda sempre que um arquivo muda, sem precisar ler o conteúdo."""
+    return tuple((str(a), a.stat().st_mtime_ns, a.stat().st_size) for a in arquivos)
+
+
 def _hash(arquivos: list[Path]) -> str:
-    h = hashlib.sha256()
-    for arquivo in arquivos:
-        h.update(arquivo.name.encode("utf-8"))
-        with arquivo.open("rb") as f:
-            for bloco in iter(lambda: f.read(1 << 20), b""):
-                h.update(bloco)
-    return h.hexdigest()
+    chave = ("unidade",) + _assinatura(arquivos)
+    if chave not in _cache_hash:  # ler todos os PDFs a cada clique deixaria a tela lenta
+        h = hashlib.sha256()
+        for arquivo in arquivos:
+            h.update(arquivo.name.encode("utf-8"))
+            with arquivo.open("rb") as f:
+                for bloco in iter(lambda: f.read(1 << 20), b""):
+                    h.update(bloco)
+        _cache_hash[chave] = h.hexdigest()
+    return _cache_hash[chave]
+
+
+def _sha_arquivo(arquivo: Path) -> str:
+    """Impressão digital do conteúdo de um arquivo (ignora o nome)."""
+    chave = ("arquivo",) + _assinatura([arquivo])
+    if chave not in _cache_hash:
+        _cache_hash[chave] = hashlib.sha256(arquivo.read_bytes()).hexdigest()
+    return _cache_hash[chave]
+
+
+def impressoes_digitais() -> dict[str, str]:
+    """Conteúdo de cada arquivo do acervo -> caminho dele (para recusar envios repetidos)."""
+    PASTA_CCTS.mkdir(parents=True, exist_ok=True)
+    return {_sha_arquivo(a): a.relative_to(PASTA_CCTS).as_posix()
+            for a in PASTA_CCTS.rglob("*") if a.is_file() and not _ignorar(a)}
 
 
 def _ignorar(caminho: Path) -> bool:
