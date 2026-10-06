@@ -12,10 +12,20 @@ Pode ser usado de dois jeitos:
 
 ## Uso
 
-1. Envie os arquivos pela barra lateral. Se forem várias fotos da mesma convenção, preencha
-   **"Juntar numa única CCT"** para que virem uma CCT só.
-2. Os arquivos são processados na hora; depois disso, basta fazer as perguntas.
-3. Para remover uma CCT, abra-a na barra lateral e use **Excluir**.
+1. Entre com **seu nome** e a senha. O nome separa o seu histórico de conversas.
+2. Em **➕ Adicionar CCTs**, envie **arquivos** ou uma **pasta inteira** (cada arquivo vira uma
+   CCT; cada subpasta vira uma CCT). Se forem várias fotos da mesma convenção, preencha
+   **"Juntar tudo numa única CCT"**.
+3. Faça as perguntas. Cada conversa fica no histórico da barra lateral, agrupada por data:
+   clique para reabrir e continuar com o mesmo contexto, 🗑️ para excluir, ou
+   **✏️ Nova conversa** para começar outra.
+4. Em **📚 CCTs indexadas** estão as CCTs do acervo, com detalhes e opção de excluir.
+
+**CCTs repetidas:** arquivos com conteúdo idêntico são recusados no envio. Quando arquivos
+diferentes são a mesma CCT (versões de anos diferentes, cópia registrada e não registrada,
+resumo e texto completo), vale sempre a **mais atual**; empatando a vigência, a mais completa.
+As demais aparecem como "Deixadas de lado" e não são usadas nas respostas. Termos aditivos e
+circulares de reajuste não contam como repetição, porque complementam a convenção.
 
 ## Formatos aceitos
 
