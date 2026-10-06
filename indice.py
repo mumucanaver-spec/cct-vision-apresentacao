@@ -1,0 +1,253 @@
+"""Mantém o índice das CCTs: texto de cada página + ficha com metadados.
+
+Cada arquivo solto em `ccts/` é uma CCT. Uma subpasta inteira também é uma CCT
+(útil quando a convenção está em várias fotos/arquivos: as páginas seguem a
+ordem dos nomes). Só o que é novo ou mudou é reprocessado.
+"""
+
+import hashlib
+import json
+import re
+import shutil
+from concurrent.futures import ThreadPoolExecutor, as_completed
+from dataclasses import dataclass, field
+from datetime import datetime
+from pathlib import Path
+from typing import Callable
+
+import ia
+from config import CHAMADAS_PARALELAS, PASTA_CCTS, PASTA_INDICE, VERSAO_INDICE
+from extracao import Pagina, ler_arquivo, transcrever_pendentes
+
+Progresso = Callable[[str, float], None] | None
+LIMITE_CARACTERES_METADADOS = 700_000
+
+CAMPOS_TEXTO = ["titulo", "tipo_instrumento", "vigencia_inicio", "vigencia_fim", "data_base",
+                "numero_registro_mte", "resumo"]
+CAMPOS_LISTA = ["sindicatos_trabalhadores", "sindicatos_empregadores_ou_empresas",
+                "categorias_abrangidas", "abrangencia_territorial", "principais_clausulas"]
+
+SISTEMA_METADADOS = """Você cataloga Convenções e Acordos Coletivos de Trabalho brasileiros.
+Leia o documento e preencha a ficha. Ela será usada para decidir qual instrumento
+coletivo se aplica a cada pergunta, então seja preciso sobre quem é abrangido e onde.
+
+Responda SOMENTE com um objeto JSON neste formato:
+{
+  "titulo": "nome curto e descritivo, ex.: CCT Vigilantes de Campinas 2026/2027",
+  "tipo_instrumento": "Convenção Coletiva, Acordo Coletivo, Termo Aditivo...",
+  "sindicatos_trabalhadores": ["..."],
+  "sindicatos_empregadores_ou_empresas": ["..."],
+  "categorias_abrangidas": ["..."],
+  "abrangencia_territorial": ["municípios ou estados"],
+  "vigencia_inicio": "AAAA-MM-DD",
+  "vigencia_fim": "AAAA-MM-DD",
+  "data_base": "...",
+  "numero_registro_mte": "...",
+  "resumo": "2 a 3 frases",
+  "principais_clausulas": ["Piso salarial vigilante: R$ ...", "Horas extras: ...%", "..."]
+}
+- Use "" ou [] quando o documento não informar.
+- principais_clausulas: os direitos e valores mais consultados (pisos por função, reajuste,
+  horas extras, adicional noturno, vale-alimentação, plano de saúde, jornada, estabilidades,
+  multas...), cada item curto e com os valores exatos do documento."""
+
+
+@dataclass
+class _Pendente:
+    id: str
+    nome: str
+    arquivos: list[Path]
+    hash: str
+    paginas: list[Pagina] = field(default_factory=list)
+    avisos: list[str] = field(default_factory=list)
+
+
+def carregar_indice() -> list[dict]:
+    if not PASTA_INDICE.exists():
+        return []
+    ccts = [json.loads(a.read_text(encoding="utf-8")) for a in PASTA_INDICE.glob("*.json")]
+    return sorted(ccts, key=lambda c: titulo(c).lower())
+
+
+def titulo(cct: dict) -> str:
+    return (cct.get("metadados") or {}).get("titulo") or cct["nome"]
+
+
+def descobrir_unidades() -> list[tuple[str, list[Path]]]:
+    """Lista as CCTs da pasta: (nome, arquivos que a compõem)."""
+    PASTA_CCTS.mkdir(parents=True, exist_ok=True)
+    unidades = []
+    for item in sorted(PASTA_CCTS.iterdir(), key=lambda p: _ordem_natural(p.name)):
+        if _ignorar(item):
+            continue
+        if item.is_file():
+            unidades.append((item.name, [item]))
+        elif item.is_dir():
+            arquivos = [a for a in item.rglob("*") if a.is_file() and not _ignorar(a)]
+            arquivos.sort(key=lambda a: _ordem_natural(a.relative_to(item).as_posix()))
+            if arquivos:
+                unidades.append((item.name, arquivos))
+    return unidades
+
+
+def excluir(cct: dict):
+    """Apaga da pasta os arquivos de uma CCT (o índice é limpo na próxima atualização)."""
+    alvo = (PASTA_CCTS / cct["nome"]).resolve()
+    if not alvo.is_relative_to(PASTA_CCTS.resolve()) or alvo == PASTA_CCTS.resolve():
+        raise ValueError("caminho inválido")
+    if alvo.is_dir():
+        shutil.rmtree(alvo)
+    elif alvo.exists():
+        alvo.unlink()
+
+
+def situacao() -> dict:
+    """Quantas CCTs estão na pasta e quantas precisam ser (re)processadas."""
+    existentes = {c["id"]: c for c in carregar_indice()}
+    unidades = descobrir_unidades()
+    pendentes = sum(1 for nome, arqs in unidades
+                    if not _atualizada(existentes.get(_id(nome)), _hash(arqs)))
+    ids = {_id(nome) for nome, _ in unidades}
+    removidas = sum(1 for i in existentes if i not in ids)
+    return {"na_pasta": len(unidades), "pendentes": pendentes, "removidas": removidas}
+
+
+def atualizar_indice(progresso: Progresso = None) -> dict:
+    """Processa CCTs novas/alteradas e remove do índice as que saíram da pasta."""
+    PASTA_INDICE.mkdir(parents=True, exist_ok=True)
+    existentes = {c["id"]: c for c in carregar_indice()}
+    unidades = descobrir_unidades()
+
+    ids_na_pasta = set()
+    pendentes: list[_Pendente] = []
+    for nome, arquivos in unidades:
+        id_, hash_ = _id(nome), _hash(arquivos)
+        ids_na_pasta.add(id_)
+        if not _atualizada(existentes.get(id_), hash_):
+            pendentes.append(_Pendente(id_, nome, arquivos, hash_))
+
+    removidas = [i for i in existentes if i not in ids_na_pasta]
+    for id_ in removidas:
+        (PASTA_INDICE / f"{id_}.json").unlink(missing_ok=True)
+
+    # 1) Leitura local dos arquivos
+    for i, p in enumerate(pendentes, 1):
+        _avisar(progresso, f"Lendo arquivos ({i}/{len(pendentes)}): {p.nome}", i / len(pendentes))
+        pasta = PASTA_CCTS / p.nome
+        for arquivo in p.arquivos:
+            prefixo = arquivo.relative_to(pasta).as_posix() if len(p.arquivos) > 1 else ""
+            p.paginas += ler_arquivo(arquivo, prefixo, p.avisos)
+
+    # 2) Transcrição pela IA das páginas escaneadas e imagens (todas as CCTs juntas)
+    avisos_gerais: list[str] = []
+    todas = [(p, pg) for p in pendentes for pg in p.paginas if pg.gerar_conteudo]
+    transcrever_pendentes([pg for _, pg in todas], avisos_gerais, progresso)
+    falhas_por_cct = {p.id: 0 for p in pendentes}
+    for p in pendentes:
+        nao_lidas = sum(1 for pg in p.paginas if pg.gerar_conteudo)  # continuou pendente = falhou
+        provisorias = sum(1 for pg in p.paginas if pg.provisoria)
+        falhas_por_cct[p.id] = nao_lidas + provisorias
+        if nao_lidas:
+            p.avisos.append(f"{nao_lidas} página(s) não puderam ser lidas; "
+                            "elas serão tentadas de novo na próxima atualização.")
+        if provisorias:
+            p.avisos.append(f"{provisorias} página(s) foram lidas pelo OCR do Windows porque a IA "
+                            "estava indisponível (pode haver erros em valores). Clique em "
+                            "Atualizar índice mais tarde para a IA relê-las.")
+
+    # 3) Ficha de metadados de cada CCT e gravação
+    concluidas = 0
+    erros = []
+    with ThreadPoolExecutor(CHAMADAS_PARALELAS) as pool:
+        futuros = {pool.submit(_finalizar, p, falhas_por_cct[p.id] == 0): p for p in pendentes}
+        for futuro in as_completed(futuros):
+            concluidas += 1
+            p = futuros[futuro]
+            try:
+                futuro.result()
+            except Exception as e:
+                erros.append(f"{p.nome}: {e}")
+            _avisar(progresso, f"Catalogando CCTs ({concluidas}/{len(pendentes)})",
+                    concluidas / len(pendentes))
+
+    return {
+        "processadas": len(pendentes),
+        "removidas": len(removidas),
+        "total": len(ids_na_pasta),
+        "avisos": [a if a.startswith(p.nome) else f"{p.nome}: {a}"
+                   for p in pendentes for a in p.avisos]
+                  + avisos_gerais + erros,
+    }
+
+
+def _finalizar(p: _Pendente, completa: bool):
+    paginas = [{"rotulo": pg.rotulo, "texto": pg.texto.strip()}
+               for pg in p.paginas if pg.texto.strip()]
+    metadados = {}
+    if paginas:
+        try:
+            metadados = _extrair_metadados(p.nome, paginas)
+        except Exception as e:
+            p.avisos.append(f"não foi possível extrair a ficha ({e}); a CCT ainda pode ser consultada.")
+            completa = False
+    else:
+        p.avisos.append("nenhum texto foi encontrado neste documento.")
+        completa = False  # tenta de novo depois (ex.: .doc é lido no servidor online)
+    ficha = {
+        "id": p.id,
+        "nome": p.nome,
+        "arquivos": [a.relative_to(PASTA_CCTS).as_posix() for a in p.arquivos],
+        # hash vazio = será reprocessada na próxima atualização
+        "hash": p.hash if completa else "",
+        "versao": VERSAO_INDICE,
+        "indexado_em": datetime.now().isoformat(timespec="seconds"),
+        "avisos": p.avisos,
+        "metadados": metadados,
+        "paginas": paginas,
+    }
+    (PASTA_INDICE / f"{p.id}.json").write_text(
+        json.dumps(ficha, ensure_ascii=False, indent=1), encoding="utf-8")
+
+
+def _extrair_metadados(nome: str, paginas: list[dict]) -> dict:
+    texto = "\n\n".join(f"=== {pg['rotulo']} ===\n{pg['texto']}" for pg in paginas)
+    if len(texto) > LIMITE_CARACTERES_METADADOS:  # só para a ficha; a consulta usa o texto completo
+        texto = texto[:LIMITE_CARACTERES_METADADOS] + "\n[...documento continua...]"
+    bruto = ia.conversar_json(SISTEMA_METADADOS, f"Arquivo: {nome}\n\n{texto}")
+    # Normaliza: o modelo pode omitir campos ou trocar lista por texto.
+    ficha = {campo: str(bruto.get(campo) or "").strip() for campo in CAMPOS_TEXTO}
+    for campo in CAMPOS_LISTA:
+        valor = bruto.get(campo) or []
+        ficha[campo] = [str(v).strip() for v in (valor if isinstance(valor, list) else [valor]) if v]
+    return ficha
+
+
+def _atualizada(ficha: dict | None, hash_: str) -> bool:
+    return bool(ficha) and ficha.get("hash") == hash_ and ficha.get("versao") == VERSAO_INDICE
+
+
+def _id(nome: str) -> str:
+    return hashlib.sha1(nome.encode("utf-8")).hexdigest()[:12]
+
+
+def _hash(arquivos: list[Path]) -> str:
+    h = hashlib.sha256()
+    for arquivo in arquivos:
+        h.update(arquivo.name.encode("utf-8"))
+        with arquivo.open("rb") as f:
+            for bloco in iter(lambda: f.read(1 << 20), b""):
+                h.update(bloco)
+    return h.hexdigest()
+
+
+def _ignorar(caminho: Path) -> bool:
+    return caminho.name.startswith((".", "~$")) or caminho.name.lower() in {"desktop.ini", "thumbs.db"}
+
+
+def _ordem_natural(texto: str):
+    return [int(t) if t.isdigit() else t.lower() for t in re.split(r"(\d+)", texto)]
+
+
+def _avisar(progresso: Progresso, mensagem: str, fracao: float):
+    if progresso:
+        progresso(mensagem, fracao)

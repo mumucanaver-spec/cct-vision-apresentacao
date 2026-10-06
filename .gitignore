@@ -1,0 +1,7 @@
+.env
+.venv/
+__pycache__/
+.streamlit/secrets.toml
+# O acervo fica num repositório separado (veja armazenamento.py)
+ccts/
+dados/
