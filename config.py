@@ -14,7 +14,8 @@ URL_API = "https://integrate.api.nvidia.com/v1"
 # Modelos em ordem de preferência: se o primeiro estiver sobrecarregado, usa o seguinte.
 MODELOS_TEXTO = [
     "nvidia/nemotron-3-ultra-550b-a55b",
-    "nvidia/nemotron-3-super-120b-a12b",
+    "nvidia/nemotron-3.5-super-vl-120b-a12b",  # sucessor do nemotron-3-super (retirado da API em nov/2026)
+    "nvidia/nemotron-3.5-lightning-30b-a3b",
 ]
 MODELOS_VISAO = [  # leem páginas escaneadas e imagens (o raciocínio é desligado: 10x mais rápido)
     "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning",  # ~10 s/página, a mais fiel nos testes
