@@ -1,4 +1,9 @@
-# Assistente de CCTs
+# CCT Vision
+
+![CCT Vision](assets/logo.png)
+
+Versão final do antigo "Assistente de CCTs", com a identidade visual do CCT Vision
+(logo e cores em `assets/`, estilos em `visual.py`). O funcionamento é o mesmo.
 
 Responde perguntas sobre Convenções e Acordos Coletivos de Trabalho usando a IA
 **gratuita** da NVIDIA (modelos Nemotron). Basta escrever a pergunta: o programa descobre

@@ -1,4 +1,4 @@
-"""Interface do Assistente de CCTs. Execute com:  streamlit run app.py
+"""Interface do CCT Vision (antigo Assistente de CCTs). Execute com:  streamlit run app.py
 
 Funciona no computador (pasta `ccts` local) ou publicado na internet (Streamlit Community
 Cloud), com o acervo e as conversas guardados num repositório privado do GitHub. Veja o README.
@@ -13,7 +13,10 @@ import threading
 
 import streamlit as st
 
-st.set_page_config(page_title="Assistente de CCTs", page_icon="⚖️", layout="wide")
+import visual
+
+st.set_page_config(page_title=visual.NOME, page_icon=visual.ICONE, layout="wide")
+visual.aplicar_estilo()
 
 
 def _carregar_segredos():
@@ -49,18 +52,20 @@ if "usuario" not in estado:
     if not (SENHA or ONLINE):
         estado.usuario = "local"  # no computador, sem senha configurada
     else:
-        st.title("⚖️ Assistente de Convenções Coletivas")
-        with st.form("entrada"):
-            nome = st.text_input("Seu nome", help="Usado para separar o seu histórico de conversas.")
-            digitada = st.text_input("Senha de acesso", type="password") if SENHA else ""
-            if st.form_submit_button("Entrar", type="primary"):
-                if not nome.strip():
-                    st.error("Informe seu nome.")
-                elif SENHA and not hmac.compare_digest(digitada.encode(), SENHA.encode()):
-                    st.error("Senha incorreta.")
-                else:
-                    estado.usuario = " ".join(nome.split())
-                    st.rerun()
+        _, centro, _ = st.columns([1, 1.4, 1])
+        with centro:
+            visual.cabecalho_entrada()
+            with st.form("entrada"):
+                nome = st.text_input("Seu nome", help="Usado para separar o seu histórico de conversas.")
+                digitada = st.text_input("Senha de acesso", type="password") if SENHA else ""
+                if st.form_submit_button("Entrar", type="primary", use_container_width=True):
+                    if not nome.strip():
+                        st.error("Informe seu nome.")
+                    elif SENHA and not hmac.compare_digest(digitada.encode(), SENHA.encode()):
+                        st.error("Senha incorreta.")
+                    else:
+                        estado.usuario = " ".join(nome.split())
+                        st.rerun()
         st.stop()
 
 if not ia.chave_configurada():
@@ -288,7 +293,8 @@ def _curto(texto: str, limite: int = 42) -> str:
 # ---------------------------------------------------------------- barra lateral
 
 with st.sidebar:
-    st.button("✏️ Nova conversa", on_click=nova_conversa, use_container_width=True, type="primary")
+    st.button("Nova conversa", icon=":material/edit_square:", on_click=nova_conversa,
+              use_container_width=True, type="primary")
 
     lista = conversas.listar(estado.usuario)
     if not lista:
@@ -309,14 +315,15 @@ with st.sidebar:
             abrir.button(_curto(titulo_conversa), key=f"abrir_{c['id']}", help=titulo_conversa,
                          on_click=abrir_conversa, args=(c["id"],), use_container_width=True,
                          type="secondary" if c["id"] == estado.conversa["id"] else "tertiary")
-            lixeira.button("🗑️", key=f"excluir_{c['id']}", help="Excluir conversa",
+            lixeira.button(":material/delete:", key=f"excluir_{c['id']}", help="Excluir conversa",
                            on_click=pedir_exclusao, args=(c["id"],), type="tertiary")
 
     st.divider()
     with st.container():  # sempre presente: evita que as seções abaixo se fechem sozinhas
         mostrar_notificacoes()
 
-    with st.expander("➕ Adicionar CCTs", key="secao_adicionar", on_change="rerun"):
+    with st.expander("Adicionar CCTs", icon=":material/upload_file:", key="secao_adicionar",
+                     on_change="rerun"):
         modo = st.radio("Enviar", ["Arquivos", "Pasta inteira"], horizontal=True,
                         label_visibility="collapsed")
         pasta_inteira = modo == "Pasta inteira"
@@ -362,7 +369,8 @@ with st.sidebar:
     ativas = [c for c in ccts if not c.get("substituida_por")]
     substituidas = [c for c in ccts if c.get("substituida_por")]
     por_id = {c["id"]: c for c in ccts}
-    with st.expander(f"📚 CCTs indexadas ({len(ativas)})", key="secao_ccts", on_change="rerun"):
+    with st.expander(f"CCTs indexadas ({len(ativas)})", icon=":material/library_books:",
+                     key="secao_ccts", on_change="rerun"):
         if not ccts:
             st.caption("Nenhuma CCT no acervo ainda.")
         # Agrupadas pela pasta de onde vieram ("Arquivos avulsos" por último), um cartão por CCT.
@@ -371,7 +379,7 @@ with st.sidebar:
             por_pasta.setdefault(pasta_da_cct(cct), []).append(cct)
         ordem = sorted(por_pasta, key=lambda p: (p == SEM_PASTA, p.lower()))
         for pasta in ordem:
-            st.markdown(f"**📁 {pasta}** · {len(por_pasta[pasta])}")
+            st.markdown(f":material/folder: **{pasta}** · {len(por_pasta[pasta])}")
             for cct in por_pasta[pasta]:
                 with st.expander(titulo(cct), key=f"cartao_{cct['id']}", on_change="rerun"):
                     mostrar_detalhes_cct(cct)
@@ -387,7 +395,8 @@ with st.sidebar:
 
         if ccts:
             st.divider()
-            if st.checkbox(f"🗑️ Remover todas as {len(ccts)} CCTs do acervo", key="remover_todas"):
+            if st.checkbox(f":material/delete_forever: Remover todas as {len(ccts)} CCTs do acervo",
+                           key="remover_todas"):
                 st.warning("Isto apaga **todas** as CCTs (arquivos e fichas) para **todos** os "
                            "usuários. As conversas são mantidas.")
                 confirmacao = st.text_input("Para confirmar, digite EXCLUIR", key="confirmar_remover_todas")
@@ -410,6 +419,7 @@ with st.sidebar:
     usuario_col.caption(f"Conectado como **{estado.usuario}**")
     if SENHA or ONLINE:
         sair_col.button("Sair", on_click=sair, type="tertiary")
+    visual.rodape_lateral()
 
 
 # ---------------------------------------------------------------- conversa
@@ -433,22 +443,20 @@ def mostrar_resposta(item: dict):
 
 mensagens = estado.conversa["mensagens"]
 if not mensagens:
-    st.title("⚖️ Assistente de Convenções Coletivas")
-    st.caption("Faça qualquer pergunta. O assistente encontra as CCTs aplicáveis, lê o texto "
-               "integral e responde citando a página de onde tirou cada informação.")
+    visual.boas_vindas(len(ativas))
 else:
     st.subheader(sem_formula(estado.conversa["titulo"] or "Conversa"))
 
 for item in mensagens:
     with st.chat_message("user"):
         st.markdown(sem_formula(item["pergunta"]))
-    with st.chat_message("assistant"):
+    with st.chat_message("assistant", avatar=visual.ICONE):
         mostrar_resposta(item)
 
 if pergunta := st.chat_input("Ex.: Qual o piso salarial dos vigilantes em Campinas?"):
     with st.chat_message("user"):
         st.markdown(sem_formula(pergunta))
-    with st.chat_message("assistant"):
+    with st.chat_message("assistant", avatar=visual.ICONE):
         with st.status("Analisando as CCTs...", expanded=False) as status:
             try:
                 # O histórico desta conversa vai junto: perguntas de seguimento mantêm o contexto.

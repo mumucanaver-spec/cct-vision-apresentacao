@@ -1,6 +1,6 @@
 @echo off
 cd /d "%~dp0"
-echo Criando ambiente Python do Assistente de CCTs...
+echo Criando ambiente Python do CCT Vision...
 py -3 -m venv .venv || python -m venv .venv
 .venv\Scripts\python -m pip install --upgrade pip
 .venv\Scripts\python -m pip install -r requirements.txt

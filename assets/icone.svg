@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128">
+  <defs>
+    <linearGradient id="fundo" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0B2545"/>
+      <stop offset="1" stop-color="#1D4E89"/>
+    </linearGradient>
+    <linearGradient id="olho" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#14B8A6"/>
+      <stop offset="1" stop-color="#0EA5E9"/>
+    </linearGradient>
+  </defs>
+  <rect width="128" height="128" rx="28" fill="url(#fundo)"/>
+  <!-- folha da convenção -->
+  <path d="M40 22h34l20 20v62a6 6 0 0 1-6 6H40a6 6 0 0 1-6-6V28a6 6 0 0 1 6-6z" fill="#FFFFFF"/>
+  <path d="M74 22v14a6 6 0 0 0 6 6h14z" fill="#C9DDF2"/>
+  <rect x="44" y="46" width="28" height="5" rx="2.5" fill="#9DB4CC"/>
+  <rect x="44" y="57" width="40" height="5" rx="2.5" fill="#9DB4CC"/>
+  <!-- olho: a visão sobre o texto -->
+  <path d="M38 87c7-11 16-16 26-16s19 5 26 16c-7 11-16 16-26 16s-19-5-26-16z" fill="url(#olho)"/>
+  <circle cx="64" cy="87" r="10" fill="#FFFFFF"/>
+  <circle cx="64" cy="87" r="5.5" fill="#0B2545"/>
+  <circle cx="66.5" cy="84.5" r="1.8" fill="#FFFFFF"/>
+</svg>

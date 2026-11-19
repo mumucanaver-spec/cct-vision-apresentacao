@@ -4,3 +4,11 @@ headless = true
 
 [browser]
 gatherUsageStats = false
+
+# Cores da identidade visual do CCT Vision
+[theme]
+base = "light"
+primaryColor = "#0F7C74"
+backgroundColor = "#F6F8FB"
+secondaryBackgroundColor = "#EAF0F6"
+textColor = "#1B2A3A"
