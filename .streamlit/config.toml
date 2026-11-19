@@ -5,10 +5,16 @@ headless = true
 [browser]
 gatherUsageStats = false
 
-# Cores da identidade visual do CCT Vision
-[theme]
-base = "light"
+# Cores da identidade visual do CCT Vision. Com os dois temas definidos, cada pessoa
+# escolhe claro ou escuro no menu do app (⋮ > Settings).
+[theme.light]
 primaryColor = "#0F7C74"
 backgroundColor = "#F6F8FB"
 secondaryBackgroundColor = "#EAF0F6"
 textColor = "#1B2A3A"
+
+[theme.dark]
+primaryColor = "#12998C"
+backgroundColor = "#0D1524"
+secondaryBackgroundColor = "#172338"
+textColor = "#E4EBF3"

@@ -293,6 +293,7 @@ def _curto(texto: str, limite: int = 42) -> str:
 # ---------------------------------------------------------------- barra lateral
 
 with st.sidebar:
+    visual.marca_lateral()
     st.button("Nova conversa", icon=":material/edit_square:", on_click=nova_conversa,
               use_container_width=True, type="primary")
 
