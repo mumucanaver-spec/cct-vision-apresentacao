@@ -1,0 +1,20 @@
+5.
+
+B) No salário dos empregados da categoria profissional admitidos em funções sem paradigma, e de admitidos por empresa constituída após a data-base (01/09/15), deverão ser aplicados os percentuais ou valores fixos referente ao AUMENTO SALARIAL, de acordo com as tabelas abaixo, considerando-se também, como mês de serviço às frações superiores há 15 dias:
+
+REAJUSTE SALARIAL EM 01 DE SETEMBRO DE 2016
+
+| MÊS DE ADMISSÃO | SALÁRIO ATÉ R$ 8.345,31 em 31/08/16: Percentual a ser aplicado em 01/09/16 | SALÁRIO ACIMA DE R$ 8.345,31 em 31/08/16: Acréscimos em reais sobre o salário de 31/08/16, a partir de 01/09/16 |
+|-----------------|-------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------|
+| SET/15          | 6,62%                                                                                         | R$ 552,46                                                                                     |
+| OUT/15          | 6,05%                                                                                         | R$ 504,89                                                                                     |
+| NOV/15          | 5,49%                                                                                         | R$ 458,16                                                                                     |
+| DEZ/15          | 4,93%                                                                                         | R$ 411,42                                                                                     |
+| JAN/16          | 4,37%                                                                                         | R$ 364,69                                                                                     |
+| FEV/16          | 3,81%                                                                                         | R$ 317,96                                                                                     |
+| MAR/16          | 3,26%                                                                                         | R$ 272,06                                                                                     |
+| ABR/16          | 2,71%                                                                                         | R$ 226,16                                                                                     |
+| MAI/16          | 2,16%                                                                                         | R$ 180,26                                                                                     |
+| JUN/16          | 1,62%                                                                                         | R$ 135,19                                                                                     |
+| JUL/16          | 1,07%                                                                                         | R$ 89,29                                                                                      |
+| AGO/16          | 0,54%                                                                                         | R$ 45,06                                                                                      |

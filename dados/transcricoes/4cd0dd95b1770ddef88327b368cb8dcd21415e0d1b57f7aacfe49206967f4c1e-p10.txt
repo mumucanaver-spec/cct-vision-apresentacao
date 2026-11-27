@@ -1,0 +1,43 @@
+# KIT BEBÊ
+
+\begin{tabular}{cccccc}
+**Qte.** & **Descrição do Produto** & **Embalagem** & **Qte.** & **Descrição do Produto** & **Embalagem** \\
+1 & Álcool & 500 ml & 1 & Fralda descartável dia e noite & Pct 10 \\
+1 & Algodão Hidrófilo & 25 g & 3 & Sabonete & 80 g \\
+1 & Cotonetes hastes flexíveis & c/75 & 1 & Shampoo S/SAL & 350 ml \\
+1 & Pomada para assadura & 30 grs. & 1 & Talco & 200g \\
+1 & Gaze & 7,5 X 7,5 & 1 & Mamadeira & Unidade \\
+ & Termometro Clinico & c/1 & 1 & Bolsa térmica infantile & Unidade \\
+1 & Esparadrapo & 4,5 m & 1 & Chupeta de silicone & Unidade \\
+1 & Lenços umedecidos & c/70 & & & \\
+\end{tabular}
+
+# KIT MAMÃE
+
+\begin{tabular}{cccccc}
+**Produto** & **Embalagem** & **Qte.** & **Produto** & **Embalagem** & **Qte.** \\
+Açúcar refinado & 1Kg & 5 & Polpa de tomate & 520 grs. & 1 \\
+Arroz - tipo 1 & 5Kg & 2 & Sal refinado & 1Kg & 1 \\
+Biscoito água e sal & 400 grs. & 1 & Sardinha em óleo comestível & 125 grs. & 2 \\
+Biscoito recheado & 140 grs. & 1 & Tempero completo & 270 grs. & 1 \\
+Café em pó & 500 grs. & 1 & Aveia em flocos & 250 grs. & 1 \\
+Farinha de trigo especial & 1Kg & 1 & Canjica branca ou farinha flocada & 1Kg & 1 \\
+Farinha de mandioca & 1Kg & 1 & Leite condensado & 295 grs & 2 \\
+Feijão carioca - tipo 1 & 1kg & 3 & Leite em pó & 400 grs. & 1 \\
+Massa com ovos espaguete & 500 grs. & 3 & Cereal infantil de arroz/lata & 400 grs. & 1 \\
+Óleo de soja & 900 ml & 2 & Semente de linhaça & 500 grs. & 1 \\
+Pó para pudim & 85 grs. & 2 & Fubá & 500 grs. & 4 \\
+Óleo mineral & 200 ml & 1 & Biscoito de Maizena & 200 grs & 1 \\
+Azeite de Oliva & 200 ml & 1 & Suco concentrado & 1lt & 1 \\
+Farinha de Milho & 1Kg & 1 & & & \\
+\end{tabular}
+
+C) Relativas à empresa empregadora:
+
+**Reembolso à empresa por Rescisão Trabalhista Empregado Titular:** Ocorrendo a Morte do empregado segurado, a empresa empregadora receberá uma indenização de até 15% (quinze por cento) da garantia de Morte do empregado titular, a título do reembolso das despesas efetivas, valor esse que não será descontado da indenização devida aos herdeiros do trabalhador falecido
+
+Francisco Pereira de Andrade | Diretor - Presidente Sindicato dos Empregados no Comércio Hoteleiro, Restaurantes Bares, Fast-Foods e congêneres de Bauru, Lins, Lençóis Paulista e região
+
+Carlos Roberto Monnesso | Diretor - Presidente Sindicato de Hoteis, Restaurantes Bares e Similares de Bauru
+
+CATEGORIA ABRANGIDA HOTEIS, RESTAURANTES, BARES, FAST-FOODS E DEMAIS CONGÊNERES EM BAURU, LINS, LENÇÓIS PAULISTA E REGIÃO 10

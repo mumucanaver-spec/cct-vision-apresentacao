@@ -1,0 +1,238 @@
+{
+ "06e3c0c812db@2026-10-06T14:55:14|0f56730747bc@2026-10-06T14:53:51": {
+  "motivo": "Sindicatos de trabalhadores diferentes (Lençóis Paulista/Borebi vs Bauru e Região) e bases territoriais distintas sem sobreposição.",
+  "relacao": "diferente"
+ },
+ "06e3c0c812db@2026-10-06T14:55:14|333186c5acf7@2026-10-06T14:54:15": {
+  "motivo": "Sindicatos de trabalhadores distintos e bases territoriais diferentes (Lençóis Paulista/Borebi vs. Bauru e região), embora o sindicato patronal e a vigência sejam iguais.",
+  "relacao": "diferente"
+ },
+ "06e3c0c812db@2026-10-06T14:55:14|3ec1b2cc8d84@2026-10-06T13:38:09": {
+  "motivo": "Sindicatos de trabalhadores e categorias profissionais distintos, embora compartilhem o sindicato patronal e haja sobreposição territorial.",
+  "relacao": "diferente"
+ },
+ "06e3c0c812db@2026-10-06T14:55:14|747868e07ccf@2026-10-06T14:56:19": {
+  "motivo": "Categorias, sindicatos e abrangências territoriais distintas: doc. A abrange comércio varejista geral (exceto farmacêuticos) com SINCOMERCIÁRIOS e SINCOMÉRCIO BAURU em 8 municípios; doc. B abrange apenas comércio varejista de produtos farmacêuticos com sindicatos específicos de farmácia em 39 municípios.",
+  "relacao": "diferente"
+ },
+ "06e3c0c812db@2026-10-06T14:55:14|7d5cddd8ad7a@2026-10-06T13:37:41": {
+  "motivo": "Categorias distintas (comércio varejista vs. hotéis/restaurantes/bares), sindicatos patronais e laborais diferentes, e abrangências territoriais não coincidentes.",
+  "relacao": "diferente"
+ },
+ "06e3c0c812db@2026-10-06T14:55:14|bb50081aa10b@2026-11-19T12:34:19": {
+  "motivo": "Mesmas partes (CNPJs idênticos), mesma categoria (comerciários do varejo exceto farmácias) e mesma base territorial (oito municípios da região de Bauru/SP), com vigências consecutivas (2025/2026 e 2026/2027).",
+  "relacao": "mesma_cct_outra_vigencia"
+ },
+ "06e3c0c812db@2026-10-06T14:55:14|ecbf507f2b43@2026-11-19T12:34:39": {
+  "motivo": "Sindicatos de trabalhadores distintos (CNPJs e bases diferentes) e abrangências territoriais sem sobreposição (Lençóis Paulista/Borebi vs região de Bauru), embora o sindicato patronal seja o mesmo.",
+  "relacao": "diferente"
+ },
+ "06e3c0c812db@2026-10-06T14:55:14|f6a9debbfbd0@2026-10-06T14:55:22": {
+  "motivo": "Sindicatos de trabalhadores distintos (SINDTRAN vs SINCOMERCIÁRIOS), categorias diferentes (motoristas/ajudantes de transporte vs comerciários varejistas) e bases territoriais diferentes.",
+  "relacao": "diferente"
+ },
+ "0dd3b98c108d@2026-10-06T14:48:39|2eec00337ec5@2026-10-06T14:58:05": {
+  "motivo": "Categorias e partes signatárias distintas:  trata de auxiliares de administração escolar com FEPPAAE/SAAE BAURU e FEEESP/SIEEESP;  trata de empregados em salões de beleza com sindicato de turismo/hospitalidade e sindicato patronal de beleza.",
+  "relacao": "diferente"
+ },
+ "0dd3b98c108d@2026-10-06T14:48:39|36c1eda2206c@2026-10-06T13:39:21": {
+  "motivo": "Sindicatos de trabalhadores e empregadores distintos, categorias profissionais diferentes (auxiliares de administração escolar vs profissionais de beleza), embora haja sobreposição parcial de municípios na região de Bauru.",
+  "relacao": "diferente"
+ },
+ "0dd3b98c108d@2026-10-06T14:48:39|747868e07ccf@2026-10-06T14:56:19": {
+  "motivo": "Partes, categorias e territórios distintos:  trata de auxiliares de administração escolar no setor de ensino particular;  trata de práticos de farmácia no comércio varejista farmacêutico.",
+  "relacao": "diferente"
+ },
+ "0e1226aad30f@2026-10-06T13:40:10|b84f35b4b323@2026-10-06T14:52:45": {
+  "motivo": "Mesmas partes (mesmos sindicatos com CNPJs idênticos), mesma categoria (comércio varejista e atacadista exceto supermercados) e mesma base territorial (10 municípios do sul de Minas), com vigências consecutivas 2025 e 2026.",
+  "relacao": "mesma_cct_outra_vigencia"
+ },
+ "0f56730747bc@2026-10-06T14:53:51|333186c5acf7@2026-10-06T14:54:15": {
+  "motivo": "Mesmas partes, categoria e território, com vigências consecutivas (2024/2025 e 2025/2026).",
+  "relacao": "mesma_cct_outra_vigencia"
+ },
+ "0f56730747bc@2026-10-06T14:53:51|361c0ea16d11@2026-10-06T14:58:30": {
+  "motivo": "Categorias, sindicatos e bases territoriais distintos:  abrange comerciários varejistas em Lençóis Paulista e Borebi;  abrange trabalhadores hoteleiros e de alimentação em Bauru, Lins, Lençóis Paulista e região.",
+  "relacao": "diferente"
+ },
+ "0f56730747bc@2026-10-06T14:53:51|b5cb3873cb5a@2026-10-06T14:57:36": {
+  "motivo": "Partes, categorias e bases territoriais completamente distintas:  abrange comerciários de Lençóis Paulista e Borebi,  abrange farmacêuticos em todo o estado de São Paulo.",
+  "relacao": "diferente"
+ },
+ "0f56730747bc@2026-10-06T14:53:51|bb50081aa10b@2026-11-19T12:34:19": {
+  "motivo": "Sindicatos de trabalhadores diferentes (CNPJs e bases distintas) e abrangências territoriais não coincidentes, embora o sindicato patronal seja o mesmo.",
+  "relacao": "diferente"
+ },
+ "0f56730747bc@2026-10-06T14:53:51|ecbf507f2b43@2026-11-19T12:34:39": {
+  "motivo": "Mesmas partes (mesmos CNPJs), mesma categoria e mesmo território, com vigências consecutivas (2024/2025 e 2026/2027).",
+  "relacao": "mesma_cct_outra_vigencia"
+ },
+ "15e37c1f1051@2026-10-06T14:59:08|17e9668bffdc@2026-10-06T13:41:25": {
+  "motivo": "Mesmas partes (SINDTRAN e SINDBRU), mesma categoria (transporte de cargas) e mesmo território (Bauru), com vigências consecutivas (2025/2026 e 2026/2027).",
+  "relacao": "mesma_cct_outra_vigencia"
+ },
+ "15e37c1f1051@2026-10-06T14:59:08|f6a9debbfbd0@2026-10-06T14:55:22": {
+  "motivo": "Sindicatos patronais distintos (SINCOMÉRCIO Bauru - comércio varejista vs SINDBRU - transportes de cargas), categorias e abrangência territorial diferentes (3 municípios vs apenas Bauru) e vigências não coincidentes.",
+  "relacao": "diferente"
+ },
+ "17e9668bffdc@2026-10-06T13:41:25|f6a9debbfbd0@2026-10-06T14:55:22": {
+  "motivo": "Sindicatos patronais distintos (comércio varejista vs. transportes de cargas), categorias e base territorial diferentes (três municípios vs. apenas Bauru).",
+  "relacao": "diferente"
+ },
+ "18611c2ca5cb@2026-10-06T14:49:10|b56daee1801f@2026-11-19T12:34:19": {
+  "motivo": "Mesmas partes (três sindicatos idênticos com CNPJs iguais), mesma categoria profissional, mesma base territorial (Agudos, Avaí e Bauru/SP) e vigências consecutivas: 2025/2026 e 2026/2027.",
+  "relacao": "mesma_cct_outra_vigencia"
+ },
+ "2eec00337ec5@2026-10-06T14:58:05|36c1eda2206c@2026-10-06T13:39:21": {
+  "motivo": "Mesmas partes (sindicatos com CNPJ idêntico para trabalhadores e patronal com nome e CNPJ muito semelhantes), mesma categoria e base territorial substancialmente igual (diferenças por erros de OCR em nomes de municípios), com vigências consecutivas (2025/2026 e 2026/2028).",
+  "relacao": "mesma_cct_outra_vigencia"
+ },
+ "2eec00337ec5@2026-10-06T14:58:05|747868e07ccf@2026-10-06T14:56:19": {
+  "motivo": "Categorias, sindicatos e bases territoriais distintos:  trata de salões de beleza e institutos de tratamento de beleza no interior de SP;  trata de comércio varejista de produtos farmacêuticos na região de Bauru.",
+  "relacao": "diferente"
+ },
+ "333186c5acf7@2026-10-06T14:54:15|361c0ea16d11@2026-10-06T14:58:30": {
+  "motivo": "Categorias, sindicatos e bases territoriais distintos:  abrange comerciários do varejo em Lençóis Paulista e Borebi;  abrange trabalhadores de hotéis, restaurantes e fast-foods em Bauru, Lins, Lençóis Paulista e região.",
+  "relacao": "diferente"
+ },
+ "333186c5acf7@2026-10-06T14:54:15|b5cb3873cb5a@2026-10-06T14:57:36": {
+  "motivo": "Partes, categorias e abrangência territorial distintas:  envolve comerciários (exceto farmacêuticos) nos municípios de Lençóis Paulista e Borebi, enquanto  abrange farmacêuticos no varejo farmacêutico em todo o Estado de São Paulo.",
+  "relacao": "diferente"
+ },
+ "333186c5acf7@2026-10-06T14:54:15|bb50081aa10b@2026-11-19T12:34:19": {
+  "motivo": "Sindicatos de trabalhadores distintos (CNPJs e bases diferentes) e abrangências territoriais sem sobreposição, embora o sindicato patronal seja o mesmo.",
+  "relacao": "diferente"
+ },
+ "333186c5acf7@2026-10-06T14:54:15|ecbf507f2b43@2026-11-19T12:34:39": {
+  "motivo": "Mesmas partes, categoria e território, com vigências consecutivas (2025/2026 e 2026/2027).",
+  "relacao": "mesma_cct_outra_vigencia"
+ },
+ "361c0ea16d11@2026-10-06T14:58:30|7d5cddd8ad7a@2026-10-06T13:37:41": {
+  "motivo": "Documentos de vigências distintas (2025 vs 2026/2027) e naturezas diferentes (informativo de reajuste vs CCT completa), embora envolvam os mesmos sindicatos e setor.",
+  "relacao": "diferente"
+ },
+ "361c0ea16d11@2026-10-06T14:58:30|cb37836c446e@2026-10-06T14:51:53": {
+  "motivo": "Documentos referem-se a vigências diferentes (2025 vs 2026-2027) e tipos distintos (informativo de reajuste vs CCT completa), embora partes, categoria e território sejam compatíveis.",
+  "relacao": "diferente"
+ },
+ "361c0ea16d11@2026-10-06T14:58:30|ecbf507f2b43@2026-11-19T12:34:39": {
+  "motivo": "Categorias, sindicatos e bases territoriais distintos:  trata de comerciários varejistas em Lençóis Paulista e Borebi;  é informativo de reajuste para trabalhadores hoteleiros e de alimentação em Bauru, Lins, Lençóis Paulista e região.",
+  "relacao": "diferente"
+ },
+ "3ec1b2cc8d84@2026-10-06T13:38:09|7d5cddd8ad7a@2026-10-06T13:37:41": {
+  "motivo": "Partes, categorias e territórios distintos:  abrange hotéis, restaurantes e bares com sindicatos do setor hoteleiro em 26 municípios;  abrange petshops com sindicatos do comércio varejista e petshops em 13 municípios.",
+  "relacao": "diferente"
+ },
+ "3ec1b2cc8d84@2026-10-06T13:38:09|bb50081aa10b@2026-11-19T12:34:19": {
+  "motivo": "Categorias profissionais e sindicatos de trabalhadores distintos (comerciários gerais vs. petshops), embora o sindicato patronal e parte do território coincidam.",
+  "relacao": "diferente"
+ },
+ "3ec1b2cc8d84@2026-10-06T13:38:09|ca894a897956@2026-10-06T13:37:17": {
+  "motivo": "Sindicatos patronais diferentes (SINDHOSVET x SINCOMÉRCIO BAURU) e abrangências territoriais distintas (Estado de SP x municípios da região de Bauru).",
+  "relacao": "diferente"
+ },
+ "3ec1b2cc8d84@2026-10-06T13:38:09|cb37836c446e@2026-10-06T14:51:53": {
+  "motivo": "Categorias econômicas distintas (hotéis/restaurantes/bares vs. petshops/clínicas veterinárias), sindicatos de trabalhadores e empregadores diferentes, embora haja sobreposição parcial de municípios na base territorial.",
+  "relacao": "diferente"
+ },
+ "4c7786878225@2026-10-06T13:41:25|a94df646968f@2026-10-06T14:49:12": {
+  "motivo": "Partes, categorias e setores distintos:  abrange professores e auxiliares de administração escolar no estado de São Paulo (FEPAAE e sindicatos filiados vs SIEEESP/FEEESP/SINEPEs), enquanto  trata de empregados em academias esportivas (Sindesporte vs Seeaatesp) em regiões paulistas.",
+  "relacao": "diferente"
+ },
+ "4c7786878225@2026-10-06T13:41:25|c9ae9412ce0e@2026-10-06T14:51:06": {
+  "motivo": "Mesmas partes (Sindesporte/SINDESPORTE e Seeaatesp/SEEAATESP), mesma categoria (empregados em academias esportivas), território compatível (regiões paulistas listadas no primeiro contra Estado de São Paulo no segundo) e vigências consecutivas (2025/2026 e 2026/2027).",
+  "relacao": "mesma_cct_outra_vigencia"
+ },
+ "4c7786878225@2026-10-06T13:41:25|ef8c2f76d420@2026-10-06T13:38:37": {
+  "motivo": "é explicitamente um resumo (arquivo 'Resumo CCT Sindesporte.docx', 2 páginas) das principais cláusulas da CCT 2026/2027, enquanto  é o texto integral da mesma convenção (17 páginas), com mesmas partes, vigência idêntica e cláusulas coincidentes (reajuste 5,80%, vale-refeição R$ 32,62, cesta básica R$ 117,83).",
+  "relacao": "resumo_e_texto_completo"
+ },
+ "51513a56fca4@2026-10-06T14:49:00|c9ae9412ce0e@2026-10-06T14:51:06": {
+  "motivo": "Sindicatos de trabalhadores e categorias profissionais distintos (SINDESPORTE para empregados gerais vs FEPEFI/SINPEFESP para profissionais de educação física), embora compartilhem sindicato patronal (SEEAATESP), território (Estado de SP) e vigência.",
+  "relacao": "diferente"
+ },
+ "51513a56fca4@2026-10-06T14:49:00|cd9f22d55660@2026-10-06T13:40:29": {
+  "motivo": "Mesmas partes (FEPEFI, SINPEFESP e SEEAAESP/SEEAATESP), mesma categoria (Profissionais de Educação Física em Academias Esportivas) e mesmo território (Estado de São Paulo), com vigências consecutivas 2025/2026 e 2026/2027.",
+  "relacao": "mesma_cct_outra_vigencia"
+ },
+ "51513a56fca4@2026-10-06T14:49:00|ef8c2f76d420@2026-10-06T13:38:37": {
+  "motivo": "Embora compartilhem o sindicato patronal (SEEAAATESP) e a base territorial (Estado de SP), os sindicatos laborais e as categorias são distintos:  abrange empregados gerais de academias/clubes (SINDESPORTE) e o B abrange a categoria diferenciada de Profissionais de Educação Física (FEPEFI/SINPEFESP).",
+  "relacao": "diferente"
+ },
+ "67180cdf4f41@2026-10-06T13:36:20|a94df646968f@2026-10-06T14:49:12": {
+  "motivo": "é comunicado de reajuste salarial de 2026 baseado na CCT 2025-2027 , mesmo período de vigência final, categorias e território idênticos, partes principais coincidentes (SIEEESP e federação de trabalhadores), tratando-se de atualização anual complementar.",
+  "relacao": "complementar"
+ },
+ "6f3ca1a4830c@2026-10-06T14:48:09|eaa66e259d76@2026-10-06T14:48:22": {
+  "motivo": "Empresas signatárias diferentes (Angélica Centro Automotivo e JR Grelhas Ltda), embora o sindicato, a categoria e a base territorial sejam os mesmos.",
+  "relacao": "diferente"
+ },
+ "6f3ca1a4830c@2026-10-06T14:48:09|fedddddbe004@2026-10-06T14:47:58": {
+  "motivo": "Empresas signatárias diferentes (Angélica Centro Automotivo vs. Camargo e Prado/Benvindo Auto Mecânica), embora o sindicato laboral, a categoria, o território e a vigência sejam idênticos.",
+  "relacao": "diferente"
+ },
+ "747868e07ccf@2026-10-06T14:56:19|7d5cddd8ad7a@2026-10-06T13:37:41": {
+  "motivo": "Partes (sindicatos patronal e laboral), categorias econômicas (hotelaria/alimentação vs. comércio farmacêutico) e abrangências territoriais distintas, embora com alguns municípios em comum na região de Bauru.",
+  "relacao": "diferente"
+ },
+ "747868e07ccf@2026-10-06T14:56:19|cb37836c446e@2026-10-06T14:51:53": {
+  "motivo": "Sindicatos, categorias econômicas e abrangências territoriais distintas;  trata de hotéis, restaurantes e bares, enquanto o B abrange comércio varejista de produtos farmacêuticos.",
+  "relacao": "diferente"
+ },
+ "7d5cddd8ad7a@2026-10-06T13:37:41|bb50081aa10b@2026-11-19T12:34:19": {
+  "motivo": "Categorias, sindicatos e abrangência territorial distintos:  refere-se a comerciários do comércio varejista (exceto farmácias) em 8 municípios;  refere-se a hotéis, restaurantes, bares e fast-foods em 26 municípios.",
+  "relacao": "diferente"
+ },
+ "7d5cddd8ad7a@2026-10-06T13:37:41|cb37836c446e@2026-10-06T14:51:53": {
+  "motivo": "Mesmo número de registro MTE, mesma vigência, mesmas partes (CNPJs idênticos), mesma categoria e território; diferenças apenas em nomes de arquivo e inclusão de nomes abreviados dos sindicatos.",
+  "relacao": "copia_do_mesmo_documento"
+ },
+ "7d5cddd8ad7a@2026-10-06T13:37:41|d5adb08750e3@2026-10-06T14:58:26": {
+  "motivo": "Mesmas partes (CNPJs idênticos), mesma categoria e mesma base territorial, com vigências consecutivas (2024-2025 e 2026-2027).",
+  "relacao": "mesma_cct_outra_vigencia"
+ },
+ "97cee47649e1@2026-10-06T13:40:43|be23fbfa6680@2026-10-06T14:53:10": {
+  "motivo": "Mesmos sindicatos de trabalhadores e empregadores, mesma categoria (vestuário/confecções) e mesma base territorial (Bauru e região SP), com vigências consecutivas (2025/2026 e 2026/2027).",
+  "relacao": "mesma_cct_outra_vigencia"
+ },
+ "b1aed9d61cc4@2026-10-06T13:35:56|b59855a40f53@2026-10-06T14:58:50": {
+  "motivo": "Mesmas partes (SENALBA e SINDELIVRE), mesma categoria profissional e mesma base territorial (Estado de São Paulo), com vigências consecutivas (2025/2026 e 2026/2027).",
+  "relacao": "mesma_cct_outra_vigencia"
+ },
+ "b5cb3873cb5a@2026-10-06T14:57:36|bb50081aa10b@2026-11-19T12:34:19": {
+  "motivo": "Sindicatos, categorias profissionais (comerciários vs farmacêuticos) e abrangência territorial (municípios da região de Bauru vs Estado de SP) são distintos.",
+  "relacao": "diferente"
+ },
+ "b5cb3873cb5a@2026-10-06T14:57:36|ecbf507f2b43@2026-11-19T12:34:39": {
+  "motivo": "Sindicatos de trabalhadores e empregadores distintos, categorias profissionais diferentes (comerciários vs farmacêuticos) e abrangências territoriais diferentes (municipal vs estadual).",
+  "relacao": "diferente"
+ },
+ "bb50081aa10b@2026-11-19T12:34:19|cb37836c446e@2026-10-06T14:51:53": {
+  "motivo": "Categorias, sindicatos e abrangência territorial distintos:  refere-se a comerciários do comércio varejista (exceto farmácias) em 8 municípios;  refere-se a hotéis, restaurantes, bares e similares em 25 municípios.",
+  "relacao": "diferente"
+ },
+ "bb50081aa10b@2026-11-19T12:34:19|ecbf507f2b43@2026-11-19T12:34:39": {
+  "motivo": "Sindicatos de trabalhadores diferentes (Bauru vs Lençóis Paulista/Borebi) e bases territoriais distintas sem sobreposição.",
+  "relacao": "diferente"
+ },
+ "c9ae9412ce0e@2026-10-06T14:51:06|cd9f22d55660@2026-10-06T13:40:29": {
+  "motivo": "Sindicatos de trabalhadores e categorias profissionais distintos:  abrange empregados gerais de academias (SINDESPORTE), enquanto  abrange categoria diferenciada de profissionais de educação física (FEPEFI/SINPEFESP), embora o sindicato patronal e o território sejam os mesmos.",
+  "relacao": "diferente"
+ },
+ "c9ae9412ce0e@2026-10-06T14:51:06|ef8c2f76d420@2026-10-06T13:38:37": {
+  "motivo": "As categorias abrangidas são diferentes: o primeiro documento cobre apenas empregados de academias esportivas, enquanto o segundo inclui também empregados de clubes, federações e confederações esportivas.",
+  "relacao": "diferente"
+ },
+ "cb37836c446e@2026-10-06T14:51:53|d5adb08750e3@2026-10-06T14:58:26": {
+  "motivo": "Mesmos sindicatos (CNPJs idênticos), mesma categoria profissional e base territorial (26 municípios da região de Bauru/SP), com vigências consecutivas (2024-2025 e 2026-2027).",
+  "relacao": "mesma_cct_outra_vigencia"
+ },
+ "cd9f22d55660@2026-10-06T13:40:29|ef8c2f76d420@2026-10-06T13:38:37": {
+  "motivo": "Categorias profissionais e sindicatos de trabalhadores distintos:  abrange empregados gerais de academias/clubes (SINDESPORTE), enquanto  abrange apenas a categoria diferenciada de Profissionais de Educação Física (FEPEFI/SINPEFESP), embora o sindicato patronal e a vigência sejam os mesmos.",
+  "relacao": "diferente"
+ },
+ "eaa66e259d76@2026-10-06T14:48:22|fedddddbe004@2026-10-06T14:47:58": {
+  "motivo": "Empresas diferentes (Camargo e Prado Mecânica de Autos Ltda vs JR Grelhas Ltda) embora mesmo sindicato, categoria, território e vigência.",
+  "relacao": "diferente"
+ }
+}

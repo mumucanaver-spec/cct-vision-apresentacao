@@ -1,0 +1,31 @@
+| 1 | Gaze | 7,5 X 7,5 | 1 | Caixa de papelão pequena | Unidade |
+| 1 | Termômetro clinico | c/1 | 1 | Bolsa térmica infantil | Unidade |
+| 1 | Esparadrapo | 4,5 m | 1 | Chupeta de silicone | Unidade |
+| 1 | Lenços umedecidos | c /70 | 1 | Mamadeira | Unidade |
+
+\begin{tabular}{cccccc}
+\multicolumn{6}{c}{CESTA MAMÃE} \\
+Produto & Embalagem & Qte. & Produto & Embalagem & Qte. \\
+Açúcar refinado & 1kg & 5 & Polpa de tomate & 520 grs. & 1 \\
+Arroz - tipo 1 & 5kg & 2 & Sal refinado & 1kg & 1 \\
+Biscoito água e sal & 400 grs. & 1 & Sardinha em óleo comestível & 125 grs. & 2 \\
+Biscoito recheado & 140 grs. & 1 & Tempero completo & 270 grs. & 1 \\
+Café em pó & 500 grs. & 1 & Aveia em flocos & 250 grs. & 1 \\
+Farinha de trigo especial & 1kg & 1 & Canjica branca ou farinha flocada & 1kg & 1 \\
+Farinha de mandioca & 1kg & 1 & Leite condensado & 295 grs. & 2 \\
+Feijão carioca - tipo 1 & 1kg & 3 & Leite em pó & 400 grs. & 1 \\
+Massa com ovos espaguete & 500 grs. & 3 & Cereal infantil de arroz / lata & 400 grs. & 1 \\
+Óleo de soja & 900ml & 2 & Semente de linhaça & 500 grs. & 1 \\
+Pó para pudim & 85 grs. & 2 & Caixa de papelão média & unidade & 1 \\
+Óleo mineral & 200 ml & 1 & Fubá & 500 gr & 4 \\
+Azeite de Oliva & 200 ml & 1 & Biscoito Maizena & 200 grs. & 1 \\
+Farinha de milho & 1 Kg & 1 & Suco concentrado & 1 lt. & 1 \\
+\end{tabular}
+
+**VII) DMHO (Despesas Médicas, Hospitalares e Odontológicas):** Ocorrendo intoxicação em decorrência do uso de produtos químicos, desde que devidamente comprovados por laudo médico, caberá ao titular responsável pelos gastos específicos ao tratamento do evento coberto, o reembolso das despesas efetivadas e devidamente comprovadas, limitado em R$ 2.000,00 por EVENTO OCORRIDO / TITULAR / ANO.
+
+**VIII) Apoio Emocional e Nutricional:** Terá direito ao uso do serviço o segurado, seu cônjuge e filhos dependentes ao Apoio Emocional e Nutricional. O serviço será disponibilizado em até 20 (vinte) encontros virtuais por motivo/situação apresentada, contatando a Central de Apoio Emocional e Nutricional, através do telefone 0800.8291301. Para uso dos filhos, dependentes ou cônjuge serão solicitados os dados do segurado titular: nome + CPF + data de nascimento + telefone + e-mail de contato.
+
+**PARÁGRAFO SEXTO:** Para a efetividade do Plano de Benefícios, e por se tratar de condições benéficas negociadas pelos Sindicatos Convenentes, as empresas/empregadores rurais contribuirão com o valor mensal de R$ 12,38 (doze reais e trinta e oito centavos) por empregado(a), única e diretamente às empresas operadoras homologadas, conveniadas e autorizadas pelos Sindicatos Convenentes, a fornecerem a totalidade das coberturas e assistências previstas nesta cláusula.
+
+**PARÁGRAFO SÉTIMO:** Os boletos ficam disponíveis em plataforma virtual indicada pelos Sindicatos Convenentes.

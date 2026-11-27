@@ -1,0 +1,17 @@
+24 páginas - Datas e horários baseados em Brasília, Brasil Sincronizado com o NTP.br e Observatório Nacional (ON) Certificado de assinaturas gerado em 16 de October de 2025, 10:09:00
+
+JUSSARA RUBIA DE CARVALHO MARCANDELI PIRES DA SILVA Assinou (bb73a5f2-34e0-4c1a-829a-6929e13fbb9e) - Email: sinprafarma.rubia@uol.com.br - IP: 177.172.14.18 (177-172-14-18.user.vivozap.com.br porta: 56340) - Documento de identificação informado: 253.580.798-07 - DATE_ATOM: 2025-10-15T20:29:43-03:00
+
+16 Oct 2025, 09:37:26
+
+ANDRÉ BEDRAN JABR Assinou - Email: andre@sincofarma.org.br - IP: 177.139.176.218 (177-139-176-218.dsl.telesp.net.br porta: 63118) - Documento de identificação informado: 268.941.768-50 - DATE_ATOM: 2025-10-16T09:37:26-03:00
+
+Hash do documento original (SHA256):e53404bea4e2df7146b6eadb20927e6ffaff14a5bff06ffd14a2bd94599c89 (SHA512):305c0948a05bc1c469c741a52bf6f3a0108ce20b6ae23a8c40f16ddda0e11e3433da99b0f47a98c4aa1850a98067f6cce40cf597443dd229708ac14711e35dd01
+
+Esse log pertence única e exclusivamente aos documentos de HASH acima
+
+Esse documento está assinado e certificado pela D4Sign
+
+Integridade certificada no padrão ICP-BRASIL
+
+Assinaturas eletrônicas e físicas têm igual validade legal, conforme MP 2.200-2/2001 e Lei 14.063/2020.

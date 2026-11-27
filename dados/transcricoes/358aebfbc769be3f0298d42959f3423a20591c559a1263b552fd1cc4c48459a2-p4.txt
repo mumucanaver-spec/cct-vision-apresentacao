@@ -1,0 +1,33 @@
+**Comunicado Conjunto Reajuste 01 2026 SIEEESP X FEPAAE**
+
+**assinatura pdf**
+
+Código do documento 18948fdf-d930-489c-838f-7bde0997f616
+
+**Assinaturas**
+
+*   Marlene Aparecida Zanata Schneider
+    marlenesieeesp@gmail.com
+    Assinou
+*   ALEXANDRE EDUARDO DA SILVA
+    aledusilva@hotmail.com
+    Assinou
+
+**Eventos do documento**
+
+*   13 Mar 2026, 11:48:51
+    Documento 18948fdf-d930-489c-838f-7bde0997f616 criado por SÉRGIO CREMASCHI SAMPAIO (714c4fc6-3422-4f50-b1bc-a57a1a6672c8). Email:claudia@sieeesp.com.br. - DATE_ATOM: 2026-03-13T11:48:51-03:00
+*   13 Mar 2026, 11:50:45
+    Assinaturas iniciadas por SÉRGIO CREMASCHI SAMPAIO (714c4fc6-3422-4f50-b1bc-a57a1a6672c8). Email: claudia@sieeesp.com.br. - DATE_ATOM: 2026-03-13T11:50:45-03:00
+*   13 Mar 2026, 11:58:34
+    ALEXANDRE EDUARDO DA SILVA Assinou - Email: aledusilva@hotmail.com - IP: 189.39.21.194 (189-039-021-194.static.spo.ctbc.com.br porta: 52568) - Documento de identificação informado: 102.996.088-75 - DATE_ATOM: 2026-03-13T11:58:34-03:00
+*   16 Mar 2026, 11:50:57
+    MARLENE APARECIDA ZANATA SCHNEIDER Assinou - Email: marlenesieeesp@gmail.com - IP: 179.209.141.129 (b3d18d81.virtua.com.br porta: 61172) - Documento de identificação informado: 226.770.708-04 - DATE_ATOM: 2026-03-16T11:50:57-03:00
+
+**Hash do documento original**
+
+(SHA256):fca47a722a72ae1b266240579c34b5578377f33dd76afd7099df928afdc564
+
+(SHA512):42fbf606058c376b9c81ebd09dec4778c04c749421ba4a14d1f0415ce7edcf69405974c60965a0e149a26392a6ec706fb6682aaa7231a53f3d020
+
+**Esse log pertence única e exclusivamente aos documentos de HASH acima**

@@ -1,0 +1,27 @@
+**Transcrição da Página**
+
+**Título**
+5 páginas - Datas e horários baseados em Brasília, Brasil
+
+**Sincronizado com o NTP.br e Observatório Nacional (ON)**
+
+**Certificado de assinaturas gerado em 16 de March de 2026, 12:03:03**
+
+**ICP Brasil**
+
+**Esse documento está assinado e certificado pela D4Sign**
+
+**Integridade certificada no padrão ICP-BRASIL**
+
+**Assinaturas eletrônicas e físicas têm igual validade legal, conforme MP 2.200-2/2001 e Lei 14.063/2020.**
+
+**Tabela**
+
+| **Número da Cláusula** | **Descrição da Cláusula** |
+| --- | --- |
+| 2.200-2/2001 |  |
+| 14.063/2020 |  |
+
+**Página sem texto**
+
+[página sem texto]

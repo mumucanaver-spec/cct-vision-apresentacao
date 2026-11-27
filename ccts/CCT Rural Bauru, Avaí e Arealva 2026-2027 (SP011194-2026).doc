@@ -1,0 +1,2131 @@
+
+<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+<head>
+    <title>
+        Mediador - Extrato Conven&#231;&#227;o Coletiva
+    </title>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+    <script src="https://www.google.com/recaptcha/api.js?render=6LdPnewrAAAAADM60VqWAyvhreJD6Jpyr1tORg6G"></script>
+
+    <script src='/sistemas/mediador/WebResource.axd?d=1jMcATVSTSIV-YWye-_Fhzx6LusxbMKvcuFdr5HI_ssgyjdJkyxA2-EPcwnz3qNZlFF6EUa-MTzLQh2dVFPj6r_v9CX4kjiINAWkeOl4CC_0h9dc_3c4xRxQ-zHB4HYhcymkhDyx2n4wQbixUUZylG6ZHODluZyYgySDWUHGY6bBFwSj7W6G1Hm92BUzXE270&t=639193666532168144' type='text/javascript'></script>
+<script src='/sistemas/mediador/WebResource.axd?d=ToP3WyKnNcTBgf8qtFLUYRrSvEUogzE-pM40Bu7S4L5AAdx4xZEkaMnpkOToC_iRaGLzQcuPBK6QCVvvJ7n95_ZSn-IRUFNgOk2p83aZIRxhTLpuIMr1UKcXyoYaXlG33DfwvAkZ2XuXdUahCfJJzoV5NWTAU3qVgldboUjNpGsGCZZ197be4yCy7x1iz_yLP6F7E2gn_YbT4c2VCg-4ow2&t=639193666532168144' type='text/javascript'></script>
+<script src='/sistemas/mediador/WebResource.axd?d=3mI4f9g3azRixf4Za0tmD6V8DJfoUkT7_QHJ9iGVUGSD5h7IfpLjhkyTYb-hbZGmZr_gZQIoqQLInz2Q70ExwiQEzyNDNZzjkfZEs6stpgHSVSKoukdQI091xmoVBT6gImUqNoJ1pjUImJNeealN5fQZdmrPKloSbs8CqQAurDlIH1u8wO9eCPFFa8iFho5r0&t=639193666532168144' type='text/javascript'></script>
+<script src='/sistemas/mediador/WebResource.axd?d=BVuzucWTXj3rqaIgH8NhzaLEETcTbpsYO1EuTMRvZ18VPOLqbmY7C6Hi1fN_YiVTs0sUz2dVLVOFlRTEjQubuLAutHQDFojXrTaSKC9A-uo9vJXhaSB80KhSdKnGGQzEWAQw4JMDgcI6MlO586NK0FyFD55j5Qp6l3sZJDgHcdyqUUAQOc09v4bha0pbp3Gf0&t=639193666532168144' type='text/javascript'></script>
+<script src='/sistemas/mediador/WebResource.axd?d=sSTHo0iNLu4fVOFTgwKlKHmnEvVjjQxbNUR8fdoV50-7GVZ8n9lc-x7as1DzlJ_ZTXN8UiiIkQJQFjIsIDKm_PY9aSJ1RyJ-Kj6i-TIP1qIl_0NAOYUjsUFDZxdeY9xstnAk5bAeFFAEl9A-kTrdB12rAuoEOIimzAo2H81hRcALjLqhEppu8Nr-XyPwX-IU0&t=639193666532168144' type='text/javascript'></script>
+<script src='/sistemas/mediador/WebResource.axd?d=CmFSB03g8txv1V3faeS1DngOSC7RY9WBHBmE_XbWoOoPvhRjbuhcccILyHR0YkHQok5229wehJLjFijhFNBWWmgXOWLnRnmT0mak7LHVwq0zFaNy03Dp33TMSoLeHued5tuo7L_xStArs6xJJyx8E8ul2gA3L4IKt_0mXM81tG24fuQp52NdzVj0tVu03C960&t=639193666532168144' type='text/javascript'></script>
+
+
+<script type="text/javascript">
+        var recaptchaSiteKey = '6LdPnewrAAAAADM60VqWAyvhreJD6Jpyr1tORg6G';
+        var pageLoadToken = '';
+        var isPageValidated = false;
+
+        function onRecaptchaLoad() {
+            console.log('reCAPTCHA carregado, validando página...');
+            executePageLoadRecaptcha();
+        }
+
+        function executePageLoadRecaptcha() {
+            if (typeof grecaptcha === 'undefined') {
+                console.error('reCAPTCHA não carregado');
+                return;
+            }
+
+            grecaptcha.ready(function() {
+                grecaptcha.execute(recaptchaSiteKey, {
+                    action: 'page_load_resumo'
+                }).then(function(token) {
+                    console.log('Token de página gerado');
+                    pageLoadToken = token;
+
+                    // Enviar o token para o servidor
+                    validatePageLoadToken(token);
+                }).catch(function(error) {
+                    console.error('Erro no reCAPTCHA de página:', error);
+                    // Em desenvolvimento, permitir continuar
+                });
+            });
+        }
+
+        function validatePageLoadToken(token) {
+            var currentUrl = window.location.href;
+            var queryString = window.location.search;
+            var nrSolicitacao = 'MR065356/2026';
+
+            $.ajax({
+                url: '/sistemas/mediador/Resumo/ValidateResumoPageLoad',
+                type: 'POST',
+                data: {
+                    recaptchaToken: token,
+                    currentUrl: currentUrl,
+                    queryString: queryString,
+                    nrSolicitacao: nrSolicitacao
+                },
+                success: function(response) {
+                    if (response.success) {
+                        console.log('Página validada com sucesso');
+                        isPageValidated = true;
+                        showPageContent();
+                    } else {
+                        console.warn('Validação de página falhou:', response.message);
+                        handleValidationFailed(response);
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('Erro ao validar página:', error);
+                    handleValidationFailed({ message: 'Erro de comunicação com o servidor' });
+                }
+            });
+        }
+
+        function showPageContent() {
+            // Remover overlay de loading se existir
+            $('#recaptcha-loading').remove();
+            console.log('Conteúdo da página liberado');
+        }
+
+        function handleValidationFailed(response) {
+            // Mostrar mensagem de erro
+            var errorHtml = `
+                <div style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 9999; display: flex; justify-content: center; align-items: center; flex-direction: column;">
+                    <div style="text-align: center; padding: 20px;">
+                        <h2 style="color: #d32f2f;">Validação de Segurança</h2>
+                        <p style="font-size: 16px; margin: 20px 0;">${response.message || 'Falha na validação de segurança.'}</p>
+                        <button onclick="window.location.reload()" style="padding: 10px 20px; background: #1976d2; color: white; border: none; border-radius: 4px; cursor: pointer;">
+                            Tentar Novamente
+                        </button>
+                        <br><br>
+                        <button onclick="window.location.href='/sistemas/mediador/'" style="padding: 8px 16px; background: #757575; color: white; border: none; border-radius: 4px; cursor: pointer;">
+                            Voltar para Página Inicial
+                        </button>
+                    </div>
+                </div>
+            `;
+            $('body').prepend(errorHtml);
+        }
+
+        $(document).ready(function() {
+            console.log('Página carregada - ambiente de produção');
+
+            // Pular validação reCAPTCHA em produção
+            setTimeout(function() {
+                if (!isPageValidated) {
+                    console.log('Produção - validando sem reCAPTCHA');
+                    isPageValidated = true;
+                    showPageContent();
+                }
+            }, 1000);
+
+            // Timeout de segurança reduzido
+            setTimeout(function() {
+                if (!isPageValidated) {
+                    console.warn('Timeout na validação - liberando conteúdo');
+                    isPageValidated = true;
+                    showPageContent();
+                }
+            }, 5000); // Reduzido para 5 segundos
+        });
+
+        function Imprimir() {
+            document.getElementById("btnResumoVisualizarImprimir").style.display = "none";
+            document.getElementById("btnResumoVisualizarSalvar").style.display = "none";
+            window.print();
+            document.getElementById("btnResumoVisualizarImprimir").style.display = "";
+            document.getElementById("btnResumoVisualizarSalvar").style.display = "";
+            return true;
+        }
+        $(function () {
+            var marcaDaguaHtml = $('.MarcaDagua').html();
+            var width = $('body').width();
+            var marcaW = $('.MarcaDagua').width();
+
+            var qtdNescessarios = Math.round((width / marcaW) + 0.4);
+            if (qtdNescessarios > 0)
+                for (var incrementador = 0; incrementador < qtdNescessarios; incrementador++) {
+                    $('.MarcaDagua').append("<br />");
+                    $('.MarcaDagua').append(marcaDaguaHtml);
+                }
+        });
+
+
+</script>
+    <style type="text/css">
+        .titulo
+        {
+            font-family: Arial, Verdana, Helvetica, sans-serif;
+            font-size: 14px;
+        }
+        .Subtitulo
+        {
+            font-family: Arial, Verdana, Helvetica, sans-serif;
+            font-size: 13px;
+        }
+        .texto
+        {
+            font-family: Arial, Verdana, Helvetica, sans-serif;
+            font-size: 14px;
+        }
+        .tituloClausula
+        {
+            font-family: Arial, Verdana, Helvetica, sans-serif;
+            font-size: 14px;
+        }
+        .descricaoClausula
+        {
+            font-family: Arial, Verdana, Helvetica, sans-serif;
+            font-size: 14px;
+        }
+        .textogrupo
+        {
+            font-family: Arial, Verdana, Helvetica, sans-serif;
+            font-size: 18px;
+            text-transform: uppercase;
+        }
+        .textosubgrupo
+        {
+            font-family: Arial, Verdana, Helvetica, sans-serif;
+            font-size: 16px;
+            text-transform: uppercase;
+        }
+        .textonome
+        {
+            font-family: Arial, Verdana, Helvetica, sans-serif;
+            font-size: 12px;
+            text-transform: uppercase;
+            font-weight: bold;
+        }
+        .textofuncao
+        {
+            font-family: Verdana, Arial, Helvetica, sans-serif;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        .pagebreak
+        {
+            page-break-after: always;
+        }
+        table.titulo
+        {
+            text-align: left;
+        }
+        @page Section2 {size:21cm 29.7cm ;mso-page-orientation:portrait;margin-top:2cm; margin-rigth:2cm; mso-paper-source:0;}
+        div.Section2 {page:Section2;}
+        pre
+        {
+            white-space: pre-wrap; /* css-3 */
+            white-space: -moz-pre-wrap !important; /* Mozilla, since 1999 */
+            white-space: -pre-wrap; /* Opera 4-6 */
+            white-space: -o-pre-wrap; /* Opera 7 */
+            word-wrap: break-word; /* Internet Explorer 5.5+ */
+            white-space: normal;
+        }
+    </style>
+    <!--[if gte mso 9]>
+    <xml>
+    <w:WordDocument>
+    <w:View>Print</w:View>
+    <w:Zoom>100</w:Zoom>
+    <w:DoNotOptimizeForBrowser/>
+    </w:WordDocument>
+    </xml>
+    <![endif]-->
+</head>
+
+<body>
+    <div class="Section2">
+
+        <center>
+            <table border="0" style="width: 18cm;" id="tblConteudo">
+                <tr>
+                    <td>
+                        <table style="width: 100%;" cellpadding="0" cellspacing="0">
+
+                                                            <tr>
+                                    <td align="center" class="titulo" style="text-transform: uppercase;">
+                                        <b>
+                                            Conven&#231;&#227;o Coletiva De Trabalho 2026/2027
+                                        </b>
+                                        <br />
+                                        <br />
+                                    </td>
+                                </tr>
+                            <tr>
+                                <td>
+                                    <div style="text-align: left;">
+                                        <table border="0" class="titulo" cellpadding="0" cellspacing="0">
+                                                <tr>
+                                                    <td>
+                                                        <b>NÚMERO DE REGISTRO NO MTE:</b>
+                                                    </td>
+                                                    <td style="width: 10px">
+                                                    </td>
+                                                    <td>
+                                                        SP011194/2026
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <b>DATA DE REGISTRO NO MTE:</b>
+                                                    </td>
+                                                    <td style="width: 10px">
+                                                    </td>
+                                                    <td>
+                                                        13/11/2026
+                                                    </td>
+                                                </tr>
+                                            <tr>
+                                                <td>
+                                                    <b>NÚMERO DA SOLICITAÇÃO:</b>
+                                                </td>
+                                                <td style="width: 10px">
+                                                </td>
+                                                <td>
+                                                    MR065356/2026
+                                                </td>
+                                            </tr>
+                                                                                            <tr>
+                                                    <td>
+                                                        <b>NÚMERO DO PROCESSO:</b>
+                                                    </td>
+                                                    <td style="width: 10px">
+                                                    </td>
+                                                    <td>
+                                                        47984.228180/2026-77
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <b>DATA DO PROTOCOLO:</b>
+                                                    </td>
+                                                    <td style="width: 10px">
+                                                    </td>
+                                                    <td>
+05/11/2026                                                    </td>
+                                                </tr>
+                                        </table>
+                                        <br />
+
+                                                        <p>
+                                                            <label class="texto">
+                                                                <b>
+                                                                    Confira a autenticidade no endereço http://www3.mte.gov.br/sistemas/mediador/.
+                                                                </b>
+                                                            </label>
+                                                        </p>
+                                                    <br />
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align="left" class="texto">
+                                    <p align="justify">
+SINDICATO DOS EMPREGADOS RURAIS DE BAURU, AVAI E AREALVA, CNPJ n. 03.967.686/0001-82, neste ato representado(a) por seu 
+
+Presidente, Sr(a). JOSE PASCOAL ALVES;
+    <br />
+&nbsp;
+    <br />
+SINDICATO DOS TRABALHADORES RURAIS DE AGUDOS - SP, CNPJ n. 02.838.724/0001-34, neste ato representado(a) por seu 
+
+Presidente, Sr(a). APARECIDO DONIZETI MUNSIMBONI;
+    <br />
+&nbsp;
+    <br />
+                                        <label>
+                                            E
+                                        </label>
+                                        <br />
+                                        <br />
+SINDICATO RURAL DE BAURU, CNPJ n. 45.030.780/0001-50, neste ato representado(a) por seu 
+
+Presidente, Sr(a). JOSE MAURICIO DE MELLO LIMA VERDE GUIMARAES;
+    <br />
+&nbsp;
+    <br />
+                                                                                    celebram
+                                                                                    a
+                                         presente CONVEN&#199;&#195;O COLETIVA DE TRABALHO,
+ estipulando as condi&#231;&#245;es de trabalho previstas nas cl&#225;usulas seguintes:                                                <br />
+                                                <br />
+                                                <label class="tituloClausula">
+                                                    <b>
+                                                        CL&#193;USULA PRIMEIRA - VIG&#202;NCIA E DATA-BASE
+                                                        <br />
+                                                    </b>
+                                                </label>
+                                                <br />
+                                                <label class="descricaoClausula">
+                                                    As partes fixam a vigência da presente Convenção Coletiva de Trabalho no período de 01º de outubro de 2026 a 30 de setembro de 2027 e a data-base da categoria em 01º de outubro.
+                                                </label>
+                                                <br />
+                                                <br />
+                                                <br />
+                                                <label class="tituloClausula">
+                                                    <b>
+                                                        CL&#193;USULA SEGUNDA - ABRANG&#202;NCIA
+                                                        <br />
+                                                    </b>
+                                                </label>
+                                                <br />
+                                                <label class="descricaoClausula">
+                                                    A presente Convenção Coletiva de Trabalho abrangerá a(s) categoria(s) <b>Empregados rurais, diaristas, volantes, os tratoristas, os operadores de máquinas agrícolas, os aplicadores de defensivos agrícolas, bóias-frias, assalariados em geral</b>, com abrangência territorial em <b>Agudos/SP, Avaí/SP e Bauru/SP</b>.
+                                                </label>
+                                                <br />
+                                    </p>
+
+                                        <center>
+                                            <br />
+                                            <b>
+                                                <label class="textogrupo">
+                                                    Salários, Reajustes e Pagamento
+                                                    <br />
+                                                </label>
+                                            </b>
+                                        </center>
+                                            <center>
+                                                <b>
+                                                    <label class="textosubgrupo">
+                                                        Piso Salarial
+                                                        <br />
+                                                    </label>
+                                                </b>
+                                            </center>
+                                                <label class="tituloClausula">
+                                                    <b>
+                                                        <br />
+                                                        CL&#193;USULA TERCEIRA - PISO SALARIAL OU SAL&#193;RIO NORMATIVO
+                                                        <br />
+                                                                                                                                                                                                                                                                                        
+                                                    </b>
+                                                </label>
+                                                <br />
+                                                <label class="descricaoClausula" >
+                                                    <p>Fixa&ccedil;&atilde;o do piso salarial ou sal&aacute;rio normativo, a partir&nbsp;01/10/2026, em&nbsp;R$ 2.077,00 (dois mil e setenta e sete reais), por m&ecirc;s, a todos trabalhadores rurais que recebiam o m&iacute;nimo legal vigente &agrave; &eacute;poca (no caso, o piso salarial convencional de R$ 1.930,00), o que corresponde a 4,49%(quatro v&iacute;rgula quarenta e nove por cento) devido &agrave; recomposi&ccedil;&atilde;o da infla&ccedil;&atilde;o do per&iacute;odo de aumento e mais um ganho real de 3% (tr&ecirc;s por cento).</p>
+<p><strong>PAR&Aacute;GRAFO PRIMEIRO:</strong>&nbsp;Aos(&agrave;s) empregados(as) rurais que recebem remunera&ccedil;&atilde;o superior ao piso da categoria, aplica-se o mesmo reajuste inflacion&aacute;rio do <em>caput</em>, sendo de 4,49%(quatro v&iacute;rgula quarenta e nove por cento) acrescido de 3% (tr&ecirc;s por cento) de ganho real.</p>
+<p><strong>PAR&Aacute;GRAFO SEGUNDO:</strong> Ocorrendo eventual majora&ccedil;&atilde;o do sal&aacute;rio m&iacute;nimo fixado pela Uni&atilde;o (Governo Federal) ou pelo Estado de S&atilde;o Paulo (Governo do Estado de S&atilde;o Paulo), na vig&ecirc;ncia desta Conven&ccedil;&atilde;o Coletiva de Trabalho e o novo valor superar o piso ora pactuado, o Empregador adotar&aacute; como piso o sal&aacute;rio m&iacute;nimo da Uni&atilde;o ou do Estado de S&atilde;o Paulo, o que for maior e mais ben&eacute;fico ao(&agrave;) empregado(a) rural, alterando-se, por consequ&ecirc;ncia, o sal&aacute;rio-base dos empregados e seus reflexos legais, observadas as incid&ecirc;ncias previdenci&aacute;rias, fundi&aacute;rias e fiscais, nos termos da lei.</p>
+<p><strong>PAR&Aacute;GRAFO TERCEIRO:&nbsp;</strong>Fica facultada a compensa&ccedil;&atilde;o de eventuais reajustes/aumentos concedidos a t&iacute;tulo de antecipa&ccedil;&atilde;o desde que compat&iacute;veis com o disposto no&nbsp;<em>caput</em>&nbsp;e no par&aacute;grafo primeiro, ambos da presente Cl&aacute;usula, exceto os decorrentes de promo&ccedil;&atilde;o, equipara&ccedil;&atilde;o, reestrutura&ccedil;&atilde;o&nbsp;ou transfer&ecirc;ncia.</p>
+<p><strong>PAR&Aacute;GRAFO QUARTO:</strong>&nbsp;Em eventuais contrata&ccedil;&otilde;es de fun&ccedil;&otilde;es diferenciadas, fica estabelecido que o piso salarial dever&aacute; ser acrescido do percentual m&iacute;nimo de 30% (trinta por cento), observados os reflexos legais, bem como as incid&ecirc;ncias previdenci&aacute;rias, fundi&aacute;rias e fiscais, nos termos da lei.</p>
+<p><strong>PAR&Aacute;GRAFO QUINTO:</strong>&nbsp;A presente Conven&ccedil;&atilde;o Coletiva de Trabalho aplica-se, na sua &iacute;ntegra, a todos os trabalhadores e empregados rurais terceirizados, que prestem servi&ccedil;o dentro da &aacute;rea de abrang&ecirc;ncia destes Sindicatos de Classe.</p>
+                                                </label>
+                                                <br />
+                                            <center>
+                                                <b>
+                                                    <label class="textosubgrupo">
+                                                        Pagamento de Salário – Formas e Prazos
+                                                        <br />
+                                                    </label>
+                                                </b>
+                                            </center>
+                                                <label class="tituloClausula">
+                                                    <b>
+                                                        <br />
+                                                        CL&#193;USULA QUARTA - PAGAMENTO DE SAL&#193;RIO
+                                                        <br />
+                                                                                                                                                                                                                                                                                        
+                                                    </b>
+                                                </label>
+                                                <br />
+                                                <label class="descricaoClausula" >
+                                                    <p>Os pagamentos de sal&aacute;rio ser&atilde;o efetuados em dinheiro ou via PIX (cujos dados banc&aacute;rios ser&atilde;o informados pelo/a Empregado(a) rural ao seu Empregador quando da contrata&ccedil;&atilde;o), ou por meio de cheques nominais, durante a jornada de trabalho.</p>
+                                                </label>
+                                                <br />
+                                            <center>
+                                                <b>
+                                                    <label class="textosubgrupo">
+                                                        Outras normas referentes a salários, reajustes, pagamentos e critérios para cálculo
+                                                        <br />
+                                                    </label>
+                                                </b>
+                                            </center>
+                                                <label class="tituloClausula">
+                                                    <b>
+                                                        <br />
+                                                        CL&#193;USULA QUINTA - GARANTIA DE SAL&#193;RIO SUBSTITUI&#199;&#195;O
+                                                        <br />
+                                                                                                                                                                                                                                                                                        
+                                                    </b>
+                                                </label>
+                                                <br />
+                                                <label class="descricaoClausula" >
+                                                    <p>Garantia ao empregado admitido para a fun&ccedil;&atilde;o de outro, de igual sal&aacute;rio do substitu&iacute;do, com exce&ccedil;&atilde;o das vantagens pessoais do empregado dispensado.</p>
+                                                </label>
+                                                <br />
+                                                <label class="tituloClausula">
+                                                    <b>
+                                                        <br />
+                                                        CL&#193;USULA SEXTA - COMPROVANTE DE PAGAMENTO
+                                                        <br />
+                                                                                                                                                                                                                                                                                        
+                                                    </b>
+                                                </label>
+                                                <br />
+                                                <label class="descricaoClausula" >
+                                                    <p>Ser&aacute; fornecido a cada empregado comprovante de pagamento com discrimina&ccedil;&atilde;o das import&acirc;ncias pagas e descontos efetuados, contendo a identifica&ccedil;&atilde;o do empregado e do empregador.</p>
+                                                </label>
+                                                <br />
+                                                <label class="tituloClausula">
+                                                    <b>
+                                                        <br />
+                                                        CL&#193;USULA S&#201;TIMA - ORDENHA
+                                                        <br />
+                                                                                                                                                                                                                                                                                        
+                                                    </b>
+                                                </label>
+                                                <br />
+                                                <label class="descricaoClausula" >
+                                                    <p>O tempo despendido na ordenha e, desde que destinado ao consumo do empregado n&atilde;o integrar&aacute; a jornada di&aacute;ria de trabalho.</p>
+<p><strong>PAR&Aacute;GRAFO &Uacute;NICO:&nbsp;</strong>O produto da ordenha n&atilde;o integrar&aacute; a remunera&ccedil;&atilde;o do empregado.</p>
+                                                </label>
+                                                <br />
+                                                <label class="tituloClausula">
+                                                    <b>
+                                                        <br />
+                                                        CL&#193;USULA OITAVA - SAL&#193;RIO DO ACIDENTADO
+                                                        <br />
+                                                                                                                                                                                                                                                                                        
+                                                    </b>
+                                                </label>
+                                                <br />
+                                                <label class="descricaoClausula" >
+                                                    <p>Obrigatoriedade ao empregador rural em efetuar o pagamento da diferen&ccedil;a correspondente &agrave; complementa&ccedil;&atilde;o da renumera&ccedil;&atilde;o devida ao empregado por ocasi&atilde;o de acidentes de trabalho, durante o per&iacute;odo de inatividade n&atilde;o superior a&nbsp;90 (noventa) dias, com garantia de emprego na forma de lei, desde que seja fra&ccedil;&atilde;o igual ou superior a 15 (quinze) dias.</p>
+                                                </label>
+                                                <br />
+                                                <label class="tituloClausula">
+                                                    <b>
+                                                        <br />
+                                                        CL&#193;USULA NONA - ATESTADO DE AFASTAMENTO DE SAL&#193;RIOS
+                                                        <br />
+                                                                                                                                                                                                                                                                                        
+                                                    </b>
+                                                </label>
+                                                <br />
+                                                <label class="descricaoClausula" >
+                                                    <p>Os empregadores dever&atilde;o preencher o atestado de afastamento de sal&aacute;rio (A.A.S.), quando solicitado pelo empregado nos seguintes casos:</p>
+<p>a) m&aacute;ximo de 03 (tr&ecirc;s) dias &uacute;teis, contados da data da solicita&ccedil;&atilde;o, nos casos de obten&ccedil;&atilde;o de benef&iacute;cios por aux&iacute;lio-doen&ccedil;a;</p>
+<p>b) m&aacute;ximo de 10 (dez) dias &uacute;teis, contados da data da solicita&ccedil;&atilde;o, nos casos de obten&ccedil;&atilde;o de aposentadoria.</p>
+                                                </label>
+                                                <br />
+                                        <center>
+                                            <br />
+                                            <b>
+                                                <label class="textogrupo">
+                                                    Gratificações, Adicionais, Auxílios e Outros
+                                                    <br />
+                                                </label>
+                                            </b>
+                                        </center>
+                                            <center>
+                                                <b>
+                                                    <label class="textosubgrupo">
+                                                        Adicional de Hora-Extra
+                                                        <br />
+                                                    </label>
+                                                </b>
+                                            </center>
+                                                <label class="tituloClausula">
+                                                    <b>
+                                                        <br />
+                                                        CL&#193;USULA D&#201;CIMA - HORAS EXTRAS
+                                                        <br />
+                                                                                                                                                                                                                                                                                        
+                                                    </b>
+                                                </label>
+                                                <br />
+                                                <label class="descricaoClausula" >
+                                                    <p>Fica estabelecido que as horas extraordin&aacute;rias ser&atilde;o remuneradas com o acr&eacute;scimo de 50% (cinq&uuml;enta por cento) em rela&ccedil;&atilde;o &agrave; remunera&ccedil;&atilde;o da hora normal, para a primeira hora extra e de 100% (cem por cento) para as posteriores. As horas extraordin&aacute;rias ser&atilde;o remuneradas com o acr&eacute;scimo de 100% (cem por cento) nos dias em que houver trabalho aos domingos e feriados.</p>
+<p>&nbsp;</p>
+                                                </label>
+                                                <br />
+                                                <label class="tituloClausula">
+                                                    <b>
+                                                        <br />
+                                                        CL&#193;USULA D&#201;CIMA PRIMEIRA - INTEGRA&#199;&#195;O DE HORAS EXTRAS
+                                                        <br />
+                                                                                                                                                                                                                                                                                        
+                                                    </b>
+                                                </label>
+                                                <br />
+                                                <label class="descricaoClausula" >
+                                                    <p>As horas extras habituais ser&atilde;o consideradas, para todos os efeitos legais, integradas na remunera&ccedil;&atilde;o do empregado, tanto para os c&aacute;lculos de aviso pr&eacute;vio, indeniza&ccedil;&atilde;o, como de f&eacute;rias, 13&ordm; sal&aacute;rio, repouso semanal remunerado, feriados e demais consect&aacute;rios legais, nos termos das s&uacute;mulas do E. Tribunal Superior do Trabalho (TST), que tratam da mat&eacute;ria at&eacute; esta data.</p>
+                                                </label>
+                                                <br />
+                                            <center>
+                                                <b>
+                                                    <label class="textosubgrupo">
+                                                        Adicional de Tempo de Serviço
+                                                        <br />
+                                                    </label>
+                                                </b>
+                                            </center>
+                                                <label class="tituloClausula">
+                                                    <b>
+                                                        <br />
+                                                        CL&#193;USULA D&#201;CIMA SEGUNDA - ADICIONAL POR TEMPO DE SERVI&#199;O
+                                                        <br />
+                                                                                                                                                                                                                                                                                        
+                                                    </b>
+                                                </label>
+                                                <br />
+                                                <label class="descricaoClausula" >
+                                                    <p>Adicional por tempo de servi&ccedil;o ao empregado rural que resida na propriedade, fixado em 5% (cinco por cento) do seu sal&aacute;rio, a cada cinco anos de trabalho cont&iacute;nuo ao mesmo empregador, a partir de 01/10/1987.</p>
+<p><strong>PAR&Aacute;GRAFO PRIMEIRO:</strong>&nbsp;O empregado rural fara jus ao adicional a partir do m&ecirc;s que completar o quinqu&ecirc;nio.</p>
+<p><strong>PAR&Aacute;GRAFO SEGUNDO:&nbsp;</strong>O adicional por tempo de servi&ccedil;o ser&aacute; pago ao empregado rural todo m&ecirc;s ap&oacute;s completar os cinco anos de trabalho, integrando o seu sal&aacute;rio.</p>
+                                                </label>
+                                                <br />
+                                            <center>
+                                                <b>
+                                                    <label class="textosubgrupo">
+                                                        Adicional Noturno
+                                                        <br />
+                                                    </label>
+                                                </b>
+                                            </center>
+                                                <label class="tituloClausula">
+                                                    <b>
+                                                        <br />
+                                                        CL&#193;USULA D&#201;CIMA TERCEIRA - DO ADICIONAL NOTURNO
+                                                        <br />
+                                                                                                                                                                                                                                                                                        
+                                                    </b>
+                                                </label>
+                                                <br />
+                                                <label class="descricaoClausula" >
+                                                    <p>Fica consignado o adicional de 25% (vinte e cinco por cento) sobre a remunera&ccedil;&atilde;o mensal a todos trabalhadores rurais que prestarem servi&ccedil;os em hor&aacute;rio noturno, na forma lei (artigo 7&ordm;, e par&aacute;grafo &uacute;nico, da Lei n&ordm; 5.889/73).</p>
+                                                </label>
+                                                <br />
+                                            <center>
+                                                <b>
+                                                    <label class="textosubgrupo">
+                                                        Outros Adicionais
+                                                        <br />
+                                                    </label>
+                                                </b>
+                                            </center>
+                                                <label class="tituloClausula">
+                                                    <b>
+                                                        <br />
+                                                        CL&#193;USULA D&#201;CIMA QUARTA - DA REMUNERA&#199;&#195;O IN ITINERE
+                                                        <br />
+                                                                                                                                                                                                                                                                                        
+                                                    </b>
+                                                </label>
+                                                <br />
+                                                <label class="descricaoClausula" >
+                                                    <p>Far&atilde;o jus ao pagamento de horas <em>in itinere </em>os trabalhadores e empregados rurais sujeitos a controle de hor&aacute;rio/ponto e n&atilde;o residentes em propriedade dos empregadores, pelo tempo despendido at&eacute; o local de trabalho e no retorno, quando o trajeto se der em locais n&atilde;o atendidos por transporte p&uacute;blico.</p>
+<p><strong>PAR&Aacute;GRAFO PRIMEIRO: </strong>A hora <em>in itinere </em>ser&aacute; devida independentemente de o transporte ser fornecido pelos empregadores ou de o trabalhador se deslocar por meios pr&oacute;prios, e independentemente de o local ser de f&aacute;cil ou dif&iacute;cil acesso.</p>
+<p><strong>PAR&Aacute;GRAFO SEGUNDO:&nbsp;</strong>A remunera&ccedil;&atilde;o de que trata o &ldquo;caput&rdquo; refere-se a tempo &agrave; disposi&ccedil;&atilde;o do empregador, n&atilde;o configurando hora extraordin&aacute;ria. Sobre tal verba n&atilde;o incidir&aacute; qualquer outro adicional (inclusive, mas n&atilde;o se limitando ao adicional de insalubridade e ao adicional de hora extra), tampouco produzir&aacute; reflexos sobre as demais parcelas salariais.</p>
+<p><strong>PAR&Aacute;GRAFO TERCEIRO: </strong>O valor ser&aacute; de 01 (uma) hora, a qual ser&aacute; calculada sobre o valor da hora normal estipulada no piso convencional, acrescida de 50% (cinquenta por cento); remunera&ccedil;&atilde;o esta, pr&eacute;-fixada pelas partes convenentes.</p>
+<p><strong>PAR&Aacute;GRAFO QUARTO: </strong>As partes convenentes reconhecem que o per&iacute;odo fixado no par&aacute;grafo terceiro corresponde &agrave; m&eacute;dia de tempo apurada para fins de comprova&ccedil;&atilde;o e pagamento, sendo indispens&aacute;vel a aferi&ccedil;&atilde;o individualizada do tempo de percurso.</p>
+<p><strong>PAR&Aacute;GRAFO QUINTO: </strong>Caso o pagamento venha a ocorrer somente ap&oacute;s notifica&ccedil;&atilde;o ou interven&ccedil;&atilde;o do Sindicato de Classe em virtude de descumprimento espont&acirc;neo, o empregador ficar&aacute; obrigado ao pagamento retroativo integral dos valores devidos desde o in&iacute;cio da presta&ccedil;&atilde;o dos servi&ccedil;os nas condi&ccedil;&otilde;es geradoras do direito, al&eacute;m da incid&ecirc;ncia da multa da Cl&aacute;usula 50&ordf; (multa por inadimplemento), sem preju&iacute;zo de outras san&ccedil;&otilde;es cab&iacute;veis.</p>
+                                                </label>
+                                                <br />
+                                                <label class="tituloClausula">
+                                                    <b>
+                                                        <br />
+                                                        CL&#193;USULA D&#201;CIMA QUINTA - DIAS PARADOS PAGAMENTO DE SAL&#193;RIOS INTEGRAIS AOS EMPREGADOS NOS DIAS EM QUE
+                                                        <br />
+                                                                                                                                                                                                                                                                                        
+                                                    </b>
+                                                </label>
+                                                <br />
+                                                <label class="descricaoClausula" >
+                                                    <p>Pagamento de sal&aacute;rios integrais aos empregados nos dias em que n&atilde;o houver trabalho em virtude da ocorr&ecirc;ncia de chuvas ou outros fatores alheios &agrave; vontade dos mesmos, desde que comprovada sua presen&ccedil;a no local de presta&ccedil;&atilde;o de servi&ccedil;o ou no ponto de reuni&atilde;o para embarque.</p>
+                                                </label>
+                                                <br />
+                                            <center>
+                                                <b>
+                                                    <label class="textosubgrupo">
+                                                        Auxílio Morte/Funeral
+                                                        <br />
+                                                    </label>
+                                                </b>
+                                            </center>
+                                                <label class="tituloClausula">
+                                                    <b>
+                                                        <br />
+                                                        CL&#193;USULA D&#201;CIMA SEXTA - AUX&#205;LIO-FUNERAL
+                                                        <br />
+                                                                                                                                                                                                                                                                                        
+                                                    </b>
+                                                </label>
+                                                <br />
+                                                <label class="descricaoClausula" >
+                                                    <p>Aux&iacute;lio-Funeral, pago pelo empregador(a) rural/empresa rural, correspondente a 03 (tr&ecirc;s) sal&aacute;rios nominais (<strong>sal&aacute;rio-base mensal</strong>&nbsp;do(a) empregado(a) rural), ser&aacute; pago aos dependentes legais, em caso de morte de empregado rural. O auxilio ser&aacute; um s&oacute;, mesmo havendo mais de um dependente.</p>
+<p><strong>PAR&Aacute;GRAFO &Uacute;NICO:</strong>&nbsp;O aux&iacute;lio-funeral dever&aacute; ser pago independentemente do(a) empregado(a) e do empregador rural possu&iacute;rem seguro de vida, no ato da rescis&atilde;o/homologa&ccedil;&atilde;o.</p>
+                                                </label>
+                                                <br />
+                                            <center>
+                                                <b>
+                                                    <label class="textosubgrupo">
+                                                        Seguro de Vida
+                                                        <br />
+                                                    </label>
+                                                </b>
+                                            </center>
+                                                <label class="tituloClausula">
+                                                    <b>
+                                                        <br />
+                                                        CL&#193;USULA D&#201;CIMA S&#201;TIMA - PLANO DE BENEF&#205;CIOS – PROTE&#199;&#195;O SEGURO DE VIDA – BEM ESTAR – ASSIST&#202;NCIAS
+                                                        <br />
+                                                                                                                                                                                                                                                                                        
+                                                    </b>
+                                                </label>
+                                                <br />
+                                                <label class="descricaoClausula" >
+                                                    <p>O seguro de vida &eacute; obrigat&oacute;rio e destinado a todos(as) os(as) empregados(as) rurais. Os empregadores(as) rurais /empresas recolher&atilde;o obrigatoriamente em favor de todos os seus empregados rurais, filiados ou n&atilde;o a esta Entidade Sindical representativa de Classe, o Plano de Benef&iacute;cios: Seguro de Vida e Acidentes Pessoais, Assist&ecirc;ncia e Assessoria, Apoio Emocional e Nutricional, Cesta Natalidade, Reembolso de Rescis&atilde;o Contratual em caso de Morte, Reembolso de Despesas M&eacute;dicas e Hospitalares por Intoxica&ccedil;&atilde;o de Agrot&oacute;xico, Cesta B&aacute;sica aos Benefici&aacute;rios em Caso de Morte do Segurado, Aux&iacute;lio Funeral (Reembolso), garantindo-se as coberturas m&iacute;nimas descritas nesta cl&aacute;usula, desta Conven&ccedil;&atilde;o Coletiva de Trabalho.</p>
+<p><strong>PARAGR&Aacute;FO PRIMEIRO:</strong>&nbsp;Os empregadores(as)/empresas poder&atilde;o optar por recolher o Seguro de Vida/Plano de Benef&iacute;cios ofertado por meio desta Entidade Sindical, o qual &eacute; v&aacute;lido somente para os filiados/associados a esta Entidade Sindical representativa de Classe, ou poder&atilde;o optar por outro seguro &agrave; sua escolha, desde que observadas as coberturas m&iacute;nimas descritas nesta cl&aacute;usula, desta Conven&ccedil;&atilde;o Coletiva de Trabalho.</p>
+<p><strong>PARAGR&Aacute;FO SEGUNDO:</strong>&nbsp;Caso os empregadores(as)/empresas optem por recolher um seguro que n&atilde;o seja o ofertado por esta Entidade Sindical, os empregadores (as)/empresas dever&atilde;o enviar a c&oacute;pia da ap&oacute;lice do seguro para este Sindicato, via Correios ou&nbsp;<em>e-mail</em>, para fins de fiscaliza&ccedil;&atilde;o do efetivo cumprimento das disposi&ccedil;&otilde;es contidas no&nbsp;<em>caput</em>&nbsp;da presente cl&aacute;usula.</p>
+<p><strong>PARAGR&Aacute;FO TERCEIRO:</strong>&nbsp;Em caso de descumprimento desta cl&aacute;usula, pelo Empregador, seja pelo n&atilde;o recolhimento do seguro de vida e acidentes pessoais em grupo, ou por contratar um seguro em desacordo com as condi&ccedil;&otilde;es m&iacute;nimas previstas nesta cl&aacute;usula, ou ainda, por n&atilde;o encaminhar a ap&oacute;lice a esta Entidade Sindical, caso opte por outro seguro, ser&aacute; aplicada a multa no valor de 100% (cem por cento) do sal&aacute;rio normativo, por empregado, cuja multa ser&aacute; revertida totalmente em favor desta Entidade Sindical, sem preju&iacute;zo das medidas administrativas e judiciais para que se fa&ccedil;a cumprir a presente cl&aacute;usula.</p>
+<p><strong>PARAGR&Aacute;FO QUARTO:</strong>&nbsp;Em caso de descumprimento desta cl&aacute;usula, o Empregador ser&aacute; totalmente respons&aacute;vel pelo pagamento das coberturas m&iacute;nimas descritas nesta cl&aacute;usula, desta Conven&ccedil;&atilde;o Coletiva de Trabalho, caso ocorra a morte do trabalhador.</p>
+<p><strong>PARAGR&Aacute;FO QUINTO:</strong>&nbsp;O Plano de Benef&iacute;cios: Seguro de Vida e Acidentes Pessoais, Assist&ecirc;ncia e Assessoria, Apoio Emocional e Nutricional, Cesta Natalidade, Reembolso de Rescis&atilde;o Contratual em caso de Morte, Reembolso de Despesas M&eacute;dicas e Hospitalares por Intoxica&ccedil;&atilde;o de Agrot&oacute;xico, Cesta B&aacute;sica aos Benefici&aacute;rios em Caso de Morte do Segurado, Aux&iacute;lio Funeral (Reembolso), possui as seguintes coberturas m&iacute;nimas:</p>
+<p><strong>I) R$ 31.500,00 (trinta e um mil e quinhentos reais)</strong> em caso de <strong>MORTE DO EMPREGADO</strong> <strong>(A),</strong> independentemente do local ocorrido, que garante ao(s) benefici&aacute;rio(s) o pagamento do capital segurado contratado em caso de morte do segurado, por causa natural ou acidental devidamente coberta, respeitadas todas as cl&aacute;usulas e condi&ccedil;&otilde;es do seguro;</p>
+<p><strong>II)</strong>&nbsp;<strong>At&eacute; R$ 31.500,00 (trinta e um mil e quinhentos reais)</strong>, em caso de <strong>INVALIDEZ PERMANENTE (Total ou Parcial) por acidente</strong>, independentemente do local ocorrido, que garante o pagamento de indeniza&ccedil;&atilde;o ao segurado, nas hip&oacute;teses e nos graus estabelecidos na tabela que integra as condi&ccedil;&otilde;es do seguro, proporcional ao valor do capital segurado contratado para esta cobertura, caso haja a perda, redu&ccedil;&atilde;o ou impot&ecirc;ncia funcional definitiva, total ou parcial, de um membro ou &oacute;rg&atilde;o, em virtude de les&atilde;o f&iacute;sica insuscet&iacute;vel de reabilita&ccedil;&atilde;o ou recupera&ccedil;&atilde;o pelos meios terap&ecirc;uticos dispon&iacute;veis no momento de sua constata&ccedil;&atilde;o, causada por acidente pessoal devidamente coberto nos termos do contrato de seguro;</p>
+<p><strong>III)</strong> <strong>Cesta B&aacute;sica:</strong> <strong>R$ 500,00 (quinhentos reais)</strong> para alimenta&ccedil;&atilde;o, no caso da morte do segurado principal, decorrente de evento coberto, ser&aacute; pago ao Benefici&aacute;rio o valor referente a cesta b&aacute;sica contratada. Se existir mais de um benefici&aacute;rio designado, o valor ser&aacute; pago durante o per&iacute;odo compreendido, para aquele que deter a maior participa&ccedil;&atilde;o na distribui&ccedil;&atilde;o do capital pelo segurado. Caso a participa&ccedil;&atilde;o na indeniza&ccedil;&atilde;o for igual entre si, ser&aacute; rateado o valor acordado em moeda corrente do pa&iacute;s.</p>
+<p><strong>IV)</strong> <strong>Aux&iacute;lio Funeral</strong> - Reembolso: <strong>R$ 7.000,00 (sete mil reais), </strong>no caso da morte do segurado principal, decorrente de evento coberto, ser&aacute; pago ao Benefici&aacute;rio o reembolso das despesas com sepultamento at&eacute; o valor limite contratado, comprovadas com a apresenta&ccedil;&atilde;o dos comprovantes originais, ou por outros documentos satisfat&oacute;rios, a crit&eacute;rio da seguradora.</p>
+<p><strong>V) Rescis&atilde;o Contratual:</strong> <strong>at&eacute; R$ 3.000,00 (tr&ecirc;s mil reais) </strong>no caso da Morte do segurado principal, decorrente de evento coberto, a empresa ou empregador receber&aacute; uma indeniza&ccedil;&atilde;o at&eacute; o valor contratado, a t&iacute;tulo do reembolso das despesas efetivadas para o acerto rescis&oacute;rio trabalhista, devidamente comprovado;</p>
+<p><strong>VI) Cesta Natalidade:</strong> Em caso de nascimento do(a) filho(a) do(a) segurado <strong>ou</strong> segurada, ser&aacute; concedida a Cesta Natalidade, com itens para atender as primeiras necessidades do beb&ecirc; e da mam&atilde;e, desde que o comunicado seja realizado pela empresa em at&eacute; 90 (noventa) dias ap&oacute;s o nascimento. A Cesta Natalidade &eacute; composta pelos itens abaixo:</p>
+<div align="center">
+<table style="width: 567px;" border="1" cellspacing="0" cellpadding="0">
+<tbody>
+<tr>
+<td colspan="6" valign="top" width="567">
+<p class="tableparagraph"><strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; CESTA BEB&Ecirc;</strong></p>
+</td>
+</tr>
+<tr>
+<td valign="top" width="38">
+<p class="tableparagraph"><strong>Qte.</strong></p>
+</td>
+<td valign="top" width="151">
+<p class="tableparagraph"><strong>Descri&ccedil;&atilde;o do Produto</strong></p>
+</td>
+<td valign="top" width="85">
+<p class="tableparagraph"><strong>Embalagem</strong></p>
+</td>
+<td valign="top" width="47">
+<p class="tableparagraph"><strong>Qte.</strong></p>
+</td>
+<td valign="top" width="132">
+<p class="tableparagraph"><strong>Descri&ccedil;&atilde;o do Produto</strong></p>
+</td>
+<td valign="top" width="114">
+<p class="tableparagraph"><strong>Embalagem</strong></p>
+</td>
+</tr>
+<tr>
+<td valign="top" width="38">
+<p class="tableparagraph">1</p>
+</td>
+<td valign="top" width="151">
+<p class="tableparagraph">&Aacute;lcool</p>
+</td>
+<td valign="top" width="85">
+<p class="tableparagraph">500 ml</p>
+</td>
+<td valign="top" width="47">
+<p class="tableparagraph">1</p>
+</td>
+<td valign="top" width="132">
+<p class="tableparagraph">Fralda descart&aacute;vel Dia e Noite</p>
+</td>
+<td valign="top" width="114">
+<p class="tableparagraph">pct / 10</p>
+</td>
+</tr>
+<tr>
+<td valign="top" width="38">
+<p class="tableparagraph">1</p>
+</td>
+<td valign="top" width="151">
+<p class="tableparagraph">Algod&atilde;o Hidr&oacute;filo</p>
+</td>
+<td valign="top" width="85">
+<p class="tableparagraph">25 g</p>
+</td>
+<td valign="top" width="47">
+<p class="tableparagraph">3</p>
+</td>
+<td valign="top" width="132">
+<p class="tableparagraph">Sabonete</p>
+</td>
+<td valign="top" width="114">
+<p class="tableparagraph">80 g</p>
+</td>
+</tr>
+<tr>
+<td valign="top" width="38">
+<p class="tableparagraph">1</p>
+</td>
+<td valign="top" width="151">
+<p class="tableparagraph">Cotonetes hastes flex&iacute;veis</p>
+</td>
+<td valign="top" width="85">
+<p class="tableparagraph">c/75</p>
+</td>
+<td valign="top" width="47">
+<p class="tableparagraph">1</p>
+</td>
+<td valign="top" width="132">
+<p class="tableparagraph">Shampoo S/SAL</p>
+</td>
+<td valign="top" width="114">
+<p class="tableparagraph">350 ml</p>
+</td>
+</tr>
+<tr>
+<td valign="top" width="38">
+<p class="tableparagraph">1</p>
+</td>
+<td valign="top" width="151">
+<p class="tableparagraph">Pomada para assadura</p>
+</td>
+<td valign="top" width="85">
+<p class="tableparagraph">30 grs.</p>
+</td>
+<td valign="top" width="47">
+<p class="tableparagraph">1</p>
+</td>
+<td valign="top" width="132">
+<p class="tableparagraph">Talco</p>
+</td>
+<td valign="top" width="114">
+<p class="tableparagraph">200 g</p>
+</td>
+</tr>
+<tr>
+<td valign="top" width="38">
+<p class="tableparagraph">1</p>
+</td>
+<td valign="top" width="151">
+<p class="tableparagraph">Gaze</p>
+</td>
+<td valign="top" width="85">
+<p class="tableparagraph">7,5 X 7,5</p>
+</td>
+<td valign="top" width="47">
+<p class="tableparagraph">1</p>
+</td>
+<td valign="top" width="132">
+<p class="tableparagraph">Caixa de papel&atilde;o pequena</p>
+</td>
+<td valign="top" width="114">
+<p class="tableparagraph">Unidade</p>
+</td>
+</tr>
+<tr>
+<td valign="top" width="38">
+<p class="tableparagraph">1</p>
+</td>
+<td valign="top" width="151">
+<p class="tableparagraph">Term&ocirc;metro clinico</p>
+</td>
+<td valign="top" width="85">
+<p class="tableparagraph">c/1</p>
+</td>
+<td valign="top" width="47">
+<p class="tableparagraph">1</p>
+</td>
+<td valign="top" width="132">
+<p class="tableparagraph">Bolsa t&eacute;rmica infantil</p>
+</td>
+<td valign="top" width="114">
+<p class="tableparagraph">Unidade</p>
+</td>
+</tr>
+<tr>
+<td valign="top" width="38">
+<p class="tableparagraph">1</p>
+</td>
+<td valign="top" width="151">
+<p class="tableparagraph">Esparadrapo</p>
+</td>
+<td valign="top" width="85">
+<p class="tableparagraph">4,5 m</p>
+</td>
+<td valign="top" width="47">
+<p class="tableparagraph">1</p>
+</td>
+<td valign="top" width="132">
+<p class="tableparagraph">Chupeta de silicone</p>
+</td>
+<td valign="top" width="114">
+<p class="tableparagraph">Unidade</p>
+</td>
+</tr>
+<tr>
+<td valign="top" width="38">
+<p class="tableparagraph">1</p>
+</td>
+<td valign="top" width="151">
+<p class="tableparagraph">Len&ccedil;os umedecidos</p>
+</td>
+<td valign="top" width="85">
+<p class="tableparagraph">c /70</p>
+</td>
+<td valign="top" width="47">
+<p class="tableparagraph">1</p>
+</td>
+<td valign="top" width="132">
+<p class="tableparagraph">Mamadeira</p>
+</td>
+<td valign="top" width="114">
+<p class="tableparagraph">Unidade</p>
+</td>
+</tr>
+<tr>
+<td valign="top" width="567">&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p align="center">&nbsp;</p>
+<div align="center">
+<table style="width: 567px;" border="1" cellspacing="0" cellpadding="0">
+<tbody>
+<tr>
+<td colspan="6" valign="top" width="567">
+<p class="tableparagraph">&nbsp;<strong>CESTA MAM&Atilde;E</strong></p>
+</td>
+</tr>
+<tr>
+<td valign="top" width="151">
+<p class="tableparagraph"><strong>Produto</strong></p>
+</td>
+<td valign="top" width="85">
+<p class="tableparagraph"><strong>Embalagem</strong></p>
+</td>
+<td valign="top" width="47">
+<p class="tableparagraph"><strong>Qte.</strong></p>
+</td>
+<td valign="top" width="151">
+<p class="tableparagraph"><strong>Produto</strong></p>
+</td>
+<td valign="top" width="85">
+<p class="tableparagraph"><strong>Embalagem</strong></p>
+</td>
+<td valign="top" width="48">
+<p class="tableparagraph"><strong>Qte.</strong></p>
+</td>
+</tr>
+<tr>
+<td valign="top" width="151">
+<p class="tableparagraph">A&ccedil;&uacute;car refinado</p>
+</td>
+<td valign="top" width="85">
+<p class="tableparagraph">1kg</p>
+</td>
+<td valign="top" width="47">
+<p class="tableparagraph">5</p>
+</td>
+<td valign="top" width="151">
+<p class="tableparagraph">Polpa de tomate</p>
+</td>
+<td valign="top" width="85">
+<p class="tableparagraph">520 grs.</p>
+</td>
+<td valign="top" width="48">
+<p class="tableparagraph">1</p>
+</td>
+</tr>
+<tr>
+<td valign="top" width="151">
+<p class="tableparagraph">Arroz - tipo 1</p>
+</td>
+<td valign="top" width="85">
+<p class="tableparagraph">5kg</p>
+</td>
+<td valign="top" width="47">
+<p class="tableparagraph">2</p>
+</td>
+<td valign="top" width="151">
+<p class="tableparagraph">Sal refinado</p>
+</td>
+<td valign="top" width="85">
+<p class="tableparagraph">1kg</p>
+</td>
+<td valign="top" width="48">
+<p class="tableparagraph">1</p>
+</td>
+</tr>
+<tr>
+<td valign="top" width="151">
+<p class="tableparagraph">Biscoito &aacute;gua e sal</p>
+</td>
+<td valign="top" width="85">
+<p class="tableparagraph">400 grs.</p>
+</td>
+<td valign="top" width="47">
+<p class="tableparagraph">1</p>
+</td>
+<td valign="top" width="151">
+<p class="tableparagraph">Sardinha em &oacute;leo comest&iacute;vel</p>
+</td>
+<td valign="top" width="85">
+<p class="tableparagraph">125 grs.</p>
+</td>
+<td valign="top" width="48">
+<p class="tableparagraph">2</p>
+</td>
+</tr>
+<tr>
+<td valign="top" width="151">
+<p class="tableparagraph">Biscoito recheado</p>
+</td>
+<td valign="top" width="85">
+<p class="tableparagraph">140 grs.</p>
+</td>
+<td valign="top" width="47">
+<p class="tableparagraph">1</p>
+</td>
+<td valign="top" width="151">
+<p class="tableparagraph">Tempero completo</p>
+</td>
+<td valign="top" width="85">
+<p class="tableparagraph">270 grs.</p>
+</td>
+<td valign="top" width="48">
+<p class="tableparagraph">1</p>
+</td>
+</tr>
+<tr>
+<td valign="top" width="151">
+<p class="tableparagraph">Caf&eacute; em p&oacute;</p>
+</td>
+<td valign="top" width="85">
+<p class="tableparagraph">500 grs.</p>
+</td>
+<td valign="top" width="47">
+<p class="tableparagraph">1</p>
+</td>
+<td valign="top" width="151">
+<p class="tableparagraph">Aveia em flocos</p>
+</td>
+<td valign="top" width="85">
+<p class="tableparagraph">250 grs.</p>
+</td>
+<td valign="top" width="48">
+<p class="tableparagraph">1</p>
+</td>
+</tr>
+<tr>
+<td valign="top" width="151">
+<p class="tableparagraph">Farinha de trigo especial</p>
+</td>
+<td valign="top" width="85">
+<p class="tableparagraph">1kg</p>
+</td>
+<td valign="top" width="47">
+<p class="tableparagraph">1</p>
+</td>
+<td valign="top" width="151">
+<p class="tableparagraph">Canjica branca ou farinha flocada</p>
+</td>
+<td valign="top" width="85">
+<p class="tableparagraph">1kg</p>
+</td>
+<td valign="top" width="48">
+<p class="tableparagraph">1</p>
+</td>
+</tr>
+<tr>
+<td valign="top" width="151">
+<p class="tableparagraph">Farinha de mandioca</p>
+</td>
+<td valign="top" width="85">
+<p class="tableparagraph">1kg</p>
+</td>
+<td valign="top" width="47">
+<p class="tableparagraph">1</p>
+</td>
+<td valign="top" width="151">
+<p class="tableparagraph">Leite condensado</p>
+</td>
+<td valign="top" width="85">
+<p class="tableparagraph">295 grs.</p>
+</td>
+<td valign="top" width="48">
+<p class="tableparagraph">2</p>
+</td>
+</tr>
+<tr>
+<td valign="top" width="151">
+<p class="tableparagraph">Feij&atilde;o carioca - tipo 1</p>
+</td>
+<td valign="top" width="85">
+<p class="tableparagraph">1kg</p>
+</td>
+<td valign="top" width="47">
+<p class="tableparagraph">3</p>
+</td>
+<td valign="top" width="151">
+<p class="tableparagraph">Leite em p&oacute;</p>
+</td>
+<td valign="top" width="85">
+<p class="tableparagraph">400 grs.</p>
+</td>
+<td valign="top" width="48">
+<p class="tableparagraph">1</p>
+</td>
+</tr>
+<tr>
+<td valign="top" width="151">
+<p class="tableparagraph">Massa com ovos espaguete</p>
+</td>
+<td valign="top" width="85">
+<p class="tableparagraph">500 grs.</p>
+</td>
+<td valign="top" width="47">
+<p class="tableparagraph">3</p>
+</td>
+<td valign="top" width="151">
+<p class="tableparagraph">Cereal infantil de arroz / lata</p>
+</td>
+<td valign="top" width="85">
+<p class="tableparagraph">400 grs.</p>
+</td>
+<td valign="top" width="48">
+<p class="tableparagraph">1</p>
+</td>
+</tr>
+<tr>
+<td valign="top" width="151">
+<p class="tableparagraph">&Oacute;leo de soja</p>
+</td>
+<td valign="top" width="85">
+<p class="tableparagraph">900ml</p>
+</td>
+<td valign="top" width="47">
+<p class="tableparagraph">2</p>
+</td>
+<td valign="top" width="151">
+<p class="tableparagraph">Semente de linha&ccedil;a</p>
+</td>
+<td valign="top" width="85">
+<p class="tableparagraph">500 grs.</p>
+</td>
+<td valign="top" width="48">
+<p class="tableparagraph">1</p>
+</td>
+</tr>
+<tr>
+<td valign="top" width="151">
+<p class="tableparagraph">P&oacute; para pudim</p>
+</td>
+<td valign="top" width="85">
+<p class="tableparagraph">85 grs.</p>
+</td>
+<td valign="top" width="47">
+<p class="tableparagraph">2</p>
+</td>
+<td valign="top" width="151">
+<p class="tableparagraph">Caixa de papel&atilde;o m&eacute;dia</p>
+</td>
+<td valign="top" width="85">
+<p class="tableparagraph">unidade</p>
+</td>
+<td valign="top" width="48">
+<p class="tableparagraph">1</p>
+</td>
+</tr>
+<tr>
+<td valign="top" width="151">
+<p class="tableparagraph">&Oacute;leo mineral</p>
+</td>
+<td valign="top" width="85">
+<p class="tableparagraph">200 ml</p>
+</td>
+<td valign="top" width="47">
+<p class="tableparagraph">1</p>
+</td>
+<td valign="top" width="151">
+<p class="tableparagraph">Fub&aacute;</p>
+</td>
+<td valign="top" width="85">
+<p class="tableparagraph">500 gr</p>
+</td>
+<td valign="top" width="48">
+<p class="tableparagraph">4</p>
+</td>
+</tr>
+<tr>
+<td valign="top" width="151">
+<p class="tableparagraph">Azeite de Oliva</p>
+</td>
+<td valign="top" width="85">
+<p class="tableparagraph">200 ml</p>
+</td>
+<td valign="top" width="47">
+<p class="tableparagraph">1</p>
+</td>
+<td valign="top" width="151">
+<p class="tableparagraph">Biscoito Maizena</p>
+</td>
+<td valign="top" width="85">
+<p class="tableparagraph">200 grs.</p>
+</td>
+<td valign="top" width="48">
+<p class="tableparagraph">1</p>
+</td>
+</tr>
+<tr>
+<td valign="top" width="151">
+<p class="tableparagraph">Farinha de milho</p>
+</td>
+<td valign="top" width="85">
+<p class="tableparagraph">1 Kg</p>
+</td>
+<td valign="top" width="47">
+<p class="tableparagraph">1</p>
+</td>
+<td valign="top" width="151">
+<p class="tableparagraph">Suco concentrado</p>
+</td>
+<td valign="top" width="85">
+<p class="tableparagraph">1 lt.</p>
+</td>
+<td valign="top" width="48">
+<p class="tableparagraph">1</p>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>VII) DMHO (Despesas M&eacute;dicas, Hospitalares e Odontol&oacute;gicas):</strong> Ocorrendo intoxica&ccedil;&atilde;o em decorr&ecirc;ncia do uso de produtos qu&iacute;micos, desde que devidamente comprovados por laudo m&eacute;dico, caber&aacute; ao titular respons&aacute;vel pelos gastos espec&iacute;ficos ao tratamento do evento coberto, o reembolso das despesas efetivadas e devidamente comprovadas, limitado em R$ 2.000,00 por EVENTO OCORRIDO / TITULAR / ANO.</p>
+<p><strong>VIII) Apoio Emocional e Nutricional:</strong> Ter&aacute; direito ao uso do servi&ccedil;o o segurado, seu c&ocirc;njuge e filhos dependentes ao Apoio Emocional e Nutricional. O servi&ccedil;o ser&aacute; disponibilizado em at&eacute; 20 (vinte) encontros virtuais por motivo/situa&ccedil;&atilde;o apresentada, contatando a Central de Apoio Emocional e Nutricional, atrav&eacute;s do telefone 0800.8291301. Para uso dos filhos, dependentes ou c&ocirc;njuge ser&atilde;o solicitados os dados do segurado titular: nome + CPF + data de nascimento + telefone + e-mail de contato.</p>
+<p><strong>PAR&Aacute;GRAFO SEXTO:</strong>&nbsp;Para a efetividade do Plano de Benef&iacute;cios, e por se tratar de condi&ccedil;&otilde;es ben&eacute;ficas negociadas pelos Sindicatos Convenentes, as empresas/empregadores rurais contribuir&atilde;o com o valor mensal de R$ 12,38 (doze reais e trinta e oito centavos) por empregado(a), &uacute;nica e diretamente &agrave;s empresas operadoras homologadas, conveniadas e autorizadas pelos Sindicatos Convenentes, a fornecerem a totalidade das coberturas e assist&ecirc;ncias previstas nesta cl&aacute;usula.</p>
+<p><strong>PAR&Aacute;GRAFO S&Eacute;TIMO:&nbsp;</strong>Os boletos ficam dispon&iacute;veis em plataforma virtual indicada pelos Sindicatos Convenentes.</p>
+<p><strong>PAR&Aacute;GRAFO OITAVO:&nbsp;</strong>A obrigatoriedade do seguro vida passa a vigorar a partir de 01/10/2025. No entanto, o trabalhador/empregado(a) rural s&oacute; ter&aacute; direito &agrave;s coberturas e assist&ecirc;ncias a partir da sua inclus&atilde;o na plataforma virtual e do seu efetivo pagamento, mensalmente. Para a inclus&atilde;o s&atilde;o necess&aacute;rios os dados de Nome Completo do Segurado + N&uacute;mero do CPF + data de nascimento + data de admiss&atilde;o. Quando ocorreram atualiza&ccedil;&otilde;es no quadro de funcion&aacute;rios (admiss&otilde;es e demiss&otilde;es) estas dever&atilde;o ser informadas na plataforma virtual.</p>
+<p><strong>PAR&Aacute;GRAFO NONO:&nbsp;</strong>Aplica-se o disposto na presente Cl&aacute;usula a todos os empregados, inclusive os que est&atilde;o em regime de trabalho tempor&aacute;rio, aut&ocirc;nomos (as) e estagi&aacute;rios (as) devidamente comprovado seu v&iacute;nculo.</p>
+<p><strong>PAR&Aacute;GRAFO D&Eacute;CIMO:&nbsp;</strong>As coberturas e as indeniza&ccedil;&otilde;es por morte/invalidez, previstas nos incisos I e II desta cl&aacute;usula, n&atilde;o ser&atilde;o cumul&aacute;veis, sendo que o pagamento de uma exclui a outra.</p>
+<p><strong>PAR&Aacute;GRAFO D&Eacute;CIMO PRIMEIRO:&nbsp;</strong>Fica ressalvado que o Plano de Benef&iacute;cios poder&aacute; sofrer reajustes, na data de anivers&aacute;rio da ap&oacute;lice do seguro de vida, ou ainda, em fun&ccedil;&atilde;o do &iacute;ndice de sinistralidade e reajuste dos servi&ccedil;os.</p>
+<p><strong>PAR&Aacute;GRAFO D&Eacute;CIMO SEGUNDO:&nbsp;</strong>As empresas e/ou empregadores n&atilde;o ser&atilde;o responsabilizados, sob qualquer forma, solid&aacute;ria ou subsidiariamente, na eventualidade da Seguradora contratada n&atilde;o cumprir com as condi&ccedil;&otilde;es m&iacute;nimas aqui estabelecidas, salvo quando houver prova de culpa ou dolo.</p>
+<p><strong>PAR&Aacute;GRAFO D&Eacute;CIMO TERCEIRO: </strong>A ap&oacute;lice do seguro de vida, parte integrante deste Plano de Benef&iacute;cios, negociado pelos Sindicatos Convenentes, ficar&aacute; dispon&iacute;vel na sede dos Sindicatos.</p>
+<p><strong>PAR&Aacute;GRAFO D&Eacute;CIMO QUARTO: </strong>Em caso de a institui&ccedil;&atilde;o empregadora optar por contratar empresa n&atilde;o homologada pelos Sindicatos Convenentes, dever&atilde;o ser observadas na &iacute;ntegra as coberturas, garantias, assist&ecirc;ncias e procedimentos, para que n&atilde;o sejam inferiores e/ou em menor quantidade dos que est&atilde;o elencados na presente cl&aacute;usula e seus itens, sob pena de aplica&ccedil;&atilde;o das penalidades previstas nesta Conven&ccedil;&atilde;o Coletiva de Trabalho.</p>
+<p><strong>PAR&Aacute;GRAFO D&Eacute;CIMO QUINTO:</strong> Os empregados j&aacute; afastados n&atilde;o poder&atilde;o ingressar na ap&oacute;lice de seguro de vida na sua implanta&ccedil;&atilde;o, salvo os empregados que j&aacute; fazem parte de alguma ap&oacute;lice de seguro empresarial vigente, sujeito a an&aacute;lise da Seguradora. Os j&aacute; afastados quando retornarem ao trabalho, dever&atilde;o ser inclu&iacute;dos no seguro. Exce&ccedil;&otilde;es: Empregados afastados por licen&ccedil;a maternidade e servi&ccedil;o militar. Se o empregado for afastado e j&aacute; fizer parte da ap&oacute;lice de seguro, a empresa dever&aacute; continuar a recolher o valor do seguro, informando, no entanto, a data do afastamento e o n&uacute;mero do CID ou motivo.</p>
+                                                </label>
+                                                <br />
+                                            <center>
+                                                <b>
+                                                    <label class="textosubgrupo">
+                                                        Outros Auxílios
+                                                        <br />
+                                                    </label>
+                                                </b>
+                                            </center>
+                                                <label class="tituloClausula">
+                                                    <b>
+                                                        <br />
+                                                        CL&#193;USULA D&#201;CIMA OITAVA - GARANTIA DE EMPREGO APOSENTADORIA
+                                                        <br />
+                                                                                                                                                                                                                                                                                        
+                                                    </b>
+                                                </label>
+                                                <br />
+                                                <label class="descricaoClausula" >
+                                                    <p>Proibi&ccedil;&atilde;o aos empregadores rurais de dispensarem seus empregados rurais durante os&nbsp;12 (doze) meses que antecederem a aquisi&ccedil;&atilde;o do direito &agrave; aposentadoria por idade, salvo se por justa causa, na forma da lei.</p>
+                                                </label>
+                                                <br />
+                                        <center>
+                                            <br />
+                                            <b>
+                                                <label class="textogrupo">
+                                                    Contrato de Trabalho – Admissão, Demissão, Modalidades
+                                                    <br />
+                                                </label>
+                                            </b>
+                                        </center>
+                                            <center>
+                                                <b>
+                                                    <label class="textosubgrupo">
+                                                        Normas para Admissão/Contratação
+                                                        <br />
+                                                    </label>
+                                                </b>
+                                            </center>
+                                                <label class="tituloClausula">
+                                                    <b>
+                                                        <br />
+                                                        CL&#193;USULA D&#201;CIMA NONA - CONTRATA&#199;&#195;O
+                                                        <br />
+                                                                                                                                                                                                                                                                                        
+                                                    </b>
+                                                </label>
+                                                <br />
+                                                <label class="descricaoClausula" >
+                                                    <p>Os empregadores empenhar-se-&atilde;o no sentido de dar prioridade &agrave; contrata&ccedil;&atilde;o de trabalhadores rurais que j&aacute; prestaram servi&ccedil;os anteriormente ou que residam na mesma regi&atilde;o.</p>
+                                                </label>
+                                                <br />
+                                                <label class="tituloClausula">
+                                                    <b>
+                                                        <br />
+                                                        CL&#193;USULA VIG&#201;SIMA - CONTRATA&#199;&#195;O DE PESSOAS PRIVADAS DE LIBERDADE
+                                                        <br />
+                                                                                                                                                                                                                                                                                        
+                                                    </b>
+                                                </label>
+                                                <br />
+                                                <label class="descricaoClausula" >
+                                                    <p>O empregador rural/a empresa rural poder&aacute;(&atilde;o) contratar pessoas privadas de liberdade para trabalho externo somente se observando o limite m&aacute;ximo de 10% (dez por cento) do total de seus empregados, conforme previsto na Lei de Execu&ccedil;&atilde;o Penal n.&ordm; 7.210/84 (artigos 36 e 37) e no Decreto n&ordm; 9.450/2018.</p>
+<p><strong>PAR&Aacute;GRAFO</strong> <strong>&Uacute;NICO:</strong> O empregador rural/a empresa rural dever&aacute; comunicar aos Sindicatos da categoria profissional dos empregados rurais, a cada 04 (quatro) meses e quando solicitado, o n&uacute;mero de pessoas privadas de liberdade contratadas, bem como as fun&ccedil;&otilde;es por elas exercidas, para fins de fiscaliza&ccedil;&atilde;o do respeito do limite m&aacute;ximo, em aten&ccedil;&atilde;o ao(a) empregado(a) rural.</p>
+                                                </label>
+                                                <br />
+                                            <center>
+                                                <b>
+                                                    <label class="textosubgrupo">
+                                                        Aviso Prévio
+                                                        <br />
+                                                    </label>
+                                                </b>
+                                            </center>
+                                                <label class="tituloClausula">
+                                                    <b>
+                                                        <br />
+                                                        CL&#193;USULA VIG&#201;SIMA PRIMEIRA - CARTA-AVISO
+                                                        <br />
+                                                                                                                                                                                                                                                                                        
+                                                    </b>
+                                                </label>
+                                                <br />
+                                                <label class="descricaoClausula" >
+                                                    <p>Em caso de dispensa com alega&ccedil;&atilde;o de falta grave, ser&aacute; entregue ao empregado(a) rural uma carta-aviso, sob pena de presun&ccedil;&atilde;o de dispensa imotivada.</p>
+                                                </label>
+                                                <br />
+                                                <label class="tituloClausula">
+                                                    <b>
+                                                        <br />
+                                                        CL&#193;USULA VIG&#201;SIMA SEGUNDA - INDENIZA&#199;&#195;O ET&#193;RIA
+                                                        <br />
+                                                                                                                                                                                                                                                                                        
+                                                    </b>
+                                                </label>
+                                                <br />
+                                                <label class="descricaoClausula" >
+                                                    <p>Em caso de dispensa sem justa causa de empregado (a) com mais de 50 (cinquenta anos) anos de idade, o (a) empregado(a) / trabalhador(a) rural far&aacute; jus a uma indeniza&ccedil;&atilde;o relativa a 15 (quinze) dias com base em sua &uacute;ltima e atual remunera&ccedil;&atilde;o mensal, independentemente do direito ao aviso pr&eacute;vio proporcional contido na &ldquo;CL&Aacute;USULA VIG&Eacute;SIMA SEGUNDA &ndash; AVISO PR&Eacute;VIO&rdquo;.</p>
+                                                </label>
+                                                <br />
+                                                <label class="tituloClausula">
+                                                    <b>
+                                                        <br />
+                                                        CL&#193;USULA VIG&#201;SIMA TERCEIRA - AVISO PR&#201;VIO
+                                                        <br />
+                                                                                                                                                                                                                                                                                        
+                                                    </b>
+                                                </label>
+                                                <br />
+                                                <label class="descricaoClausula" >
+                                                    <p>Nos casos de dispensa sem justa causa, o (a) trabalhador(a) e empregado(a) rural com 01 (um) ano completo, ou mais, de registro de trabalho far&aacute; jus &agrave; indeniza&ccedil;&atilde;o relativa ao aviso pr&eacute;vio proporcional na forma da Lei n&ordm; 12.506, de 11/10/2011, regulamentada pela Nota T&eacute;cnica do Minist&eacute;rio do Trabalho n&ordm; 184/2012 &ndash; CGRT/SRT/MTE, de 07 de maio de 2012.</p>
+<p><strong>PAR&Aacute;GRAFO &Uacute;NICO:</strong>&nbsp;o aviso pr&eacute;vio dever&aacute; ser concedido aos trabalhadores e empregados rurais para cumprimento de 30 (trinta) dias (prazo m&aacute;ximo), indenizando-se os demais dias, na propor&ccedil;&atilde;o da referida lei.</p>
+                                                </label>
+                                                <br />
+                                            <center>
+                                                <b>
+                                                    <label class="textosubgrupo">
+                                                        Outras normas referentes a admissão, demissão e modalidades de contratação
+                                                        <br />
+                                                    </label>
+                                                </b>
+                                            </center>
+                                                <label class="tituloClausula">
+                                                    <b>
+                                                        <br />
+                                                        CL&#193;USULA VIG&#201;SIMA QUARTA - ENTREGA DE DOCUMENTOS
+                                                        <br />
+                                                                                                                                                                                                                                                                                        
+                                                    </b>
+                                                </label>
+                                                <br />
+                                                <label class="descricaoClausula" >
+                                                    <p>Os documentos exigidos pelo empregador, em decorr&ecirc;ncia do contrato de trabalho, como a CTPS, certid&otilde;es de nascimento, casamento etc., ser&atilde;o sempre entregues contrarrecibos.</p>
+                                                </label>
+                                                <br />
+                                        <center>
+                                            <br />
+                                            <b>
+                                                <label class="textogrupo">
+                                                    Relações de Trabalho – Condições de Trabalho, Normas de Pessoal e Estabilidades
+                                                    <br />
+                                                </label>
+                                            </b>
+                                        </center>
+                                            <center>
+                                                <b>
+                                                    <label class="textosubgrupo">
+                                                        Estabilidade Serviço Militar
+                                                        <br />
+                                                    </label>
+                                                </b>
+                                            </center>
+                                                <label class="tituloClausula">
+                                                    <b>
+                                                        <br />
+                                                        CL&#193;USULA VIG&#201;SIMA QUINTA - SERVI&#199;O MILITAR
+                                                        <br />
+                                                                                                                                                                                                                                                                                        
+                                                    </b>
+                                                </label>
+                                                <br />
+                                                <label class="descricaoClausula" >
+                                                    <p>Estabilidade provis&oacute;ria de empregado em idade de servi&ccedil;o militar, desde a data do alistamento at&eacute; 60 (sessenta) dias ap&oacute;s a baixa ou dispensa do servi&ccedil;o militar, salvo por motivo de justa causa ou pedido de dispensa.</p>
+                                                </label>
+                                                <br />
+                                            <center>
+                                                <b>
+                                                    <label class="textosubgrupo">
+                                                        Outras estabilidades
+                                                        <br />
+                                                    </label>
+                                                </b>
+                                            </center>
+                                                <label class="tituloClausula">
+                                                    <b>
+                                                        <br />
+                                                        CL&#193;USULA VIG&#201;SIMA SEXTA - FORNECIMENTO DE MORADIA
+                                                        <br />
+                                                                                                                                                                                                                                                                                        
+                                                    </b>
+                                                </label>
+                                                <br />
+                                                <label class="descricaoClausula" >
+                                                    <p>A moradia do empregado ser&aacute; dotada de luz el&eacute;trica, &aacute;gua encanada e instala&ccedil;&atilde;o sanit&aacute;ria, observadas as disposi&ccedil;&otilde;es contidas na Norma Regulamentar NR-31 (Portaria&nbsp;&nbsp; n&ordm; 86, do Minist&eacute;rio do Trabalho e Emprego, D.O.U.: 04/03/2005), tudo fornecido gratuitamente pelo empregador.</p>
+<p><strong>PAR&Aacute;GRAFO PRIMEIRO:</strong>&nbsp;N&atilde;o ser&atilde;o esses valores (moradia, luz el&eacute;trica, &aacute;gua encanada e instala&ccedil;&atilde;o sanit&aacute;ria) integrados &agrave; remunera&ccedil;&atilde;o do empregado, desde que caracterizados como tais em contrato escrito celebrado entre as partes, com testemunhas e notifica&ccedil;&atilde;o obrigat&oacute;ria ao respectivo Sindicato dos Trabalhadores e Empregados Rurais, nos moldes da Lei n&ordm; 5.889/73, com reda&ccedil;&atilde;o alterada pela Lei&nbsp;n&ordm; 9.300/96.</p>
+<p><strong>PAR&Aacute;GRAFO SEGUNDO:</strong>&nbsp;Quando da contrata&ccedil;&atilde;o, o empregado dever&aacute; fornecer lista dos integrantes da sua fam&iacute;lia n&atilde;o sendo permitida a moradia de novas pessoas na mesma casa cedida, sem autoriza&ccedil;&atilde;o expressa do empregador.</p>
+                                                </label>
+                                                <br />
+                                        <center>
+                                            <br />
+                                            <b>
+                                                <label class="textogrupo">
+                                                    Jornada de Trabalho – Duração, Distribuição, Controle, Faltas
+                                                    <br />
+                                                </label>
+                                            </b>
+                                        </center>
+                                            <center>
+                                                <b>
+                                                    <label class="textosubgrupo">
+                                                        Compensação de Jornada
+                                                        <br />
+                                                    </label>
+                                                </b>
+                                            </center>
+                                                <label class="tituloClausula">
+                                                    <b>
+                                                        <br />
+                                                        CL&#193;USULA VIG&#201;SIMA S&#201;TIMA - COMPENSA&#199;&#195;O/FERIADOS
+                                                        <br />
+                                                                                                                                                                                                                                                                                        
+                                                    </b>
+                                                </label>
+                                                <br />
+                                                <label class="descricaoClausula" >
+                                                    <p>Os empregadores poder&atilde;o estabelecer programa de compensa&ccedil;&atilde;o de dias &uacute;teis intercalados entre domingos e feriados, fins de semana e Carnaval, de sorte a conceder aos empregados um per&iacute;odo mais prolongado de descanso, mediante entendimento direto com a maioria dos empregados dos setores envolvidos. A ratifica&ccedil;&atilde;o pela diretoria do sindicato dar-se-&aacute; no pr&oacute;prio documento da compensa&ccedil;&atilde;o.</p>
+                                                </label>
+                                                <br />
+                                                <label class="tituloClausula">
+                                                    <b>
+                                                        <br />
+                                                        CL&#193;USULA VIG&#201;SIMA OITAVA - COMPENSA&#199;&#195;O
+                                                        <br />
+                                                                                                                                                                                                                                                                                        
+                                                    </b>
+                                                </label>
+                                                <br />
+                                                <label class="descricaoClausula" >
+                                                    <p>Os empregadores poder&atilde;o estabelecer acordos de compensa&ccedil;&atilde;o de jornada de trabalho, desde que devidamente negociadas com a participa&ccedil;&atilde;o efetiva da respectiva Entidade Sindical profissional.</p>
+                                                </label>
+                                                <br />
+                                            <center>
+                                                <b>
+                                                    <label class="textosubgrupo">
+                                                        Descanso Semanal
+                                                        <br />
+                                                    </label>
+                                                </b>
+                                            </center>
+                                                <label class="tituloClausula">
+                                                    <b>
+                                                        <br />
+                                                        CL&#193;USULA VIG&#201;SIMA NONA - CONCESS&#195;O DE FOLGAS
+                                                        <br />
+                                                                                                                                                                                                                                                                                        
+                                                    </b>
+                                                </label>
+                                                <br />
+                                                <label class="descricaoClausula" >
+                                                    <p>Concess&atilde;o de um dia de folga ao empregado rural, ou ao grupo familiar, por ocasi&atilde;o do pagamento do m&ecirc;s, ou meio-dia quando por quinzena, para o fim espec&iacute;fico de efetuar compras, compensando-se nos dias subsequentes, mediante escala pr&eacute;via de revezamento, conforme as exig&ecirc;ncias dos servi&ccedil;os.</p>
+                                                </label>
+                                                <br />
+                                            <center>
+                                                <b>
+                                                    <label class="textosubgrupo">
+                                                        Controle da Jornada
+                                                        <br />
+                                                    </label>
+                                                </b>
+                                            </center>
+                                                <label class="tituloClausula">
+                                                    <b>
+                                                        <br />
+                                                        CL&#193;USULA TRIG&#201;SIMA - CONTROLE DA JORNADA DE TRABALHO
+                                                        <br />
+                                                                                                                                                                                                                                                                                        
+                                                    </b>
+                                                </label>
+                                                <br />
+                                                <label class="descricaoClausula" >
+                                                    <p>Os empregadores rurais, com mais de 10 (dez) empregados em sua (s) propriedade (s), implantar&atilde;o sistema de controle de jornada de trabalho atrav&eacute;s de ponto eletr&ocirc;nico, na forma da lei, ficando facultado o controle de jornada atrav&eacute;s de livro-ponto ou outro meio apropriado e eficaz, para os empregadores que possuam at&eacute; 10 (dez) empregados rurais.</p>
+                                                </label>
+                                                <br />
+                                        <center>
+                                            <br />
+                                            <b>
+                                                <label class="textogrupo">
+                                                    Férias e Licenças
+                                                    <br />
+                                                </label>
+                                            </b>
+                                        </center>
+                                            <center>
+                                                <b>
+                                                    <label class="textosubgrupo">
+                                                        Licença Maternidade
+                                                        <br />
+                                                    </label>
+                                                </b>
+                                            </center>
+                                                <label class="tituloClausula">
+                                                    <b>
+                                                        <br />
+                                                        CL&#193;USULA TRIG&#201;SIMA PRIMEIRA - TRABALHADORA RURAL GESTANTE
+                                                        <br />
+                                                                                                                                                                                                                                                                                        
+                                                    </b>
+                                                </label>
+                                                <br />
+                                                <label class="descricaoClausula" >
+                                                    <p>Ficam assegurados &agrave; trabalhadora gestante, 60 (sessenta) dias de estabilidade ap&oacute;s o t&eacute;rmino do afastamento compuls&oacute;rio.</p>
+                                                </label>
+                                                <br />
+                                            <center>
+                                                <b>
+                                                    <label class="textosubgrupo">
+                                                        Outras disposições sobre férias e licenças
+                                                        <br />
+                                                    </label>
+                                                </b>
+                                            </center>
+                                                <label class="tituloClausula">
+                                                    <b>
+                                                        <br />
+                                                        CL&#193;USULA TRIG&#201;SIMA SEGUNDA - LICEN&#199;A-PATERNIDADE
+                                                        <br />
+                                                                                                                                                                                                                                                                                        
+                                                    </b>
+                                                </label>
+                                                <br />
+                                                <label class="descricaoClausula" >
+                                                    <p>A partir da vig&ecirc;ncia desta Conven&ccedil;&atilde;o Coletiva de Trabalho, o empregador conceder&aacute; aos empregados rurais a licen&ccedil;a-paternidade remunerada de 10 (dez) dias consecutivos, por ocasi&atilde;o do nascimento de seus filhos, sem preju&iacute;zo da remunera&ccedil;&atilde;o integral.</p>
+<p><strong>PAR&Aacute;GRAFO PRIMEIRO: </strong>O benef&iacute;cio previsto nesta cl&aacute;usula substitui o prazo de 05 (cinco) dias estabelecido na Constitui&ccedil;&atilde;o Federal, de 05/10/1988. Ele absorve eventuais extens&otilde;es previstas em leis federais de ades&atilde;o volunt&aacute;ria, como o Programa Empresa Cidad&atilde;, se aplic&aacute;vel.</p>
+<p><strong>PAR&Aacute;GRAFO SEGUNDO: </strong>Para fazer jus ao benef&iacute;cio, o empregado rural dever&aacute; apresentar a certid&atilde;o de nascimento do filho ao empregador no prazo de at&eacute; 05 (cinco) dias &uacute;teis ap&oacute;s o parto.</p>
+<p><strong>PAR&Aacute;GRAFO TERCEIRO: </strong>A licen&ccedil;a prevista nesta cl&aacute;usula aplica-se tamb&eacute;m em casos de ado&ccedil;&atilde;o ou obten&ccedil;&atilde;o de guarda judicial para fins de ado&ccedil;&atilde;o de crian&ccedil;a, a contar da data do termo de guarda e demais documentos legais correlatos.</p>
+<p><strong>PAR&Aacute;GRAFO QUARTO: </strong>Durante o per&iacute;odo da licen&ccedil;a-paternidade ampliada, o empregado rural n&atilde;o poder&aacute; prestar servi&ccedil;os sob nenhuma hip&oacute;tese, sob pena de descaracteriza&ccedil;&atilde;o da licen&ccedil;a e aplica&ccedil;&atilde;o de multa ao empregador, conforme as san&ccedil;&otilde;es cominadas na Cl&aacute;usula 50&ordf; (multa pelo inadimplemento).</p>
+<p><strong>PAR&Aacute;GRAFO QUINTO:</strong> Esta licen&ccedil;a-paternidade estendida vale somente os empregados rurais associados ou filiados aos Sindicatos de Classe ora signat&aacute;rios, cujos empregados rurais s&atilde;o abrangidos por esta Conven&ccedil;&atilde;o Coletiva de Trabalho, independentemente do tipo de contrata&ccedil;&atilde;o ou tempo de servi&ccedil;o para o empregador rural.</p>
+                                                </label>
+                                                <br />
+                                                <label class="tituloClausula">
+                                                    <b>
+                                                        <br />
+                                                        CL&#193;USULA TRIG&#201;SIMA TERCEIRA - LICEN&#199;A-GALA
+                                                        <br />
+                                                                                                                                                                                                                                                                                        
+                                                    </b>
+                                                </label>
+                                                <br />
+                                                <label class="descricaoClausula" >
+                                                    <p>O empregador conceder&aacute; licen&ccedil;a remunerada de 05 (cinco) dias consecutivos ao(&agrave;) empregado(a) rural por motivo de seu casamento, sem preju&iacute;zo de seus sal&aacute;rios e demais direitos.</p>
+<p><strong>PAR&Aacute;GRAFO PRIMEIRO: </strong>Para fazer jus ao benef&iacute;cio, o empregado rural dever&aacute; comunicar o empregador por escrito, com anteced&ecirc;ncia m&iacute;nima de 15 (quinze) dias da data do evento.</p>
+<p><strong>PAR&Aacute;GRAFO SEGUNDO: </strong>O comprovante oficial de casamento (certid&atilde;o) dever&aacute; ser apresentado ao empregador, junto ao setor de recursos humanos e/ou departamento pessoal, no prazo m&aacute;ximo de 10 (de) dias ap&oacute;s o seu retorno ao trabalho.</p>
+<p><strong>PAR&Aacute;GRAFO TERCEIRO: </strong>Esta licen&ccedil;a-gala vale somente os empregados rurais associados ou filiados aos Sindicatos de Classe ora signat&aacute;rios, cujos empregados rurais s&atilde;o abrangidos por esta Conven&ccedil;&atilde;o Coletiva de Trabalho, independentemente do tipo de contrata&ccedil;&atilde;o ou tempo de servi&ccedil;o para o empregador rural.</p>
+                                                </label>
+                                                <br />
+                                        <center>
+                                            <br />
+                                            <b>
+                                                <label class="textogrupo">
+                                                    Saúde e Segurança do Trabalhador
+                                                    <br />
+                                                </label>
+                                            </b>
+                                        </center>
+                                            <center>
+                                                <b>
+                                                    <label class="textosubgrupo">
+                                                        Condições de Ambiente de Trabalho
+                                                        <br />
+                                                    </label>
+                                                </b>
+                                            </center>
+                                                <label class="tituloClausula">
+                                                    <b>
+                                                        <br />
+                                                        CL&#193;USULA TRIG&#201;SIMA QUARTA - FORNECIMENTO DE ABRIGO E &#193;GUA POT&#193;VEL
+                                                        <br />
+                                                                                                                                                                                                                                                                                        
+                                                    </b>
+                                                </label>
+                                                <br />
+                                                <label class="descricaoClausula" >
+                                                    <p>Os empregadores rurais ficam obrigados a oferecer abrigos nos locais de trabalho para prote&ccedil;&atilde;o de seus empregados, contra chuva ou outras intemp&eacute;ries, podendo ser utilizado para este fim o pr&oacute;prio ve&iacute;culo transportador, oferecendo, durante a jornada de trabalho, &aacute;gua pot&aacute;vel.</p>
+                                                </label>
+                                                <br />
+                                                <label class="tituloClausula">
+                                                    <b>
+                                                        <br />
+                                                        CL&#193;USULA TRIG&#201;SIMA QUINTA - TRANSPORTE DE TRABALHADORES/ CONDI&#199;&#213;ES T&#201;CNICAS E DE SEGURAN&#199;A
+                                                        <br />
+                                                                                                                                                                                                                                                                                        
+                                                    </b>
+                                                </label>
+                                                <br />
+                                                <label class="descricaoClausula" >
+                                                    <p>Quando necess&aacute;rio o transporte dos trabalhadores, os ve&iacute;culos dever&atilde;o satisfazer as condi&ccedil;&otilde;es t&eacute;cnicas de seguran&ccedil;a e comodidade para o transporte de pessoas, observando-se atentamente as orienta&ccedil;&otilde;es contidas na Norma Regulamentar NR-31 (Portaria n&ordm; 86, do Minist&eacute;rio do Trabalho e Emprego, D.O.U.: 04/03/2005), sem &ocirc;nus para o empregado.</p>
+<p><strong>PARAGRAFO 1&ordm;:&nbsp;</strong>O transporte de ferramentas e equipamentos juntamente com os trabalhadores somente ser&aacute; permitido se em compartimento separado e seguro.</p>
+<p><strong>PARAGRAFO 2&ordm;:&nbsp;</strong>Compromisso dos empregadores em ter cuidado na sele&ccedil;&atilde;o de seus motoristas, para garantir maior seguran&ccedil;a aos seus trabalhadores rurais.</p>
+                                                </label>
+                                                <br />
+                                                <label class="tituloClausula">
+                                                    <b>
+                                                        <br />
+                                                        CL&#193;USULA TRIG&#201;SIMA SEXTA - ESTRANHOS &#192; RELA&#199;&#195;O DE EMPREGO
+                                                        <br />
+                                                                                                                                                                                                                                                                                        
+                                                    </b>
+                                                </label>
+                                                <br />
+                                                <label class="descricaoClausula" >
+                                                    <p>Ao empregado que permitir a presen&ccedil;a, no local de trabalho, de pessoas trabalhando de forma n&atilde;o-autorizada e estranhas &agrave; rela&ccedil;&atilde;o de emprego, ser&aacute; aplicada advert&ecirc;ncia por escrito.</p>
+                                                </label>
+                                                <br />
+                                            <center>
+                                                <b>
+                                                    <label class="textosubgrupo">
+                                                        Equipamentos de Segurança
+                                                        <br />
+                                                    </label>
+                                                </b>
+                                            </center>
+                                                <label class="tituloClausula">
+                                                    <b>
+                                                        <br />
+                                                        CL&#193;USULA TRIG&#201;SIMA S&#201;TIMA - FORNECIMENTO GRATUITO DE INSTRUMENTO DE TRABALHO
+                                                        <br />
+                                                                                                                                                                                                                                                                                        
+                                                    </b>
+                                                </label>
+                                                <br />
+                                                <label class="descricaoClausula" >
+                                                    <p>Fornecimento obrigat&oacute;rio e gratuito pelos empregadores de instrumentos de trabalho a seus trabalhadores, de acordo com a necessidade exigida para o desempenho das atividades.</p>
+                                                </label>
+                                                <br />
+                                            <center>
+                                                <b>
+                                                    <label class="textosubgrupo">
+                                                        Equipamentos de Proteção Individual
+                                                        <br />
+                                                    </label>
+                                                </b>
+                                            </center>
+                                                <label class="tituloClausula">
+                                                    <b>
+                                                        <br />
+                                                        CL&#193;USULA TRIG&#201;SIMA OITAVA - EQUIPAMENTOS E MEIOS DE PROTE&#199;&#195;O E SEGURAN&#199;A
+                                                        <br />
+                                                                                                                                                                                                                                                                                        
+                                                    </b>
+                                                </label>
+                                                <br />
+                                                <label class="descricaoClausula" >
+                                                    <p>Fornecimento obrigat&oacute;rio de equipamentos de seguran&ccedil;a e meios de prote&ccedil;&atilde;o, quando necess&aacute;rio &aacute; execu&ccedil;&atilde;o do servi&ccedil;o, sem &ocirc;nus para o empregado.</p>
+<p><strong>PAR&Aacute;GRAFO PRIMEIRO:&nbsp;</strong>Compete ao empregador a instru&ccedil;&atilde;o e conscientiza&ccedil;&atilde;o do trabalhador quanto ao uso adequado dos equipamentos.</p>
+<p><strong>PAR&Aacute;GRAFO SEGUNDO:&nbsp;</strong>Cabe ao(&agrave;) empregado(a) rural o uso obrigat&oacute;rio e regular do EPI fornecido pelo empregador, responsabilizando-se pelo uso.</p>
+                                                </label>
+                                                <br />
+                                            <center>
+                                                <b>
+                                                    <label class="textosubgrupo">
+                                                        Insalubridade
+                                                        <br />
+                                                    </label>
+                                                </b>
+                                            </center>
+                                                <label class="tituloClausula">
+                                                    <b>
+                                                        <br />
+                                                        CL&#193;USULA TRIG&#201;SIMA NONA - APLICA&#199;&#195;O DE DEFENSIVOS AGR&#205;COLAS
+                                                        <br />
+                                                                                                                                                                                                                                                                                        
+                                                    </b>
+                                                </label>
+                                                <br />
+                                                <label class="descricaoClausula" >
+                                                    <p>Para a execu&ccedil;&atilde;o de atividades que envolvam a manipula&ccedil;&atilde;o e aplica&ccedil;&atilde;o de defensivos agr&iacute;colas, o empregador rural obriga-se a manter e apresentar o respectivo Receitu&aacute;rio Agron&ocirc;mico, emitido por profissional legalmente habilitado, sob pena de interrup&ccedil;&atilde;o imediata da atividade por risco &agrave; sa&uacute;de do trabalhador.</p>
+<p><strong>PAR&Aacute;GRAFO PRIMEIRO: </strong>Em estrita observ&acirc;ncia &agrave; NR-31, o empregador dever&aacute; fornecer aos empregados que exercem esta atividade, obrigatoriamente e sem &ocirc;nus, treinamento espec&iacute;fico sobre o manuseio seguro, riscos &agrave; sa&uacute;de, higiene pessoal e o uso correto de Equipamentos de Prote&ccedil;&atilde;o Individual (EPIs).</p>
+<p><strong>PAR&Aacute;GRAFO SEGUNDO: </strong>Em virtude da exposi&ccedil;&atilde;o inerente a agentes qu&iacute;micos nocivos, a atividade de aplica&ccedil;&atilde;o de defensivos agr&iacute;colas &eacute; reconhecida como insalubre, garantindo ao trabalhador/empregado(a) rural o pagamento do adicional nos seguintes graus, independentemente da efic&aacute;cia ou do fornecimento de EPIs: I &ndash; Grau M&aacute;ximo (40%): Para a manipula&ccedil;&atilde;o e aplica&ccedil;&atilde;o de defensivos de alta toxicidade (ex: organofosforados e outros classificados como altamente t&oacute;xicos); II &ndash; Grau M&eacute;dio (20%): Para a manipula&ccedil;&atilde;o e aplica&ccedil;&atilde;o de defensivos de m&eacute;dia toxicidade (ex: carbamatos e similares); III &ndash; Grau M&iacute;nimo (10%): Para a manipula&ccedil;&atilde;o e aplica&ccedil;&atilde;o de defensivos de baixa toxicidade.</p>
+<p><strong>PAR&Aacute;GRAFO TERCEIRO: </strong>Os percentuais de insalubridade descritos no par&aacute;grafo anterior incidir&atilde;o, obrigatoriamente, sobre o sal&aacute;rio-base estabelecido nesta Conven&ccedil;&atilde;o Coletiva de Trabalho, vedada a utiliza&ccedil;&atilde;o do sal&aacute;rio-m&iacute;nimo nacional como base de c&aacute;lculo, visando a condi&ccedil;&atilde;o mais ben&eacute;fica ao trabalhador.</p>
+<p><strong>PAR&Aacute;GRAFO QUARTO: </strong>O fornecimento, a fiscaliza&ccedil;&atilde;o e o uso dos EPIs s&atilde;o deveres de seguran&ccedil;a e sa&uacute;de do empregador, por&eacute;m, sua utiliza&ccedil;&atilde;o n&atilde;o exime o pagamento do adicional de insalubridade pactuado nesta cl&aacute;usula, dada a natureza da exposi&ccedil;&atilde;o e o princ&iacute;pio da prote&ccedil;&atilde;o integral &agrave; sa&uacute;de do trabalhador rural.</p>
+                                                </label>
+                                                <br />
+                                            <center>
+                                                <b>
+                                                    <label class="textosubgrupo">
+                                                        Aceitação de Atestados Médicos
+                                                        <br />
+                                                    </label>
+                                                </b>
+                                            </center>
+                                                <label class="tituloClausula">
+                                                    <b>
+                                                        <br />
+                                                        CL&#193;USULA QUADRAG&#201;SIMA - ATESTADOS M&#201;DICOS E ODONTOL&#211;GICOS
+                                                        <br />
+                                                                                                                                                                                                                                                                                        
+                                                    </b>
+                                                </label>
+                                                <br />
+                                                <label class="descricaoClausula" >
+                                                    <p>Os empregadores rurais reconhecem e aceitam os atestados m&eacute;dicos e odontol&oacute;gicos expedidos por profissionais legalmente habilitados, por servi&ccedil;os m&eacute;dicos do Sindicato dos Empregados Rurais / Trabalhadores Rurais, bem como de &oacute;rg&atilde;os oficiais da Previd&ecirc;ncia Social ou do sistema p&uacute;blico e privado de sa&uacute;de.</p>
+<p><strong>PAR&Aacute;GRAFO PRIMEIRO: </strong>No ato da entrega do atestado pelo trabalhador, o empregador fornecer&aacute; obrigatoriamente o respectivo contrarrecibo, que poder&aacute; ser emitido de forma f&iacute;sica ou digital (via <em>e-mail </em>ou aplicativo de mensagens).</p>
+<p><strong>PAR&Aacute;GRAFO SEGUNDO: </strong>O(A) empregado(a) rural dever&aacute; entregar ou enviar o atestado ao empregador em at&eacute; 02 (dois) dias &uacute;teis, contados a partir da data de emiss&atilde;o do documento, admitindo-se o envio por <em>e-mail </em>ou por qualquer aplicativo de mensagens instant&acirc;neas.</p>
+<p><strong>PAR&Aacute;GRAFO TERCEIRO: </strong>O empregador rural aceitar&aacute; todos os atestados m&eacute;dicos e odontol&oacute;gicos entregues pela empregada gestante relativos a consultas, exames e demais acompanhamentos durante todo o per&iacute;odo pr&eacute;-natal at&eacute; a data do parto, garantindo-se o afastamento necess&aacute;rio sem preju&iacute;zo do sal&aacute;rio e de demais benef&iacute;cios, sendo vedado qualquer desconto ou exig&ecirc;ncia de compensa&ccedil;&atilde;o de jornada.</p>
+<p><strong>PAR&Aacute;GRAFO QUARTO: </strong>O empregador rural aceitar&aacute; os atestados e declara&ccedil;&otilde;es apresentados pelo empregado que acompanhar sua esposa ou companheira gestante &agrave;s consultas m&eacute;dicas e exames pr&eacute;-natais, assegurando a justificativa da aus&ecirc;ncia sem qualquer preju&iacute;zo salarial ou de benef&iacute;cios.</p>
+<p><strong>PAR&Aacute;GRAFO QUINTO: </strong>No caso de empregado(a) rural que seja pai, m&atilde;e ou tutor legal de crian&ccedil;a ou dependente com defici&ecirc;ncia &ndash; incluindo o Transtorno do Espectro Autista (TEA) e outras condi&ccedil;&otilde;es neurodivergentes e necessidades especiais &ndash;, o empregador rural aceitar&aacute; todos os atestados, declara&ccedil;&otilde;es ou relat&oacute;rios de comparecimento a consultas, exames e sess&otilde;es de terapias multidisciplinares (como psicologia, fonoaudiologia, terapia ocupacional, entre outras), sem limite de dias e sem preju&iacute;zo &agrave; remunera&ccedil;&atilde;o integral e demais direitos previstos nesta Conven&ccedil;&atilde;o Coletiva de Trabalho.</p>
+<p><strong>PAR&Aacute;GRAFO SEXTO: </strong>Para o acompanhamento m&eacute;dico de demais filhos menores, pais idosos ou dependentes legais (sem defici&ecirc;ncia), o empregador rural aceitar&aacute; os atestados de acompanhamento at&eacute; o limite de 30 (trinta) dias no ano civil (corridos ou fracionados), sem preju&iacute;zo da remunera&ccedil;&atilde;o e dos benef&iacute;cios assegurados nesta Conven&ccedil;&atilde;o Coletiva de Trabalho.</p>
+                                                </label>
+                                                <br />
+                                            <center>
+                                                <b>
+                                                    <label class="textosubgrupo">
+                                                        Primeiros Socorros
+                                                        <br />
+                                                    </label>
+                                                </b>
+                                            </center>
+                                                <label class="tituloClausula">
+                                                    <b>
+                                                        <br />
+                                                        CL&#193;USULA QUADRAG&#201;SIMA PRIMEIRA - MEDICAMENTOS E MATERIAIS DE PRIMEIRO SOCORROS
+                                                        <br />
+                                                                                                                                                                                                                                                                                        
+                                                    </b>
+                                                </label>
+                                                <br />
+                                                <label class="descricaoClausula" >
+                                                    <p>Fica estabelecido que nos locais de trabalho seja mantida, pelo empregador rural, caixa de medicamentos e material de primeiros socorros.</p>
+<p><strong>PARAGRAFO &Uacute;NICO:&nbsp;</strong>Em caso de mal s&uacute;bito ou acidente de trabalho, os empregadores providenciar&atilde;o condu&ccedil;&atilde;o adequada para o socorro imediato do(a) acidentado(a).</p>
+                                                </label>
+                                                <br />
+                                            <center>
+                                                <b>
+                                                    <label class="textosubgrupo">
+                                                        Outras Normas de Prevenção de Acidentes e Doenças Profissionais
+                                                        <br />
+                                                    </label>
+                                                </b>
+                                            </center>
+                                                <label class="tituloClausula">
+                                                    <b>
+                                                        <br />
+                                                        CL&#193;USULA QUADRAG&#201;SIMA SEGUNDA - COMUNICA&#199;&#195;O DE ACIDENTE DE TRABALHO
+                                                        <br />
+                                                                                                                                                                                                                                                                                        
+                                                    </b>
+                                                </label>
+                                                <br />
+                                                <label class="descricaoClausula" >
+                                                    <p>A falta de comunica&ccedil;&atilde;o de acidente de trabalho por parte do empregador importar&aacute; em responsabilidade pelo pagamento integral dos sal&aacute;rios durante o per&iacute;odo de inatividade.</p>
+                                                </label>
+                                                <br />
+                                            <center>
+                                                <b>
+                                                    <label class="textosubgrupo">
+                                                        Outras Normas de Proteção ao Acidentado ou Doente
+                                                        <br />
+                                                    </label>
+                                                </b>
+                                            </center>
+                                                <label class="tituloClausula">
+                                                    <b>
+                                                        <br />
+                                                        CL&#193;USULA QUADRAG&#201;SIMA TERCEIRA - AFASTAMENTO DE SERVI&#199;O POR DOEN&#199;A
+                                                        <br />
+                                                                                                                                                                                                                                                                                        
+                                                    </b>
+                                                </label>
+                                                <br />
+                                                <label class="descricaoClausula" >
+                                                    <p>Pagamento pelos empregadores dos primeiros quinze dias de renumera&ccedil;&atilde;o nos casos de afastamento por motivos de doen&ccedil;a.</p>
+                                                </label>
+                                                <br />
+                                        <center>
+                                            <br />
+                                            <b>
+                                                <label class="textogrupo">
+                                                    Relações Sindicais
+                                                    <br />
+                                                </label>
+                                            </b>
+                                        </center>
+                                            <center>
+                                                <b>
+                                                    <label class="textosubgrupo">
+                                                        Acesso do Sindicato ao Local de Trabalho
+                                                        <br />
+                                                    </label>
+                                                </b>
+                                            </center>
+                                                <label class="tituloClausula">
+                                                    <b>
+                                                        <br />
+                                                        CL&#193;USULA QUADRAG&#201;SIMA QUARTA - ACESSO DA DIRETORIA
+                                                        <br />
+                                                                                                                                                                                                                                                                                        
+                                                    </b>
+                                                </label>
+                                                <br />
+                                                <label class="descricaoClausula" >
+                                                    <p>Fica permitido o acesso do Presidente ou do Diretor devidamente credenciado, do Sindicato dos Trabalhadores e Empregados Rurais acordante e, desde que comunicado previamente e devidamente acompanhado pelo empregador, ou seu representante, aos locais de trabalho.</p>
+                                                </label>
+                                                <br />
+                                            <center>
+                                                <b>
+                                                    <label class="textosubgrupo">
+                                                        Contribuições Sindicais
+                                                        <br />
+                                                    </label>
+                                                </b>
+                                            </center>
+                                                <label class="tituloClausula">
+                                                    <b>
+                                                        <br />
+                                                        CL&#193;USULA QUADRAG&#201;SIMA QUINTA - CONTRIBUI&#199;&#195;O ASSOCIATIVA
+                                                        <br />
+                                                                                                                                                                                                                                                                                        
+                                                    </b>
+                                                </label>
+                                                <br />
+                                                <label class="descricaoClausula" >
+                                                    <p>No prazo m&aacute;ximo de 10 (dez) dias a contar da assinatura desta Conven&ccedil;&atilde;o Coletiva de Trabalho, o(s) empregador(es) rural(is) proceder&aacute;(&atilde;o) ao recolhimento em favor do Sindicato Profissional representativo da categoria, do local da moradia ou do trabalho do(a) empregado(a) rural, quando do primeiro pagamento j&aacute; reajustado, o desconto da Contribui&ccedil;&atilde;o Associativa, a qual dever&aacute; ser descontada, mensalmente, somente dos(as) Empregados(as) rurais associados(as)/filiados(as) ao Sindicato representativo da categoria e com a autoriza&ccedil;&atilde;o expressa destes, em favor desta Entidade Sindical, na base de&nbsp;<strong>02% (dois por cento) do sal&aacute;rio bruto</strong><strong>,</strong> procedendo ao recolhimento em favor do Sindicato Profissional em conta e banco a serem indicados pelo mesmo na respectiva guia de recolhimento.</p>
+                                                </label>
+                                                <br />
+                                                <label class="tituloClausula">
+                                                    <b>
+                                                        <br />
+                                                        CL&#193;USULA QUADRAG&#201;SIMA SEXTA - CONTRIBUI&#199;&#195;O ASSISTENCIAL
+                                                        <br />
+                                                                                                                                                                                                                                                                                        
+                                                    </b>
+                                                </label>
+                                                <br />
+                                                <label class="descricaoClausula" >
+                                                    <p>Conforme estipulado pela Assembleia Geral da categoria profissional, os Empregadores(as) rurais efetuar&atilde;o, quando do primeiro pagamento j&aacute; reajustado dos(as) empregados(as) rurais, o desconto de uma s&oacute; vez, do valor correspondente a uma di&aacute;ria&nbsp;do(a) empregado(a), a t&iacute;tulo de Contribui&ccedil;&atilde;o Assistencial<strong>,&nbsp;</strong>de todos os(as) empregados(as) rurais, associados ou n&atilde;o, sindicalizados ou n&atilde;o, safristas, tempor&aacute;rios, intermitentes, em favor desta Entidade Sindical, por se tratar de aumento da verba salarial conquistada por esta Entidade Sindical em favor de toda a categoria, com amparo no artigo 513, al&iacute;nea &ldquo;e&rdquo;, da Consolida&ccedil;&atilde;o das Leis do Trabalho (CLT).</p>
+<p><strong>PARAGR&Aacute;FO PRIMEIRO:</strong> O recolhimento dever&aacute; ser feito em at&eacute; 10 (dez) dias corridos ap&oacute;s o desconto dos&nbsp;empregados(as) rurais, por meio de guia &uacute;nica ou conjunta com outras taxas/contribui&ccedil;&otilde;es, a crit&eacute;rio desta Entidade Sindical, o que ser&aacute; fornecido pelo Sindicato ou por empresas terceirizadas a servi&ccedil;o desta Entidade Sindical.</p>
+<p><strong>PAR&Aacute;GRAFO SEGUNDO:</strong> A todos os empregados rurais que forem contratados durante o ano, safristas ou n&atilde;o, tempor&aacute;rios ou n&atilde;o, intermitentes ou n&atilde;o, ser&aacute; feito o desconto de uma di&aacute;ria referente &agrave; contribui&ccedil;&atilde;o assistencial, quando do primeiro pagamento recebido, na forma do <em>caput</em>.</p>
+<p><strong>PAR&Aacute;GRAFO QUARTO:</strong> O n&atilde;o recolhimento da contribui&ccedil;&atilde;o assistencial prevista nesta cl&aacute;usula, desta Conven&ccedil;&atilde;o Coletiva de Trabalho, at&eacute; a data do seu respectivo vencimento implicar&aacute; na aplica&ccedil;&atilde;o de multa de 15% (quinze por cento) sobre o valor total devido, acrescido de juros de mora de 1% (um por cento) ao m&ecirc;s e corre&ccedil;&atilde;o monet&aacute;ria pelo INPC, calculados <em>pro rata die</em> at&eacute; a data do efetivo pagamento.</p>
+<p>&nbsp;</p>
+                                                </label>
+                                                <br />
+                                                <label class="tituloClausula">
+                                                    <b>
+                                                        <br />
+                                                        CL&#193;USULA QUADRAG&#201;SIMA S&#201;TIMA - DA OPOSI&#199;&#195;O
+                                                        <br />
+                                                                                                                                                                                                                                                                                        
+                                                    </b>
+                                                </label>
+                                                <br />
+                                                <label class="descricaoClausula" >
+                                                    <p>&Eacute; facultado ao(&agrave;) empregado(a) rural o direito de oposi&ccedil;&atilde;o aos descontos das contribui&ccedil;&otilde;es associativa e assistencial, cuja oposi&ccedil;&atilde;o dever&aacute; ser feita, presencialmente, na sede do Sindicato.</p>
+<p><strong>PARAGRAFO PRIMEIRO:</strong> Fica assegurado aos empregados rurais o direito de oposi&ccedil;&atilde;o &agrave; contribui&ccedil;&atilde;o assistencial, no prazo de 05 (cinco) dias &uacute;teis a contar da assinatura desta Conven&ccedil;&atilde;o Coletiva de Trabalho, cuja oposi&ccedil;&atilde;o dever&aacute; ser feita, presencialmente, na sede do Sindicato.</p>
+<p><strong>PARAGRAFO SEGUNDO:</strong> Para os empregados rurais que forem contratados durante a vig&ecirc;ncia desta Conven&ccedil;&atilde;o Coletiva de Trabalho, fica assegurado o direito de oposi&ccedil;&atilde;o &agrave; contribui&ccedil;&atilde;o assistencial, o qual ser&aacute; de 05 (cinco) dias &uacute;teis, a contar da data do registro em Carteira de Trabalho e Previd&ecirc;ncia Social, cuja oposi&ccedil;&atilde;o dever&aacute; ser feita, presencialmente, na sede do Sindicato.</p>
+<p><strong>PARAGRAFO TERCEIRO:</strong>&nbsp;A oposi&ccedil;&atilde;o ao desconto das contribui&ccedil;&otilde;es assistencial e associativa &eacute; v&aacute;lida somente para o ano de vig&ecirc;ncia da presente Conven&ccedil;&atilde;o Coletiva de Trabalho, devendo ser renovada anualmente a cada nova Conven&ccedil;&atilde;o Coletiva de Trabalho transmitida, no mesmo prazo e forma estabelecidos neste instrumento.</p>
+<p><strong>PARAGRAFO QUARTO:</strong> N&atilde;o ser&atilde;o aceitas: &ldquo;oposi&ccedil;&otilde;es antecipadas &ndash; apresentadas antes da divulga&ccedil;&atilde;o da transmiss&atilde;o do instrumento coletivo de trabalho&rdquo;; &ldquo;oposi&ccedil;&otilde;es enviadas fora do prazo&rdquo;; &ldquo;oposi&ccedil;&otilde;es padronizadas&rdquo;; &ldquo;oposi&ccedil;&otilde;es incentivadas por terceiros&rdquo;; &ldquo;oposi&ccedil;&otilde;es entregues diretamente ao empregador&rdquo;; &ldquo;oposi&ccedil;&otilde;es enviadas de forma coletiva pelo empregador&rdquo;.</p>
+<p><strong>PARAGRAFO QUINTO:</strong>&nbsp;O(a) empregado(a) rural que fizer a oposi&ccedil;&atilde;o ao desconto da contribui&ccedil;&atilde;o assistencial e/ou &agrave; contribui&ccedil;&atilde;o associativa n&atilde;o far&aacute; jus &agrave;s garantias, aos benef&iacute;cios e a quaisquer conv&ecirc;nios prescritos nesta Conven&ccedil;&atilde;o Coletiva de Trabalho.</p>
+<p><strong>PARAGRAFO SEXTO:</strong>&nbsp;O(a) empregado(a) rural, para fazer jus aos direitos e benef&iacute;cios assegurados nesta Conven&ccedil;&atilde;o Coletiva de Trabalho, dever&aacute; estar adimplente com todas as contribui&ccedil;&otilde;es devidas.&nbsp;</p>
+<p><strong>PARAGRAFO S&Eacute;TIMO:</strong>&nbsp;O empregador/empresa que n&atilde;o promover, retardar ou dificultar os descontos das contribui&ccedil;&otilde;es contidas nesta Conven&ccedil;&atilde;o Coletiva de Trabalho, sendo por a&ccedil;&atilde;o dolosa ou por omiss&atilde;o, ser&aacute; notificado para que promova o devido desconto e o recolhimento no prazo de 05 (cinco) dias corridos, ap&oacute;s a ci&ecirc;ncia da notifica&ccedil;&atilde;o, a qual poder&aacute; ser feita por carta com aviso de recebimento (A.R.),&nbsp;<em>e-mail</em>&nbsp;ou qualquer outro meio v&aacute;lido que fa&ccedil;a a empresa tomar ci&ecirc;ncia. A notifica&ccedil;&atilde;o feita ao escrit&oacute;rio de contabilidade que preste servi&ccedil;os para o empregador/empresa ser&aacute; considerada v&aacute;lida, para os devidos fins.</p>
+<p><strong>PARAGRAFO OITAVO:</strong>&nbsp;Notificado o(s) empregador(es)/empresa(s) e findado o prazo do par&aacute;grafo acima sem ocorrer o devido recolhimento, esta Entidade Sindical poder&aacute; notificar o Minist&eacute;rio P&uacute;blico do Trabalho para que fa&ccedil;a as apura&ccedil;&otilde;es devidas quanto ao fato noticiado (pr&aacute;tica antissindical), sem preju&iacute;zo das medidas judiciais cab&iacute;veis.</p>
+<p><strong>PARAGRAFO NONO:</strong>&nbsp;Feita a oposi&ccedil;&atilde;o pelo(a) empregado(a) rural nesta Entidade Sindical, nos termos desta cl&aacute;usula, o(a) empregado(a) rural informar&aacute; &agrave; empresa/escrit&oacute;rio de contabilidade, com c&oacute;pia da carta de oposi&ccedil;&atilde;o protocolada nesta Entidade Sindical, e a empresa/escrit&oacute;rio de contabilidade que preste servi&ccedil;os ao empregador/empresa, comunicar&aacute; este Sindicato, por <em>e-mail</em>, do recebimento da carta de oposi&ccedil;&atilde;o protocolada, requerendo a confirma&ccedil;&atilde;o para cancelar os descontos.</p>
+<p><strong>PARAGRAFO D&Eacute;CIMO: </strong>&nbsp;A Entidade Sindical ter&aacute; o prazo de 02 (dois) dias &uacute;teis para responder &agrave; confirma&ccedil;&atilde;o. Confirmada por esta Entidade Sindical, a empresa/escrit&oacute;rio de contabilidade poder&aacute; proceder ao cancelamento dos descontos, caso a oposi&ccedil;&atilde;o n&atilde;o seja confirmada e/ou negado o pedido de oposi&ccedil;&atilde;o, esta Entidade Sindical informar&aacute; os motivos &agrave; empresa/escrit&oacute;rio de contabilidade,&nbsp;que dever&aacute; manter todos os descontos e&nbsp;informar ao empregado rural da recusa, para que ele compare&ccedil;a neste Sindicato para esclarecimentos.</p>
+<p><strong>PAR&Aacute;GRAFO D&Eacute;CIMO PRIMEIRO: </strong>No caso de oposi&ccedil;&atilde;o, os empregadores(as) rurais/empresas dever&atilde;o, no prazo m&aacute;ximo de 30 (trinta) dias corridos a contar da efetiva&ccedil;&atilde;o da oposi&ccedil;&atilde;o do(a) empregado(a) rural, realizar a contrata&ccedil;&atilde;o de um seguro de vida particular em favor dos empregados rurais, observadas as coberturas m&iacute;nimas descritas na Cl&aacute;usula D&eacute;cima Oitava &ndash; Plano De Benef&iacute;cios &ndash; Prote&ccedil;&atilde;o Seguro De Vida &ndash; Bem Estar &ndash; Assist&ecirc;ncias, desta Conven&ccedil;&atilde;o Coletiva de Trabalho.</p>
+                                                </label>
+                                                <br />
+                                            <center>
+                                                <b>
+                                                    <label class="textosubgrupo">
+                                                        Outras disposições sobre relação entre sindicato e empresa
+                                                        <br />
+                                                    </label>
+                                                </b>
+                                            </center>
+                                                <label class="tituloClausula">
+                                                    <b>
+                                                        <br />
+                                                        CL&#193;USULA QUADRAG&#201;SIMA OITAVA - QUADRO DE AVISOS
+                                                        <br />
+                                                                                                                                                                                                                                                                                        
+                                                    </b>
+                                                </label>
+                                                <br />
+                                                <label class="descricaoClausula" >
+                                                    <p>Permiss&atilde;o ao Sindicato dos Empregados Rurais de afixar nos ve&iacute;culos de transporte de empregados rurais, avisos de interesse da categoria profissional, inclusive campanhas de sindicaliza&ccedil;&atilde;o, desde que confeccionados em papel timbrado do Sindicato e assinado pelo representante legal da Entidade Sindical, notificando-se previamente os empregadores ou seus representantes legais.</p>
+                                                </label>
+                                                <br />
+                                            <center>
+                                                <b>
+                                                    <label class="textosubgrupo">
+                                                        Outras disposições sobre representação e organização
+                                                        <br />
+                                                    </label>
+                                                </b>
+                                            </center>
+                                                <label class="tituloClausula">
+                                                    <b>
+                                                        <br />
+                                                        CL&#193;USULA QUADRAG&#201;SIMA NONA - HOMOLOGA&#199;&#213;ES CONTRATUAIS
+                                                        <br />
+                                                                                                                                                                                                                                                                                        
+                                                    </b>
+                                                </label>
+                                                <br />
+                                                <label class="descricaoClausula" >
+                                                    <p>De acordo com a Reforma Trabalhista trazida pela Lei n&ordm; 13.467, de 11/11/2017, a qual excluiu o par&aacute;grafo primeiro do artigo 477, da CLT, as homologa&ccedil;&otilde;es das rescis&otilde;es dos contratos de trabalho perante o Sindicato de Classe n&atilde;o s&atilde;o mais obrigat&oacute;rias. Exce&ccedil;&atilde;o apenas aos casos previstos em lei (artigo 500, da CLT) ou em caso de pedido expresso do(a) empregado(a) rural para que a sua rescis&atilde;o contratual seja feita com a assist&ecirc;ncia e homologada junto &agrave; sua Entidade de Representativa de Classe (Sindicato).</p>
+<p><strong>PAR&Aacute;GRAFO PRIMEIRO: </strong>Constitui dever dos empregadores rurais e dos respectivos escrit&oacute;rios de contabilidade encaminhar mensalmente ao Sindicato dos Empregados c&oacute;pia de todos os Termos de Rescis&atilde;o do Contrato de Trabalho (TRCT) formalizados com os trabalhadores e empregados rurais.</p>
+<p><strong>PAR&Aacute;GRAFO SEGUNDO: </strong>A remessa referida no caput poder&aacute; ser realizada por correio eletr&ocirc;nico (<em>e-mail</em>), aplicativo de mensagem instant&acirc;nea (<em>WhatsApp</em>) ou outro meio digital v&aacute;lido.</p>
+<p><strong>PAR&Aacute;GRAFO TERCEIRO: </strong>O descumprimento desta obriga&ccedil;&atilde;o sujeitar&aacute; o infrator &agrave;s san&ccedil;&otilde;es cominadas na Cl&aacute;usula 50&ordf; (multa pelo inadimplemento).</p>
+                                                </label>
+                                                <br />
+                                        <center>
+                                            <br />
+                                            <b>
+                                                <label class="textogrupo">
+                                                    Disposições Gerais
+                                                    <br />
+                                                </label>
+                                            </b>
+                                        </center>
+                                            <center>
+                                                <b>
+                                                    <label class="textosubgrupo">
+                                                        Mecanismos de Solução de Conflitos
+                                                        <br />
+                                                    </label>
+                                                </b>
+                                            </center>
+                                                <label class="tituloClausula">
+                                                    <b>
+                                                        <br />
+                                                        CL&#193;USULA QUINQUAG&#201;SIMA - ELEI&#199;&#195;O
+                                                        <br />
+                                                                                                                                                                                                                                                                                        
+                                                    </b>
+                                                </label>
+                                                <br />
+                                                <label class="descricaoClausula" >
+                                                    <p>Elei&ccedil;&atilde;o da Justi&ccedil;a do Trabalho da Comarca de Bauru, SP, para a solu&ccedil;&atilde;o de quaisquer pend&ecirc;ncias decorrentes da presente Conven&ccedil;&atilde;o Coletiva de Trabalho ou de Senten&ccedil;a Normativa prolatada.</p>
+                                                </label>
+                                                <br />
+                                            <center>
+                                                <b>
+                                                    <label class="textosubgrupo">
+                                                        Aplicação do Instrumento Coletivo
+                                                        <br />
+                                                    </label>
+                                                </b>
+                                            </center>
+                                                <label class="tituloClausula">
+                                                    <b>
+                                                        <br />
+                                                        CL&#193;USULA QUINQUAG&#201;SIMA PRIMEIRA - APLICABILIDADE
+                                                        <br />
+                                                                                                                                                                                                                                                                                        
+                                                    </b>
+                                                </label>
+                                                <br />
+                                                <label class="descricaoClausula" >
+                                                    <p>Esta Conven&ccedil;&atilde;o Coletiva de Trabalho &eacute; de aplicabilidade abrangente em todo o Estado de S&atilde;o Paulo, nas bases territoriais de representatividade dos Sindicatos signat&aacute;rios, observando-se o disposto no artigo 615, da Consolida&ccedil;&atilde;o das Leis do Trabalho (CLT), ressalvados os Acordos ou Conven&ccedil;&otilde;es Coletivas j&aacute; existentes e em vigor.</p>
+                                                </label>
+                                                <br />
+                                            <center>
+                                                <b>
+                                                    <label class="textosubgrupo">
+                                                        Descumprimento do Instrumento Coletivo
+                                                        <br />
+                                                    </label>
+                                                </b>
+                                            </center>
+                                                <label class="tituloClausula">
+                                                    <b>
+                                                        <br />
+                                                        CL&#193;USULA QUINQUAG&#201;SIMA SEGUNDA - MULTA PELO INADIMPLEMENTO
+                                                        <br />
+                                                                                                                                                                                                                                                                                        
+                                                    </b>
+                                                </label>
+                                                <br />
+                                                <label class="descricaoClausula" >
+                                                    <p>Para cada cl&aacute;usula violada/descumprida, ser&aacute; aplicada multa no valor de 30% (trinta por cento) do sal&aacute;rio normativo, multiplicado pelo n&uacute;mero de trabalhadores, a qual ser&aacute; revertida em favor da parte prejudicada, seja o(a) empregado(a) rural lesado ou o Sindicato Profissional de Classe em caso de representa&ccedil;&atilde;o administrativa e processual dos seus representados, nas a&ccedil;&otilde;es coletivas e demais atos, na forma da lei.</p>
+<p><strong>PARAGR&Aacute;FO PRIMEIRO:</strong> Constatada a viola&ccedil;&atilde;o das cl&aacute;usulas do presente instrumento coletivo, o(s) empregador(es)/empresa(s) ser&aacute;(&atilde;o) notificado(s) sobre as infra&ccedil;&otilde;es cometidas, o qual ter&aacute; o prazo de 05 (cinco) dias corridos para esclarecimentos.</p>
+<p><strong>PARAGRAFO SEGUNDO:</strong> Ultrapassado o prazo previsto no par&aacute;grafo acima, ser&aacute; imediatamente iniciada a cobran&ccedil;a administrativa e/ou judicial.</p>
+<p><strong>PARAGRAFO TERCEIRO: </strong>A ci&ecirc;ncia da notifica&ccedil;&atilde;o aos empregadores(as)/empresas poder&aacute; ser feita por carta com AR,&nbsp;<em>e-mail</em>&nbsp;ou qualquer outro meio digital v&aacute;lido que fa&ccedil;a o empregador tomar ci&ecirc;ncia.</p>
+<p><strong>PARAGR&Aacute;FO QUARTO:</strong> Constatada a viola&ccedil;&atilde;o de qualquer cl&aacute;usula do presente instrumento coletivo, poder&atilde;o ser oficiados os &Oacute;rg&atilde;os P&uacute;blicos competentes para que adotem as provid&ecirc;ncias cab&iacute;veis, nos termos da lei.</p>
+<p><strong>PAR&Aacute;GRAFO QUINTO:</strong> Os <em>e-mails</em> enviados pelo Sindicato dos Empregados Rurais ao(s) empregador(es) rural(is)/escrit&oacute;rio(s) ter&atilde;o plena validade jur&iacute;dica como notifica&ccedil;&otilde;es formais, dispensando-se outras formalidades.</p>
+                                                </label>
+                                                <br />
+                                            <center>
+                                                <b>
+                                                    <label class="textosubgrupo">
+                                                        Outras Disposições
+                                                        <br />
+                                                    </label>
+                                                </b>
+                                            </center>
+                                                <label class="tituloClausula">
+                                                    <b>
+                                                        <br />
+                                                        CL&#193;USULA QUINQUAG&#201;SIMA TERCEIRA - MATERIAL ESCOLAR
+                                                        <br />
+                                                                                                                                                                                                                                                                                        
+                                                    </b>
+                                                </label>
+                                                <br />
+                                                <label class="descricaoClausula" >
+                                                    <p>O empregador fornecer&aacute;, anualmente, a todos os seus empregados rurais que possuam filhos em idade escolar (educa&ccedil;&atilde;o infantil, ensino fundamental ou ensino m&eacute;dio), um kit de material escolar adequado ao ano cursado pelo estudante.</p>
+<p><strong>PAR&Aacute;GRAFO PRIMEIRO: </strong>O benef&iacute;cio aplica-se a cada filho do empregado matriculado regularmente em estabelecimento de ensino oficial ou reconhecido, na faixa et&aacute;ria de 04 (quatro) a 17 (dezessete) anos de idade.</p>
+<p><strong>PAR&Aacute;GRAFO SEGUNDO: </strong>O kit de material escolar dever&aacute; ser entregue ao empregado at&eacute; o dia 10 (dez) de fevereiro de cada ano, mediante comprova&ccedil;&atilde;o de matr&iacute;cula ou frequ&ecirc;ncia escolar do dependente apresentada pelo empregado rural / trabalhador at&eacute; o final de janeiro.</p>
+<p><strong>PAR&Aacute;GRAFO TERCEIRO: </strong>Os itens que comp&otilde;em o kit m&iacute;nimo de material escolar ser&atilde;o definidos de comum acordo entre o(s) Sindicato(s) Profissional(is) e o Sindicato Patronal, garantindo qualidade e itens de uso individual pedag&oacute;gico.</p>
+<p><strong>PAR&Aacute;GRAFO QUARTO: </strong>O valor ou o fornecimento do material escolar de que trata esta cl&aacute;usula n&atilde;o ter&aacute; natureza salarial, n&atilde;o se incorporando &agrave; remunera&ccedil;&atilde;o do empregado para nenhum efeito legal, nos termos do artigo 458, da CLT.</p>
+<p><strong>PAR&Aacute;GRAFO QUINTO: </strong>Este benef&iacute;cio vale somente para os empregados rurais associados ou filiados aos Sindicatos de Classe ora signat&aacute;rios, cujos empregados rurais s&atilde;o abrangidos por esta Conven&ccedil;&atilde;o Coletiva de Trabalho, independentemente do tipo de contrata&ccedil;&atilde;o ou tempo de servi&ccedil;o para o empregador rural.</p>
+                                                </label>
+                                                <br />
+                                                <label class="tituloClausula">
+                                                    <b>
+                                                        <br />
+                                                        CL&#193;USULA QUINQUAG&#201;SIMA QUARTA - DA VIG&#202;NCIA
+                                                        <br />
+                                                                                                                                                                                                                                                                                        
+                                                    </b>
+                                                </label>
+                                                <br />
+                                                <label class="descricaoClausula" >
+                                                    <p>A vig&ecirc;ncia dessa Conven&ccedil;&atilde;o Coletiva de Trabalho ser&aacute; de 01 (um) ano, com in&iacute;cio em 1&ordm; (primeiro) de outubro de 2026 e t&eacute;rmino em 30 de setembro de 2027.</p>
+                                                </label>
+                                                <br />
+                                                <label class="tituloClausula">
+                                                    <b>
+                                                        <br />
+                                                        CL&#193;USULA QUINQUAG&#201;SIMA QUINTA - DEN&#218;NCIA, REVOGA&#199;&#195;O E REVIS&#195;O
+                                                        <br />
+                                                                                                                                                                                                                                                                                        
+                                                    </b>
+                                                </label>
+                                                <br />
+                                                <label class="descricaoClausula" >
+                                                    <p>O processo de den&uacute;ncia, revoga&ccedil;&atilde;o ou revis&atilde;o total ou parcial do presente ajuste estar&aacute; sujeito &agrave;s regras dos artigos 615 e seguintes, todos da CLT.</p>
+<p><strong>PAR&Aacute;GRAFO &Uacute;NICO:</strong> Os entendimentos com vistas &agrave; celebra&ccedil;&atilde;o de renova&ccedil;&atilde;o da presente Conven&ccedil;&atilde;o Coletiva de Trabalho dever&atilde;o iniciar-se em at&eacute; 60 (sessenta) dias de anteced&ecirc;ncia do t&eacute;rmino de vig&ecirc;ncia deste instrumento coletivo.</p>
+                                                </label>
+                                                <br />
+                                    }
+                                    <br />
+                                    <table border="0" cellpadding="0" cellspacing="0" align="center">
+                                        <tr>
+                                            <td align="center">
+                                                    <br />
+    <br />
+    <label class="textonome">
+        JOSE PASCOAL ALVES
+        <br style="height: 5px" />
+        Presidente
+        <br style="height: 5px" />
+        SINDICATO DOS EMPREGADOS RURAIS DE BAURU, AVAI E AREALVA
+        <br />
+        <br />
+    </label>
+
+    <br />
+    <br />
+    <label class="textonome">
+        APARECIDO DONIZETI MUNSIMBONI
+        <br style="height: 5px" />
+        Presidente
+        <br style="height: 5px" />
+        SINDICATO DOS TRABALHADORES RURAIS DE AGUDOS - SP
+        <br />
+        <br />
+    </label>
+    <br />
+    <br />
+    <label class="textonome">
+        JOSE MAURICIO DE MELLO LIMA VERDE GUIMARAES
+        <br style="height: 5px" />
+        Presidente
+        <br style="height: 5px" />
+        SINDICATO RURAL DE BAURU
+        <br />
+        <br />
+    </label>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                        <br />
+                                        <center>
+                                            <label class="textogrupo">
+                                                <b>ANEXOS </b>
+                                            </label>
+                                        </center>
+                                                        <label>
+                                                            <b>
+                                                                <center>
+                                                                    <label class="textogrupo">
+                                                                        ANEXO I - ATA DE ASSEMBLEIA
+                                                                    </label>
+                                                                </center>
+                                                                <label class="tituloClausula">
+                                                                                                                                    </label>
+                                                            </b>
+                                                        </label>
+                                                        <b>
+                                                            <label>
+
+                                                            </label>
+                                                        </b>
+                                                        <br />
+                                                        <label class="descricaoClausula" >
+                                                            <p><a href="https://mediador.trabalho.gov.br/sistemas/mediador/imagemAnexo/MR065356_20262026_10_20T14_33_17.pdf" target="_blank">Anexo (PDF)</a></p>
+                                                        </label>
+                                                        <br />
+                                        <!--****************************************** FIM - Anexos ******************************************-->
+                                            <label class="texto">
+                                                &#160;&#160;&#160;&#160;A autenticidade deste documento poderá ser confirmada na
+                                                página do Ministerio do Trabalho e Emprego na Internet, no endereço http://www.mte.gov.br.
+                                            </label>
+                                            <br />
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </center>
+    </div>
+</body>
+<script>
+    setTimeout(function () {
+        window.history.replaceState({}, '', window.location.pathname);
+    }, 0);
+</script>
+</html>

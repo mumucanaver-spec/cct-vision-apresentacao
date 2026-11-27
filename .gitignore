@@ -2,9 +2,9 @@
 .venv/
 __pycache__/
 .streamlit/secrets.toml
-# O acervo fica num repositório separado (veja armazenamento.py)
-ccts/
-dados/
+# Versão de apresentação: o acervo vai junto no repositório (o site não usa o acervo online).
+# As conversas ficam de fora.
+dados/conversas/
 COLAR_NO_STREAMLIT_SECRETS.txt
 testes/tmp_app/
 testes/_acervo_tmp/
