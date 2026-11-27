@@ -530,8 +530,10 @@ def processar_atualizacao(pedido: dict):
     with st.chat_message("assistant", avatar=visual.ICONE):
         with st.status("Buscando a versão atualizada na internet...", expanded=True) as status:
             def progresso(mensagem: str):
-                status.update(label=mensagem)
-                status.write(mensagem)
+                # expanded=True a cada passo: sem isso a caixa fecha ao trocar o título e o
+                # usuário deixa de ver a lista das ações já feitas.
+                status.update(label=mensagem, expanded=True)
+                status.write(f":material/check_small: {mensagem}")
 
             try:
                 resultado = atualizacao.buscar_versao_atual(cct, progresso)

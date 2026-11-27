@@ -242,6 +242,10 @@ def _rodada(antiga: dict, ficha: str, resultados: list[dict], tentados: set, pro
         if novos:
             etapas.append("Numa página de sindicato com a lista de convenções, abri: "
                           + ", ".join(_nome_do_arquivo(u) or _site(u) for u in novos) + ".")
+        else:
+            etapas.append(f"Nas páginas de sindicato abertas havia {len(links)} link(s) de documentos, "
+                          "mas nenhum parecia ser a versão nova desta convenção (eram versões "
+                          "anteriores ou de outra categoria).")
         mais, rel2, _ = _abrir_varios(novos, progresso)
         documentos += mais
         relatorio += rel2
