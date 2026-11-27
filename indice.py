@@ -13,7 +13,7 @@ import threading
 import unicodedata
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from dataclasses import dataclass, field
-from datetime import datetime
+from datetime import date, datetime
 from pathlib import Path
 from typing import Callable
 
@@ -73,6 +73,23 @@ def carregar_indice() -> list[dict]:
 
 def titulo(cct: dict) -> str:
     return (cct.get("metadados") or {}).get("titulo") or cct["nome"]
+
+
+def data_iso(valor) -> date | None:
+    """Lê as datas da ficha ("2026-09-30", "30/09/2026" ou "2026-09")."""
+    texto = str(valor or "").strip()
+    for formato, tamanho in (("%Y-%m-%d", 10), ("%d/%m/%Y", 10), ("%Y-%m", 7)):
+        try:
+            return datetime.strptime(texto[:tamanho], formato).date()
+        except ValueError:
+            continue
+    return None
+
+
+def vencida_em(cct: dict, hoje: date | None = None) -> date | None:
+    """Data em que a CCT venceu, se o fim da vigência já passou (conferido pelo programa)."""
+    fim = data_iso((cct.get("metadados") or {}).get("vigencia_fim"))
+    return fim if fim and fim < (hoje or date.today()) else None
 
 
 MARCADOR_PASTA = ".pasta_do_acervo"  # arquivo vazio que identifica uma pasta de organização
@@ -350,6 +367,12 @@ def analisar_repetidas(progresso: Progresso = None) -> int:
         if decisao and decisao["relacao"] in RELACOES_MESMA_CCT:
             grupo_de[raiz(a["id"])] = raiz(b["id"])
             motivos[frozenset((a["id"], b["id"]))] = decisao["motivo"]
+    # Versões atualizadas encontradas pela IA (atualizacao.py): a ligação antiga -> nova vale sempre.
+    for id_antiga, ligacao in _carregar_atualizacoes().items():
+        id_nova = ligacao.get("nova")
+        if id_antiga in grupo_de and id_nova in grupo_de:
+            grupo_de[raiz(id_antiga)] = raiz(id_nova)
+            motivos[frozenset((id_antiga, id_nova))] = ligacao.get("motivo") or "versão anterior"
     grupos: dict[str, list[dict]] = {}
     for cct in candidatas:
         grupos.setdefault(raiz(cct["id"]), []).append(cct)
@@ -451,6 +474,13 @@ def _salvar_decisoes(decisoes: dict, ids_existentes: set[str]):
     _arquivo_decisoes().parent.mkdir(parents=True, exist_ok=True)
     _arquivo_decisoes().write_text(json.dumps(validas, ensure_ascii=False, indent=1, sort_keys=True),
                                 encoding="utf-8")
+
+
+def _carregar_atualizacoes() -> dict:
+    try:
+        return json.loads((PASTA_INDICE.parent / "atualizacoes.json").read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return {}
 
 
 def _arquivo_decisoes() -> Path:

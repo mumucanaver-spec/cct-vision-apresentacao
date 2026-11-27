@@ -33,13 +33,14 @@ def _carregar_segredos():
 _carregar_segredos()
 
 import armazenamento  # noqa: E402  (precisam das variáveis carregadas acima)
+import atualizacao  # noqa: E402
 import conversas  # noqa: E402
 import ia  # noqa: E402
 from config import PASTA_CCTS  # noqa: E402
 from consulta import responder  # noqa: E402
 from indice import (MARCADOR_PASTA, SEM_PASTA, atualizar_indice, carregar_indice,  # noqa: E402
                     eh_pasta_de_organizacao, excluir, excluir_todas, impressoes_digitais, pasta_da_cct,
-                    pastas_de_organizacao, situacao, titulo)
+                    pastas_de_organizacao, situacao, titulo, vencida_em)
 
 ONLINE = armazenamento.configurado()
 SENHA = os.getenv("SENHA_DE_ACESSO", "")
@@ -160,6 +161,20 @@ def sair():
         del estado[chave]
 
 
+def pedir_atualizacao(id_cct: str, pergunta: str | None = None):
+    """Botão "Buscar versão atualizada": a busca roda na conversa, com o passo a passo à vista.
+    `pergunta`: a pergunta cuja resposta avisou do vencimento (para responder de novo depois)."""
+    estado.atualizar = {"id": id_cct, "pergunta": pergunta}
+
+
+def repetir_pergunta(pergunta: str):
+    estado.repetir = pergunta
+
+
+BUSCA_DESATIVADA = ("A busca na internet não está ativada: falta a chave TAVILY_API_KEY "
+                    "(no .env ou em Settings → Secrets).")
+
+
 # ---------------------------------------------------------------- acervo
 
 
@@ -271,6 +286,14 @@ def mostrar_detalhes_cct(cct: dict):
     m = cct.get("metadados") or {}
     st.caption(f"Arquivo: {cct['nome']} · {len(cct['paginas'])} página(s)/trecho(s)")
     st.write(f"**Vigência:** {_vigencia(cct)}")
+    fim = vencida_em(cct)
+    if fim and not cct.get("substituida_por"):
+        st.warning(f"Vencida em {fim:%d/%m/%Y}. Pode já existir uma versão nova.")
+        st.button("Buscar versão atualizada", key=f"atualizar_lateral_{cct['id']}",
+                  icon=":material/travel_explore:", on_click=pedir_atualizacao, args=(cct["id"],),
+                  use_container_width=True, disabled=not atualizacao.chave_configurada(),
+                  help="A IA procura na internet a versão nova desta convenção, confere e guarda "
+                       "no acervo." if atualizacao.chave_configurada() else BUSCA_DESATIVADA)
     if m.get("categorias_abrangidas"):
         st.write("**Categorias:** " + sem_formula("; ".join(m["categorias_abrangidas"])))
     if m.get("abrangencia_territorial"):
@@ -426,10 +449,19 @@ with st.sidebar:
 # ---------------------------------------------------------------- conversa
 
 
-def mostrar_resposta(item: dict):
+def mostrar_resposta(item: dict, posicao: int):
     st.markdown(sem_formula(item["resposta"]))
     for aviso in item.get("avisos", []):
         st.warning(aviso)
+    mostrar_vencidas(item, posicao)
+    if item.get("etapas"):
+        with st.expander(f"Passo a passo ({len(item['etapas'])} etapas)", icon=":material/checklist:"):
+            st.markdown(sem_formula("\n".join(f"{n}. {e}" for n, e in enumerate(item["etapas"], 1))))
+    pergunta_original = (item.get("atualizacao") or {}).get("pergunta")
+    if (item.get("atualizacao") or {}).get("nova_id") and pergunta_original and \
+            not any(m["pergunta"] == pergunta_original for m in mensagens[posicao + 1:]):
+        st.button("Responder de novo com a versão nova", key=f"repetir_{posicao}", type="primary",
+                  icon=":material/refresh:", on_click=repetir_pergunta, args=(pergunta_original,))
     if item.get("consultadas"):
         st.caption("CCTs analisadas: " + " · ".join(item["consultadas"]))
     if item.get("fontes"):
@@ -442,19 +474,30 @@ def mostrar_resposta(item: dict):
                             unsafe_allow_html=True)
 
 
-mensagens = estado.conversa["mensagens"]
-if not mensagens:
-    visual.boas_vindas(len(ativas))
-else:
-    st.subheader(sem_formula(estado.conversa["titulo"] or "Conversa"))
+def mostrar_vencidas(item: dict, posicao: int):
+    """Aviso de CCT vencida (conferido pelo programa), com a opção de buscar a versão nova."""
+    for v in item.get("vencidas", []):
+        atual = por_id.get(v["id"])
+        if atual is None:
+            continue  # a CCT saiu do acervo
+        if atual.get("substituida_por"):
+            nova = por_id.get(atual["substituida_por"])
+            st.success(f"A CCT **{v['titulo']}** venceu, mas o acervo já tem a versão mais nova: "
+                       f"**{titulo(nova) if nova else '?'}**.", icon=":material/check_circle:")
+            continue
+        fim = vencida_em(atual)
+        st.warning(f"A CCT **{v['titulo']}** venceu em "
+                   f"{fim:%d/%m/%Y}." if fim else f"A CCT **{v['titulo']}** está vencida.",
+                   icon=":material/event_busy:")
+        st.button("Buscar versão atualizada", key=f"atualizar_{posicao}_{v['id']}",
+                  icon=":material/travel_explore:", on_click=pedir_atualizacao,
+                  args=(v["id"], item["pergunta"]), disabled=not atualizacao.chave_configurada(),
+                  help="A IA procura na internet a versão nova desta convenção, confere se é a "
+                       "mesma convenção e se está vigente, e guarda no acervo."
+                  if atualizacao.chave_configurada() else BUSCA_DESATIVADA)
 
-for item in mensagens:
-    with st.chat_message("user"):
-        st.markdown(sem_formula(item["pergunta"]))
-    with st.chat_message("assistant", avatar=visual.ICONE):
-        mostrar_resposta(item)
 
-if pergunta := st.chat_input("Ex.: Qual o piso salarial dos vigilantes em Campinas?"):
+def processar_pergunta(pergunta: str):
     with st.chat_message("user"):
         st.markdown(sem_formula(pergunta))
     with st.chat_message("assistant", avatar=visual.ICONE):
@@ -469,7 +512,59 @@ if pergunta := st.chat_input("Ex.: Qual o piso salarial dos vigilantes em Campin
                 st.error(str(e))
                 st.stop()
     item = {"pergunta": pergunta, "resposta": resultado.texto, "fontes": resultado.fontes,
-            "consultadas": resultado.ccts_consultadas, "avisos": resultado.avisos}
+            "consultadas": resultado.ccts_consultadas, "avisos": resultado.avisos,
+            "vencidas": resultado.vencidas}
     conversas.adicionar_mensagem(estado.usuario, estado.conversa, item)
     salvar_em_segundo_plano("Atualiza conversa")
     st.rerun()  # redesenha a tela já com a conversa no histórico da barra lateral
+
+
+def processar_atualizacao(pedido: dict):
+    """Busca a versão nova de uma CCT vencida, mostrando cada ação enquanto acontece."""
+    cct = por_id.get(pedido["id"])
+    if cct is None or cct.get("substituida_por"):
+        return  # já atualizada (ex.: clique repetido) ou removida do acervo
+    rotulo = f"Buscar a versão atualizada de {titulo(cct)}"
+    with st.chat_message("user"):
+        st.markdown(sem_formula(rotulo))
+    with st.chat_message("assistant", avatar=visual.ICONE):
+        with st.status("Buscando a versão atualizada na internet...", expanded=True) as status:
+            def progresso(mensagem: str):
+                status.update(label=mensagem)
+                status.write(mensagem)
+
+            try:
+                resultado = atualizacao.buscar_versao_atual(cct, progresso)
+                status.update(label="Pronto", state="complete", expanded=False)
+            except ia.ErroIA as e:
+                status.update(label="Erro", state="error")
+                st.error(str(e))
+                return
+    if resultado.nova_id:
+        salvar_acervo("Versão atualizada de uma CCT vencida, encontrada pela IA")
+    item = {"pergunta": rotulo, "resposta": resultado.texto, "etapas": resultado.etapas,
+            "atualizacao": {"nova_id": resultado.nova_id, "pergunta": pedido.get("pergunta")}}
+    conversas.adicionar_mensagem(estado.usuario, estado.conversa, item)
+    salvar_em_segundo_plano("Atualiza conversa")
+    st.rerun()
+
+
+mensagens = estado.conversa["mensagens"]
+if not mensagens:
+    visual.boas_vindas(len(ativas))
+else:
+    st.subheader(sem_formula(estado.conversa["titulo"] or "Conversa"))
+
+for posicao, item in enumerate(mensagens):
+    with st.chat_message("user"):
+        st.markdown(sem_formula(item["pergunta"]))
+    with st.chat_message("assistant", avatar=visual.ICONE):
+        mostrar_resposta(item, posicao)
+
+pergunta = st.chat_input("Ex.: Qual o piso salarial dos vigilantes em Campinas?")
+if pedido := estado.pop("atualizar", None):
+    processar_atualizacao(pedido)
+elif repetida := estado.pop("repetir", None):
+    processar_pergunta(repetida)
+elif pergunta:
+    processar_pergunta(pergunta)

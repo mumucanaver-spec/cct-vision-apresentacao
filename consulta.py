@@ -18,7 +18,7 @@ from typing import Callable
 
 import ia
 from config import CHAMADAS_PARALELAS, LIMITE_TOKENS_POR_CHAMADA
-from indice import carregar_indice, titulo
+from indice import carregar_indice, titulo, vencida_em
 
 Progresso = Callable[[str], None] | None
 CARACTERES_POR_TOKEN = 3.0      # estimativa conservadora para português
@@ -83,6 +83,8 @@ class Resultado:
     fontes: list[dict] = field(default_factory=list)
     ccts_consultadas: list[str] = field(default_factory=list)
     avisos: list[str] = field(default_factory=list)
+    # CCTs usadas na resposta cuja vigência já terminou: {"id", "titulo", "fim" (AAAA-MM-DD)}.
+    vencidas: list[dict] = field(default_factory=list)
 
 
 @dataclass
@@ -109,7 +111,7 @@ class _Fontes:
         chave = (cct["id"], pagina, trecho.strip())
         with self._trava:
             if chave not in self._indices:
-                self.itens.append({"cct": titulo(cct), "arquivo": cct["nome"],
+                self.itens.append({"id": cct["id"], "cct": titulo(cct), "arquivo": cct["nome"],
                                    "pagina": pagina, "trecho": trecho.strip()})
                 self._indices[chave] = len(self.itens)
             return self._indices[chave]
@@ -144,7 +146,18 @@ def responder(pergunta: str, historico: list[dict] | None = None,
         texto = _analisar_em_lotes(lotes, pergunta, contexto, fontes, avisos, progresso)
 
     texto, usadas = _renumerar(texto, fontes.itens)
-    return Resultado(texto, usadas, nomes, avisos)
+    return Resultado(texto, usadas, nomes, avisos, _vencidas(selecionadas, usadas))
+
+
+def _vencidas(selecionadas: list[dict], usadas: list[dict]) -> list[dict]:
+    """CCTs vencidas entre as citadas na resposta (ou, sem citações, entre as analisadas).
+    A vigência é conferida pelo programa, não pela IA: é o que aciona o aviso com a opção de
+    buscar a versão atualizada."""
+    citadas = {f.get("id") for f in usadas}
+    alvo = [c for c in selecionadas if c["id"] in citadas] or selecionadas
+    hoje = date.today()
+    return [{"id": c["id"], "titulo": titulo(c), "fim": fim.isoformat()}
+            for c in alvo if (fim := vencida_em(c, hoje))]
 
 
 # ---------------------------------------------------------------- seleção

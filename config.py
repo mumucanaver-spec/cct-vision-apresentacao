@@ -43,5 +43,15 @@ TRANSCREVER_TODOS_OS_PDFS = False
 # Resolução usada para transformar páginas escaneadas de PDF em imagem.
 DPI_PAGINAS_ESCANEADAS = 200
 
+# Busca da versão atualizada de uma CCT vencida (atualizacao.py). Chave TAVILY_API_KEY no .env
+# ou em Settings -> Secrets; BRAVE_API_KEY é um fornecedor de reserva opcional.
+URL_BUSCA = "https://api.tavily.com/search"
+URL_BUSCA_RESERVA = "https://api.search.brave.com/res/v1/web/search"
+BUSCAS_POR_ATUALIZACAO = 3          # consultas diferentes feitas à API de busca
+DOCUMENTOS_ABERTOS_POR_BUSCA = 4    # candidatos baixados e lidos
+PAGINAS_MAXIMAS_POR_DOCUMENTO = 80  # documentos maiores que isso não são CCTs típicas
+TAMANHO_MAXIMO_DOWNLOAD = 30_000_000
+PASTA_CACHE_PESQUISA = PASTA_BASE / "cache_pesquisa"  # documentos já lidos (7 dias)
+
 # Mudar este número força a reindexação de todas as CCTs.
 VERSAO_INDICE = 2

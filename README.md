@@ -25,6 +25,18 @@ Pode ser usado de dois jeitos:
    clique para reabrir e continuar com o mesmo contexto, 🗑️ para excluir, ou
    **✏️ Nova conversa** para começar outra.
 4. Em **📚 CCTs indexadas** estão as CCTs do acervo, com detalhes e opção de excluir.
+5. **CCT vencida:** o programa confere a vigência de cada CCT usada na resposta (contra a data
+   de hoje, sem depender da IA). Se uma delas venceu, aparece o aviso com o botão **Buscar
+   versão atualizada** (também nos detalhes da CCT, em CCTs indexadas). A IA procura a versão
+   nova na internet a partir da ficha da CCT vencida (mesmos sindicatos, categoria e local),
+   lê os documentos encontrados, confere se são a mesma convenção e se a vigência é mais nova
+   e está em vigor, e só então guarda a versão nova na mesma pasta da antiga, que passa para
+   "Deixadas de lado". Cada ação aparece na tela e fica no **Passo a passo** da resposta,
+   com o link e o registro no MTE. Se nada servir, o acervo não é alterado. Depois, o botão
+   **Responder de novo com a versão nova** refaz a pergunta. Precisa da chave gratuita da
+   Tavily (https://app.tavily.com): `TAVILY_API_KEY=tvly-...` no `.env` ou em *Settings →
+   Secrets*; `BRAVE_API_KEY` é um fornecedor de reserva opcional. Nesta versão não há
+   pesquisa livre na internet: a busca serve só para atualizar uma CCT vencida do acervo.
 
 **CCTs repetidas:** arquivos com conteúdo idêntico são recusados no envio. Quando arquivos
 diferentes são a mesma CCT (versões de anos diferentes, cópia registrada e não registrada,
@@ -95,6 +107,8 @@ do próprio Windows. Essas páginas são relidas pela IA na próxima atualizaç�
 ## Testes
 
 - `testes\teste_offline.py`: todo o fluxo com a IA simulada.
+- `testes\teste_atualizacao.py`: a busca da versão atualizada de uma CCT vencida, com a tela,
+  a IA e a internet simuladas (roda numa cópia temporária, sem mexer no acervo).
 - `testes\teste_armazenamento.py`: o salvamento no GitHub, com uma imitação da API.
 - `testes\teste_real.py`: 3 CCTs fictícias com a API de verdade (use `python -X utf8`).
 - `testes\benchmark_leitura.py`: compara velocidade e precisão da leitura de imagens.
